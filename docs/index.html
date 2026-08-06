@@ -313,10 +313,7 @@
     <a href="#platforms">平台</a>
     <a href="#workflow">工作流</a>
     <a href="#quickstart">开始</a>
-    <a class="nav-cta" href="https://github.com/yancongya/NexusSnap">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-      GitHub
-    </a>
+    <a class="nav-cta" href="#quickstart">下载</a>
   </div>
 </nav>
 
@@ -328,8 +325,8 @@
     <h1 class="reveal reveal-delay-1">浏览器到 AE/PS，<br><em>一键直达</em></h1>
     <p class="reveal reveal-delay-2">NexusSnap 是媒体嗅探与 Adobe 创作工具之间的桥梁：在浏览器中快速捕获网页上的图片、视频、音频，直接发送到 After Effects 或 Photoshop，无需下载、整理、拖拽。</p>
     <div class="hero-actions reveal reveal-delay-3">
-      <a class="btn btn-primary" href="#quickstart">快速开始</a>
-      <a class="btn btn-outline" href="https://github.com/yancongya/NexusSnap">浏览源码</a>
+      <a class="btn btn-primary" href="#quickstart">下载浏览器扩展</a>
+      <a class="btn btn-outline" href="#quickstart-cep">下载 CEP 插件</a>
     </div>
 
     <div class="hero-visual reveal reveal-delay-3">
@@ -655,28 +652,38 @@
   <!-- ============= QUICK START ============= -->
   <section class="section" id="quickstart">
     <div class="section-label reveal">快速开始</div>
-    <h2 class="reveal reveal-delay-1">三步安装，即刻使用</h2>
+    <h2 class="reveal reveal-delay-1">下载安装，即刻使用</h2>
 
-    <div class="qs-block primary reveal reveal-delay-2">
+    <div class="qs-block primary reveal reveal-delay-2" id="quickstart-browser">
       <h4><span class="qs-step-num">1</span> 安装浏览器扩展</h4>
-      <p>从 Chrome Web Store 安装，或克隆仓库后在 <code>chrome://extensions</code> 中以开发者模式加载 <code>browser-ext/</code> 目录。支持 Chrome / Edge / Arc 等 Chromium 内核浏览器。</p>
-      <div class="code-block">
-        <button class="copy-btn" aria-label="复制克隆命令" data-text="git clone https://github.com/yancongya/NexusSnap.git">复制</button>
-        <span class="cm"># 克隆仓库（私有仓库需授权）</span>
-git clone https://github.com/yancongya/NexusSnap.git
-<span class="cm"># 在 chrome://extensions 中"加载已解压的扩展程序"，选择 browser-ext/</span>
-      </div>
+      <p>下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>，选择解压后的文件夹即可。支持 Chrome / Edge / Arc 等 Chromium 内核浏览器。</p>
+      <a class="btn btn-primary" href="#download-browser" style="display:inline-flex;margin-top:4px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        下载浏览器扩展 (.zip)
+      </a>
+      <p style="margin-top:12px;font-size:13px;color:var(--subtle);">macOS 用户下载后解压，在终端执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 以去除安全隔离标记。</p>
     </div>
 
-    <div class="qs-block reveal reveal-delay-3">
-      <h4><span class="qs-step-num">2</span> 安装 AE/PS CEP 扩展</h4>
-      <p>将 <code>ae-cep-ext/</code> 目录复制或软链接到 Adobe CEP 扩展目录。需要先启用 CEP 调试模式。</p>
-      <div class="code-block">
-        <button class="copy-btn" aria-label="复制软链接命令" data-text='ln -s "$(pwd)/ae-cep-ext" "$HOME/Library/Application Support/Adobe/CEP/extensions/NexusSnap"'>复制</button>
-        <span class="cm"># macOS：创建软链接到 CEP 扩展目录</span>
-ln -s "$(pwd)/ae-cep-ext" \
-  "$HOME/Library/Application Support/Adobe/CEP/extensions/NexusSnap"
-<span class="cm"># 确保 PlayerDebugMode = 1（启用 CEP 调试）</span>
+    <div class="qs-block reveal reveal-delay-3" id="quickstart-cep">
+      <h4><span class="qs-step-num">2</span> 安装 AE/PS CEP 插件</h4>
+      <p>下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录。需要先启用 CEP 调试模式（<code>PlayerDebugMode = 1</code>）。</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;">
+        <a class="btn btn-primary" href="#download-cep-mac" style="display:inline-flex;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载 CEP 插件 (macOS)
+        </a>
+        <a class="btn btn-outline" href="#download-cep-win" style="display:inline-flex;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载 CEP 插件 (Windows)
+        </a>
+      </div>
+      <div class="code-block" style="margin-top:14px;">
+        <button class="copy-btn" aria-label="复制 CEP 安装路径">复制</button>
+        <span class="cm"># macOS CEP 扩展目录</span>
+~/Library/Application Support/Adobe/CEP/extensions/
+<span class="cm"># Windows CEP 扩展目录</span>
+C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
+<span class="cm"># 放入后确保 PlayerDebugMode = 1（启用 CEP 调试）</span>
       </div>
     </div>
 
@@ -727,9 +734,9 @@ ln -s "$(pwd)/ae-cep-ext" \
   <div class="inner">
     <div class="copy">NexusSnap · 浏览器媒体嗅探与 Adobe 创作工具导入桥梁</div>
     <div class="fl">
-      <a href="https://github.com/yancongya/NexusSnap">GitHub</a>
-      <a href="https://github.com/yancongya/NexusSnap/blob/main/README.md">README</a>
-      <a href="https://github.com/yancongya/NexusSnap/blob/main/AGENTS.md">开发指南</a>
+      <a href="#quickstart">下载</a>
+      <a href="#features">特性</a>
+      <a href="#platforms">支持平台</a>
     </div>
   </div>
 </footer>
