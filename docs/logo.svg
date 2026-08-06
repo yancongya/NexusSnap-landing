@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">NexusSnap</title>
+  <style>
+    .primary { fill: #7c3aed; }
+    .secondary { fill: #55b84a; }
+  </style>
+  <defs>
+    <mask id="play-cut">
+      <rect width="128" height="128" fill="#fff"/>
+      <path d="M47 43 82 64 47 85Z" fill="#000"/>
+    </mask>
+  </defs>
+  <g mask="url(#play-cut)">
+    <path class="secondary" d="M51 85c8 21 31 34 50 25 13-6 20-17 20-32V29c0-13-15-20-25-12L55 49c-10 8-12 23-4 36Z"/>
+    <path class="primary" d="M17 102V34c0-16 18-25 31-15l49 38c8 6 8 18 0 25l-22 18c-7 6-18 5-24-2L38 82v20c0 14-21 14-21 0Z"/>
+  </g>
+</svg>
