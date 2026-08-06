@@ -27,53 +27,39 @@
   }
   @media (prefers-color-scheme: light) {
     :root {
-      --bg: #f8f6fa;
-      --surface: #ffffff;
-      --card: #faf9fc;
-      --ink: #1a1528;
-      --muted: #5c5470;
-      --subtle: #9088a8;
-      --border: #e8e4f2;
-      --border-strong: #d4cee4;
-      --accent: #7c3aed;
-      --accent-glow: rgba(124,58,237,.1);
-      --green: #3da04e;
-      --orange: #d9643f;
+      --bg: #f8f6fa; --surface: #ffffff; --card: #faf9fc;
+      --ink: #1a1528; --muted: #5c5470; --subtle: #9088a8;
+      --border: #e8e4f2; --border-strong: #d4cee4;
+      --accent: #7c3aed; --accent-glow: rgba(124,58,237,.1);
+      --green: #3da04e; --orange: #d9643f;
     }
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--bg);
-    color: var(--ink);
+    background: var(--bg); color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-text-size-adjust: 100%;
-    overflow-x: hidden;
+    font-size: 16px; line-height: 1.6; -webkit-text-size-adjust: 100%; overflow-x: hidden;
   }
   ::selection { background: var(--accent); color: #fff; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
   code { font-family: var(--mono); font-size: .88em; background: rgba(124,58,237,.1); color: var(--accent); padding: .1em .4em; border-radius: 4px; }
-  img { max-width: 100%; display: block; }
 
-  /* ---- Nav ---- */
+  /* ========== NAV ========== */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 0 28px; height: 56px;
     display: flex; align-items: center; justify-content: space-between;
     background: color-mix(in srgb, var(--bg) 82%, transparent);
-    backdrop-filter: saturate(180%) blur(16px);
-    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px); -webkit-backdrop-filter: saturate(180%) blur(16px);
     border-bottom: 1px solid var(--border);
   }
   .nav-brand {
     display: flex; align-items: center; gap: 10px;
-    font-weight: 800; font-size: 15px; letter-spacing: -.01em;
-    color: var(--ink); cursor: pointer;
+    font-weight: 800; font-size: 15px; letter-spacing: -.01em; color: var(--ink);
   }
   .nav-brand:hover { text-decoration: none; }
   .nav-brand svg { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; }
@@ -82,62 +68,46 @@
   .nav-links a:hover { color: var(--ink); text-decoration: none; }
   .nav-cta {
     display: inline-flex; align-items: center; gap: 6px;
-    height: 34px; padding: 0 14px;
-    border-radius: 8px; font-size: 13px; font-weight: 600;
-    background: var(--accent); color: #fff !important;
+    height: 34px; padding: 0 14px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; background: var(--accent); color: #fff !important;
     transition: filter .15s;
   }
   .nav-cta:hover { filter: brightness(1.15); text-decoration: none; }
-  @media (max-width: 760px) {
-    .nav-links a:not(.nav-cta) { display: none; }
-    .nav { padding: 0 16px; }
-  }
+  @media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } .nav { padding: 0 16px; } }
 
-  /* ---- Hero ---- */
+  /* ========== HERO ========== */
   .hero {
-    padding: 120px 24px 80px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    padding: 120px 24px 80px; text-align: center; position: relative; overflow: hidden;
   }
-  .hero::before {
-    content: "";
-    position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
-    width: 700px; height: 500px;
-    background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
-    pointer-events: none;
+  .hero-bg {
+    position: absolute; inset: -200px 0 0 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 50% at 50% 30%, var(--accent-glow) 0%, transparent 70%);
+    animation: hero-pulse 6s ease-in-out infinite;
+  }
+  @keyframes hero-pulse {
+    0%, 100% { opacity: .6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
   }
   .hero-badge {
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 12px; font-weight: 600; letter-spacing: .08em;
-    color: var(--accent); margin-bottom: 24px;
-    position: relative;
+    color: var(--accent); margin-bottom: 24px; position: relative;
   }
   .hero-badge::before {
-    content: ""; width: 6px; height: 6px;
-    background: var(--green); border-radius: 50%;
-    animation: pulse-dot 2s ease infinite;
+    content: ""; width: 6px; height: 6px; background: var(--green);
+    border-radius: 50%; animation: pulse-dot 2s ease infinite;
   }
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: .4; transform: scale(1.6); }
-  }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(1.6); } }
   .hero h1 {
-    font-size: clamp(36px, 7vw, 68px);
-    line-height: 1.06; letter-spacing: -.03em;
-    font-weight: 800; max-width: 700px; margin: 0 auto 20px;
-    position: relative;
+    font-size: clamp(36px, 7vw, 68px); line-height: 1.06; letter-spacing: -.03em;
+    font-weight: 800; max-width: 700px; margin: 0 auto 20px; position: relative;
   }
   .hero h1 em {
     font-style: normal;
     background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 60%, var(--orange) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
-  .hero p {
-    color: var(--muted); font-size: 17px;
-    max-width: 560px; margin: 0 auto 32px; position: relative;
-  }
+  .hero p { color: var(--muted); font-size: 17px; max-width: 560px; margin: 0 auto 32px; position: relative; }
   .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -153,147 +123,85 @@
   .btn-outline { background: transparent; color: var(--ink); border-color: var(--border-strong); }
   .btn-outline:hover { border-color: var(--accent); }
 
-  /* ---- Hero visual ---- */
-  .hero-visual {
-    max-width: 880px; margin: 48px auto 0;
-    position: relative;
-  }
-  .hero-visual img {
-    width: 100%; border-radius: 16px;
-    border: 1px solid var(--border-strong);
-    box-shadow: 0 4px 40px rgba(0,0,0,.3), 0 0 80px var(--accent-glow);
-  }
+  /* Hero mockup */
+  .hero-visual { max-width: 880px; margin: 48px auto 0; position: relative; }
   .hero-visual-inner {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
     box-shadow: 0 4px 40px rgba(0,0,0,.3), 0 0 80px var(--accent-glow);
+    animation: mockup-float 5s ease-in-out infinite;
+  }
+  @keyframes mockup-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
   }
   .mockup-bar {
     display: flex; align-items: center; gap: 8px;
-    padding: 11px 16px;
-    background: var(--surface);
+    padding: 11px 16px; background: var(--surface);
     border-bottom: 1px solid var(--border);
     font-family: var(--mono); font-size: 11px; color: var(--subtle);
   }
-  .mockup-bar span:first-child {
-    font-weight: 700; color: var(--accent); letter-spacing: .06em;
+  .mockup-bar .status-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+    animation: pulse-dot 2s ease infinite;
   }
-  .mockup-body {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: 320px;
-  }
-  @media (max-width: 640px) {
-    .mockup-body { grid-template-columns: 1fr; }
-    .mockup-sidebar { display: none; }
-  }
+  .mockup-body { display: grid; grid-template-columns: 220px 1fr; min-height: 300px; }
+  @media (max-width: 640px) { .mockup-body { grid-template-columns: 1fr; } .mockup-sidebar { display: none; } }
   .mockup-sidebar {
-    background: var(--bg);
-    border-right: 1px solid var(--border);
-    padding: 16px;
-    display: flex; flex-direction: column; gap: 4px;
+    background: var(--bg); border-right: 1px solid var(--border);
+    padding: 16px; display: flex; flex-direction: column; gap: 4px;
   }
   .mockup-item {
     display: flex; align-items: center; gap: 10px;
     padding: 10px 12px; border-radius: 8px;
-    font-size: 13px; color: var(--muted);
-    cursor: default; transition: background .15s;
+    font-size: 13px; color: var(--muted); cursor: default;
+    transition: background .15s;
   }
-  .mockup-item.active {
-    background: rgba(124,58,237,.12);
-    color: var(--ink); font-weight: 600;
-  }
+  .mockup-item.active { background: rgba(124,58,237,.12); color: var(--ink); font-weight: 600; }
   .mockup-thumb {
-    width: 36px; height: 36px;
-    border-radius: 6px; flex-shrink: 0;
+    width: 36px; height: 36px; border-radius: 6px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
   }
   .mockup-thumb.vid { background: rgba(239,118,81,.15); color: var(--orange); }
   .mockup-thumb.img { background: rgba(85,184,74,.15); color: var(--green); }
   .mockup-thumb.aud { background: rgba(124,58,237,.15); color: var(--accent); }
-  .mockup-main {
-    padding: 14px 18px;
-    display: flex; flex-direction: column;
-  }
+  .mockup-main { padding: 14px 18px; display: flex; flex-direction: column; }
   .mockup-preview {
-    flex: 1;
-    background: var(--bg);
-    border-radius: 10px;
-    border: 1px solid var(--border);
+    flex: 1; background: var(--bg); border-radius: 10px; border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
     color: var(--subtle); font-family: var(--mono); font-size: 12px;
     position: relative; overflow: hidden;
+    min-height: 160px;
   }
   .mockup-preview::before {
-    content: "";
-    position: absolute; inset: 0;
+    content: ""; position: absolute; inset: 0;
     background: linear-gradient(135deg, rgba(124,58,237,.05) 0%, rgba(85,184,74,.05) 100%);
   }
-  .mockup-preview-inner {
-    position: relative; z-index: 1; text-align: center;
-  }
-  .mockup-preview-inner svg { display: block; margin: 0 auto 10px; opacity: .3; }
-  .mockup-info {
-    display: flex; gap: 20px; margin-top: 14px;
-    font-family: var(--mono); font-size: 11px; color: var(--subtle);
-  }
+  .mockup-preview-inner { position: relative; z-index: 1; text-align: center; }
+  .mockup-preview-inner svg { display: block; margin: 0 auto 10px; opacity: .25; }
+  .mockup-info { display: flex; gap: 20px; margin-top: 14px; font-family: var(--mono); font-size: 11px; color: var(--subtle); }
   .mockup-info b { color: var(--ink); font-weight: 600; }
-  .mockup-btn-row {
-    display: flex; gap: 8px; margin-top: 12px;
-  }
+  .mockup-btn-row { display: flex; gap: 8px; margin-top: 12px; }
   .mockup-btn {
-    padding: 8px 14px; border-radius: 8px; font-size: 12px;
-    font-weight: 600; font-family: inherit;
-    border: 1px solid var(--border-strong);
-    background: var(--surface); color: var(--muted);
-    cursor: default;
+    padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    font-family: inherit; border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--muted); cursor: default;
   }
-  .mockup-btn.primary {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-    box-shadow: 0 2px 12px var(--accent-glow);
-  }
+  .mockup-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 2px 12px var(--accent-glow); }
 
-  /* ---- Stats ---- */
-  .stats-row {
-    display: flex; justify-content: center; gap: 48px;
-    margin-top: 48px; flex-wrap: wrap;
-  }
+  /* Stats */
+  .stats-row { display: flex; justify-content: center; gap: 48px; margin-top: 48px; flex-wrap: wrap; }
   .stat-item { text-align: center; }
-  .stat-item strong {
-    display: block; font-size: 28px; font-weight: 800;
-    letter-spacing: -.02em; color: var(--ink);
-  }
-  .stat-item span {
-    font-size: 12px; color: var(--subtle);
-    font-family: var(--mono); letter-spacing: .06em;
-    text-transform: uppercase;
-  }
+  .stat-item strong { display: block; font-size: 28px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+  .stat-item span { font-size: 12px; color: var(--subtle); font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 
-  /* ---- Sections ---- */
-  .section {
-    max-width: 1040px;
-    margin: 0 auto;
-    padding: 80px 24px;
-  }
-  .section-label {
-    font-size: 13px; font-weight: 700; letter-spacing: .1em;
-    color: var(--accent); text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .section h2 {
-    font-size: clamp(26px, 3.5vw, 36px);
-    letter-spacing: -.02em; font-weight: 800;
-    margin-bottom: 10px;
-  }
-  .section-desc {
-    color: var(--muted); font-size: 16px;
-    max-width: 600px; margin-bottom: 40px;
-  }
+  /* ========== SECTIONS ========== */
+  .section { max-width: 1040px; margin: 0 auto; padding: 80px 24px; }
+  .section-label { font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+  .section h2 { font-size: clamp(26px, 3.5vw, 36px); letter-spacing: -.02em; font-weight: 800; margin-bottom: 10px; }
+  .section-desc { color: var(--muted); font-size: 16px; max-width: 600px; margin-bottom: 40px; }
 
-  /* ---- Feature rows (alternating image+text) ---- */
+  /* ========== FEATURE ROWS ========== */
   .feat-row {
     display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
     align-items: center; margin-bottom: 64px;
@@ -301,134 +209,85 @@
   .feat-row:last-child { margin-bottom: 0; }
   .feat-row.reverse .feat-visual { order: -1; }
   .feat-visual {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px;
     display: flex; align-items: center; justify-content: center;
-    min-height: 260px;
+    min-height: 240px;
   }
-  .feat-visual-inner {
-    text-align: center; color: var(--subtle);
-    font-family: var(--mono); font-size: 12px;
-  }
-  .feat-illust {
-    width: 100%; max-width: 300px; margin: 0 auto;
-  }
-  .feat-text h3 {
-    font-size: 22px; font-weight: 800;
-    letter-spacing: -.01em; margin-bottom: 10px;
-  }
-  .feat-text p {
-    color: var(--muted); font-size: 15px; line-height: 1.7;
-  }
-  .feat-tags {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
-  }
+  .feat-visual-inner { text-align: center; color: var(--subtle); font-family: var(--mono); font-size: 12px; }
+  .feat-illust { width: 100%; max-width: 300px; margin: 0 auto; }
+  .feat-text h3 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 10px; }
+  .feat-text p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .feat-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
   .feat-tag {
     font-family: var(--mono); font-size: 11px; font-weight: 600;
     color: var(--muted); border: 1px solid var(--border-strong);
     border-radius: 6px; padding: 3px 10px;
   }
-
   @media (max-width: 760px) {
     .feat-row { grid-template-columns: 1fr; gap: 28px; margin-bottom: 48px; }
     .feat-row.reverse .feat-visual { order: 0; }
-    .feat-visual { min-height: 200px; }
+    .feat-visual { min-height: 180px; }
   }
 
-  /* ---- Platform grid ---- */
-  .plat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 10px;
-  }
+  /* ========== PLATFORM GRID with SVG icons ========== */
+  .plat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
   .plat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 16px;
-    text-align: center;
-    transition: border-color .15s, background .15s;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 16px; text-align: center;
+    transition: border-color .2s, background .2s, transform .2s, box-shadow .2s;
   }
-  .plat-card:hover { border-color: var(--accent); background: rgba(124,58,237,.04); }
-  .plat-icon { font-size: 28px; margin-bottom: 8px; }
-  .plat-name {
-    font-weight: 700; font-size: 14px;
-    color: var(--ink); margin-bottom: 4px;
+  .plat-card:hover {
+    border-color: var(--accent); background: rgba(124,58,237,.04);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124,58,237,.08);
   }
-  .plat-detail {
-    font-size: 11px; color: var(--subtle);
-    font-family: var(--mono);
-  }
+  .plat-icon { margin-bottom: 10px; display: flex; justify-content: center; }
+  .plat-icon svg { width: 28px; height: 28px; color: var(--accent); transition: color .2s; }
+  .plat-card:hover .plat-icon svg { color: var(--accent); }
+  .plat-name { font-weight: 700; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+  .plat-detail { font-size: 11px; color: var(--subtle); font-family: var(--mono); }
 
-  /* ---- How it works (timeline style) ---- */
-  .steps-line {
-    position: relative; padding-left: 40px;
-  }
+  /* ========== WORKFLOW TIMELINE ========== */
+  .steps-line { position: relative; padding-left: 40px; }
   .steps-line::before {
-    content: "";
-    position: absolute; left: 15px; top: 8px; bottom: 8px;
+    content: ""; position: absolute; left: 15px; top: 8px; bottom: 8px;
     width: 2px; background: var(--border-strong);
   }
-  .step-node {
-    position: relative; margin-bottom: 36px;
-  }
+  .step-node { position: relative; margin-bottom: 36px; }
   .step-node:last-child { margin-bottom: 0; }
-  .step-node::before {
-    content: "";
+  .step-dot {
     position: absolute; left: -29px; top: 6px;
-    width: 12px; height: 12px;
-    border-radius: 50%; background: var(--accent);
-    border: 3px solid var(--bg);
-    z-index: 1;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 3px solid var(--bg); z-index: 1;
   }
-  .step-node h3 {
-    font-size: 17px; font-weight: 800;
-    letter-spacing: -.01em; margin-bottom: 4px;
-  }
+  .step-node h3 { font-size: 17px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 4px; }
   .step-node p { color: var(--muted); font-size: 14px; line-height: 1.65; }
 
-  /* ---- Quick start ---- */
+  /* ========== QUICK START ========== */
   .qs-block {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 32px;
-    margin-bottom: 14px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 32px; margin-bottom: 14px;
   }
-  .qs-block.primary {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(124,58,237,.08);
-  }
-  .qs-block h4 {
-    font-size: 15px; font-weight: 800;
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 14px;
-  }
+  .qs-block.primary { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,.08); }
+  .qs-block h4 { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
   .qs-step-num {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    background: var(--accent); color: #fff;
-    font-size: 12px; font-weight: 800;
-    flex-shrink: 0;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; flex-shrink: 0;
   }
   .qs-block p { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
   .code-block {
-    background: #0d0d14; color: #c8c8d8;
-    border: 1px solid rgba(255,255,255,.08);
+    background: #0d0d14; color: #c8c8d8; border: 1px solid rgba(255,255,255,.08);
     border-radius: 10px; padding: 14px 16px;
-    font-family: var(--mono); font-size: 12.5px;
-    line-height: 1.8; overflow-x: auto;
-    position: relative;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.8;
+    overflow-x: auto; position: relative;
   }
   .code-block .cm { color: #6a6a7e; }
   .copy-btn {
     position: absolute; top: 10px; right: 10px;
-    min-height: 28px; padding: 0 10px;
-    font-size: 11px; font-weight: 600; font-family: inherit;
-    border-radius: 6px; cursor: pointer;
+    min-height: 28px; padding: 0 10px; font-size: 11px; font-weight: 600;
+    font-family: inherit; border-radius: 6px; cursor: pointer;
     border: 1px solid rgba(255,255,255,.15);
     background: rgba(255,255,255,.06); color: #c8c8d8;
     transition: background .15s;
@@ -436,12 +295,15 @@
   .copy-btn:hover { background: rgba(255,255,255,.12); }
   .copy-btn.done { border-color: var(--green); color: var(--green); }
 
-  /* ---- Footer ---- */
-  .site-footer {
-    border-top: 1px solid var(--border);
-    padding: 32px 24px 48px;
-    text-align: center;
-  }
+  /* ========== COMPATIBILITY CARDS ========== */
+  .compat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .compat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .compat-card .cc-title { font-weight: 800; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .compat-card .cc-title svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); }
+  .compat-card p { color: var(--muted); font-size: 13px; margin: 0; }
+
+  /* ========== FOOTER ========== */
+  .site-footer { border-top: 1px solid var(--border); padding: 32px 24px 48px; text-align: center; }
   .site-footer .inner {
     max-width: 1040px; margin: 0 auto;
     display: flex; align-items: center; justify-content: space-between;
@@ -450,15 +312,27 @@
   .site-footer .copy { color: var(--subtle); font-size: 13px; }
   .site-footer .fl { display: flex; gap: 20px; font-size: 13px; }
   .site-footer .fl a { color: var(--muted); }
-  @media (max-width: 560px) {
-    .site-footer .inner { flex-direction: column; text-align: center; }
-  }
+  @media (max-width: 560px) { .site-footer .inner { flex-direction: column; text-align: center; } }
 
+  /* ========== SCROLL REVEAL ANIMATIONS ========== */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+  .reveal-delay-4 { transition-delay: .4s; }
+  .reveal-delay-5 { transition-delay: .5s; }
+
+  /* ========== REDUCED MOTION ========== */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .btn, .plat-card { transition: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .hero-badge::before, .hero-bg, .hero-visual-inner { animation: none; }
     @keyframes none {}
-    .hero-badge::before { animation: none; }
   }
 </style>
 </head>
@@ -484,41 +358,48 @@
 <main>
   <!-- ============= HERO ============= -->
   <section class="hero">
-    <div class="hero-badge">浏览器扩展 + AE / PS CEP 插件</div>
-    <h1>浏览器到 AE/PS，<br><em>一键直达</em></h1>
-    <p>NexusSnap 是媒体嗅探与 Adobe 创作工具之间的桥梁：在浏览器中快速捕获网页上的图片、视频、音频，直接发送到 After Effects 或 Photoshop，无需下载、整理、拖拽。</p>
-    <div class="hero-actions">
+    <div class="hero-bg"></div>
+    <div class="hero-badge reveal">浏览器扩展 + AE / PS CEP 插件</div>
+    <h1 class="reveal reveal-delay-1">浏览器到 AE/PS，<br><em>一键直达</em></h1>
+    <p class="reveal reveal-delay-2">NexusSnap 是媒体嗅探与 Adobe 创作工具之间的桥梁：在浏览器中快速捕获网页上的图片、视频、音频，直接发送到 After Effects 或 Photoshop，无需下载、整理、拖拽。</p>
+    <div class="hero-actions reveal reveal-delay-3">
       <a class="btn btn-primary" href="#quickstart">快速开始</a>
       <a class="btn btn-outline" href="https://github.com/yancongya/NexusSnap">浏览源码</a>
     </div>
 
-    <!-- Product UI mockup -->
-    <div class="hero-visual">
+    <div class="hero-visual reveal reveal-delay-3">
       <div class="hero-visual-inner">
         <div class="mockup-bar">
-          <span>NexusSnap</span>
-          <span style="color:var(--green);font-weight:700;">● 已连接 AE</span>
+          <span style="font-weight:700;color:var(--accent);letter-spacing:.06em;">NexusSnap</span>
+          <span class="status-dot"></span>
+          <span style="color:var(--green);font-weight:600;">已连接 AE</span>
           <span style="margin-left:auto;">YouTube · 音乐视频</span>
         </div>
         <div class="mockup-body">
           <div class="mockup-sidebar">
             <div class="mockup-item active">
-              <div class="mockup-thumb vid">▶</div>
-              <div>music_video_1080p<br><span style="font-size:10px;color:var(--subtle)">1920×1080 · 45.2 MB</span></div>
+              <div class="mockup-thumb vid">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div>music_video_1080p.mp4<br><span style="font-size:10px;color:var(--subtle)">1920×1080 · 45.2 MB</span></div>
             </div>
             <div class="mockup-item">
-              <div class="mockup-thumb img">◻</div>
+              <div class="mockup-thumb img">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
               <div>cover_art.jpg<br><span style="font-size:10px;color:var(--subtle)">1280×720 · 2.1 MB</span></div>
             </div>
             <div class="mockup-item">
-              <div class="mockup-thumb aud">♫</div>
+              <div class="mockup-thumb aud">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              </div>
               <div>bgm_loop.mp3<br><span style="font-size:10px;color:var(--subtle)">320kbps · 3.8 MB</span></div>
             </div>
           </div>
           <div class="mockup-main">
             <div class="mockup-preview">
               <div class="mockup-preview-inner">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 <div style="color:var(--muted)">music_video_1080p.mp4</div>
               </div>
             </div>
@@ -536,7 +417,7 @@
       </div>
     </div>
 
-    <div class="stats-row">
+    <div class="stats-row reveal reveal-delay-4">
       <div class="stat-item"><strong>11</strong><span>站点适配器</span></div>
       <div class="stat-item"><strong>2</strong><span>宿主 (AE+PS)</span></div>
       <div class="stat-item"><strong>~80KB</strong><span>核心体积</span></div>
@@ -544,20 +425,21 @@
     </div>
   </section>
 
-  <!-- ============= FEATURE ROWS ============= -->
+  <!-- ============= FEATURES ============= -->
   <section class="section" id="features">
-    <div class="section-label">核心能力</div>
-    <h2>不只是下载，是从浏览器到画布的全链路</h2>
-    <p class="section-desc">DOM 扫描 + 网络拦截 + 站点适配器，自动发现页面上所有媒体资源。</p>
+    <div class="section-label reveal">核心能力</div>
+    <h2 class="reveal reveal-delay-1">不只是下载，是从浏览器到画布的全链路</h2>
+    <p class="section-desc reveal reveal-delay-1">DOM 扫描 + 网络拦截 + 站点适配器，自动发现页面上所有媒体资源。原生架构，极速响应。</p>
 
-    <!-- Feature 1: Quick Capture -->
-    <div class="feat-row">
+    <!-- Feature 1 -->
+    <div class="feat-row reveal reveal-delay-2">
       <div class="feat-visual">
         <div class="feat-visual-inner">
           <svg class="feat-illust" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="300" height="200" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
             <rect x="20" y="16" width="260" height="28" rx="6" fill="var(--bg)"/>
-            <text x="36" y="36" font-family="monospace" font-size="10" fill="var(--subtle)">Ctrl+Shift+右键 → Quick Capture 面板</text>
+            <line x1="36" y1="30" x2="48" y2="30" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="36" y1="33" x2="42" y2="33" stroke="var(--subtle)" stroke-width="1" stroke-linecap="round"/>
             <rect x="20" y="56" width="160" height="128" rx="8" fill="var(--bg)" stroke="var(--border)" stroke-width=".5"/>
             <rect x="28" y="64" width="144" height="80" rx="4" fill="var(--accent-glow)"/>
             <polygon points="92,96 108,104 92,112" fill="var(--accent)"/>
@@ -583,8 +465,8 @@
       </div>
     </div>
 
-    <!-- Feature 2: Action Orbit -->
-    <div class="feat-row reverse">
+    <!-- Feature 2 -->
+    <div class="feat-row reverse reveal reveal-delay-3">
       <div class="feat-visual">
         <div class="feat-visual-inner">
           <svg class="feat-illust" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -613,8 +495,8 @@
       </div>
     </div>
 
-    <!-- Feature 3: AE Integration -->
-    <div class="feat-row">
+    <!-- Feature 3 -->
+    <div class="feat-row reveal reveal-delay-4">
       <div class="feat-visual">
         <div class="feat-visual-inner">
           <svg class="feat-illust" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -622,15 +504,15 @@
             <text x="20" y="24" font-family="monospace" font-size="9" font-weight="700" fill="var(--accent)">After Effects · 项目浏览器</text>
             <rect x="20" y="36" width="260" height="1" fill="var(--border)"/>
             <rect x="20" y="48" width="120" height="140" rx="6" fill="var(--bg)" stroke="var(--border)" stroke-width=".5"/>
-            <text x="30" y="66" font-family="monospace" font-size="8" fill="var(--subtle)">📁 项目面板</text>
+            <text x="30" y="66" font-family="monospace" font-size="8" fill="var(--subtle)">项目面板</text>
             <rect x="28" y="76" width="104" height="20" rx="3" fill="var(--accent-glow)" opacity=".6"/>
             <text x="34" y="89" font-family="monospace" font-size="7" fill="var(--accent)">▶ video_1080p.mp4</text>
             <rect x="28" y="100" width="104" height="18" rx="3"/>
-            <text x="34" y="112" font-family="monospace" font-size="7" fill="var(--subtle)">🎵 bgm.mp3</text>
+            <text x="34" y="112" font-family="monospace" font-size="7" fill="var(--subtle)">♫ bgm.mp3</text>
             <rect x="28" y="122" width="104" height="18" rx="3"/>
             <text x="34" y="134" font-family="monospace" font-size="7" fill="var(--subtle)">🖼 cover.jpg</text>
             <rect x="154" y="48" width="126" height="140" rx="6" fill="var(--bg)" stroke="var(--border)" stroke-width=".5"/>
-            <text x="164" y="66" font-family="monospace" font-size="8" fill="var(--subtle)">🎬 当前合成</text>
+            <text x="164" y="66" font-family="monospace" font-size="8" fill="var(--subtle)">当前合成</text>
             <rect x="162" y="76" width="110" height="102" rx="4" fill="var(--card)"/>
             <rect x="168" y="82" width="98" height="30" rx="3" fill="var(--accent)" opacity=".12"/>
             <text x="174" y="100" font-family="monospace" font-size="7" fill="var(--accent)">图层: video_1080p</text>
@@ -652,41 +534,99 @@
     </div>
   </section>
 
-  <!-- ============= PLATFORMS ============= -->
+  <!-- ============= PLATFORMS (SVG icons) ============= -->
   <section class="section" id="platforms">
-    <div class="section-label">深度适配</div>
-    <h2>11 个主流平台专属解析 + 通用嗅探</h2>
-    <p class="section-desc">绕过前端反爬，直达原始高清资源。同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
+    <div class="section-label reveal">深度适配</div>
+    <h2 class="reveal reveal-delay-1">11 个主流平台专属解析 + 通用嗅探</h2>
+    <p class="section-desc reveal reveal-delay-1">绕过前端反爬，直达原始高清资源。同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
     <div class="plat-grid">
-      <div class="plat-card"><div class="plat-icon">▶</div><div class="plat-name">YouTube</div><div class="plat-detail">InnerTube API · 全清晰度</div></div>
-      <div class="plat-card"><div class="plat-icon">📺</div><div class="plat-name">Bilibili</div><div class="plat-detail">__playinfo__ · 音视频分离</div></div>
-      <div class="plat-card"><div class="plat-icon">🔴</div><div class="plat-name">小红书</div><div class="plat-detail">笔记图片/视频提取</div></div>
-      <div class="plat-card"><div class="plat-icon">📷</div><div class="plat-name">Instagram</div><div class="plat-detail">帖子媒体源解析</div></div>
-      <div class="plat-card"><div class="plat-icon">🐦</div><div class="plat-name">Twitter / X</div><div class="plat-detail">媒体源地址还原</div></div>
-      <div class="plat-card"><div class="plat-icon">📌</div><div class="plat-name">Pinterest</div><div class="plat-detail">Pin 原图提取</div></div>
-      <div class="plat-card"><div class="plat-icon">🔖</div><div class="plat-name">Reddit</div><div class="plat-detail">视频/图片源提取</div></div>
-      <div class="plat-card"><div class="plat-icon">📰</div><div class="plat-name">微博</div><div class="plat-detail">高清原图 URL 解析</div></div>
-      <div class="plat-card"><div class="plat-icon">🛒</div><div class="plat-name">淘宝</div><div class="plat-detail">商品图/视频提取</div></div>
-      <div class="plat-card"><div class="plat-icon">✨</div><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
-      <div class="plat-card"><div class="plat-icon">🌐</div><div class="plat-name">通用网页</div><div class="plat-detail">DOM 扫描 + 网络嗅探</div></div>
+      <!-- YouTube -->
+      <div class="plat-card reveal reveal-delay-1">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.94 29.94 0 0 0 1 12a29.94 29.94 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29.94 29.94 0 0 0 23 12a29.94 29.94 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></div>
+        <div class="plat-name">YouTube</div>
+        <div class="plat-detail">InnerTube API · 全清晰度</div>
+      </div>
+      <!-- Bilibili -->
+      <div class="plat-card reveal reveal-delay-1">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="plat-name">Bilibili</div>
+        <div class="plat-detail">__playinfo__ · 音视频分离</div>
+      </div>
+      <!-- 小红书 -->
+      <div class="plat-card reveal reveal-delay-1">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="plat-name">小红书</div>
+        <div class="plat-detail">笔记图片/视频提取</div>
+      </div>
+      <!-- Instagram -->
+      <div class="plat-card reveal reveal-delay-2">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+        <div class="plat-name">Instagram</div>
+        <div class="plat-detail">帖子媒体源解析</div>
+      </div>
+      <!-- Twitter / X -->
+      <div class="plat-card reveal reveal-delay-2">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div>
+        <div class="plat-name">Twitter / X</div>
+        <div class="plat-detail">媒体源地址还原</div>
+      </div>
+      <!-- Pinterest -->
+      <div class="plat-card reveal reveal-delay-2">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <div class="plat-name">Pinterest</div>
+        <div class="plat-detail">Pin 原图提取</div>
+      </div>
+      <!-- Reddit -->
+      <div class="plat-card reveal reveal-delay-3">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+        <div class="plat-name">Reddit</div>
+        <div class="plat-detail">视频/图片源提取</div>
+      </div>
+      <!-- 微博 -->
+      <div class="plat-card reveal reveal-delay-3">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="plat-name">微博</div>
+        <div class="plat-detail">高清原图 URL 解析</div>
+      </div>
+      <!-- 淘宝 -->
+      <div class="plat-card reveal reveal-delay-3">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+        <div class="plat-name">淘宝</div>
+        <div class="plat-detail">商品图/视频提取</div>
+      </div>
+      <!-- 即梦 -->
+      <div class="plat-card reveal reveal-delay-4">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="plat-name">即梦</div>
+        <div class="plat-detail">jimeng.jianying.com</div>
+      </div>
+      <!-- 通用网页 -->
+      <div class="plat-card reveal reveal-delay-4">
+        <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="plat-name">通用网页</div>
+        <div class="plat-detail">DOM 扫描 + 网络嗅探</div>
+      </div>
     </div>
   </section>
 
   <!-- ============= WORKFLOW ============= -->
   <section class="section" id="workflow">
-    <div class="section-label">工作流</div>
-    <h2>三步：发现 → 选中 → 发送</h2>
-    <p class="section-desc">不需要下载、找文件、拖拽。在网页上看到任何媒体素材，直接发送到你的创作工具。</p>
+    <div class="section-label reveal">工作流</div>
+    <h2 class="reveal reveal-delay-1">三步：发现 → 选中 → 发送</h2>
+    <p class="section-desc reveal reveal-delay-1">不需要下载、找文件、拖拽。在网页上看到任何媒体素材，直接发送到你的创作工具。</p>
     <div class="steps-line">
-      <div class="step-node">
+      <div class="step-node reveal reveal-delay-2">
+        <div class="step-dot"></div>
         <h3>智能嗅探，自动发现</h3>
         <p>浏览器扩展自动扫描页面 DOM 中的图片、视频、音频元素，同时通过 webRequest API 拦截网络请求，捕获 AJAX/XHR 加载的隐藏媒体 URL。内嵌 hls.js 和 mpegts.js 解析 HLS、DASH、FLV 等流媒体协议，自动识别多清晰度源。</p>
       </div>
-      <div class="step-node">
+      <div class="step-node reveal reveal-delay-3">
+        <div class="step-dot"></div>
         <h3>快捷采集，即时预览</h3>
         <p>Ctrl+Shift+右键 呼出采集面板——左侧预览媒体内容和元数据（尺寸、格式、时长、分辨率），右侧选择发送目标和导入选项。支持 HLS 直播流实时预览播放，批量采集一次性发送多资源。</p>
       </div>
-      <div class="step-node">
+      <div class="step-node reveal reveal-delay-4">
+        <div class="step-dot"></div>
         <h3>一键导入，开始创作</h3>
         <p>通过 WebSocket 加密通信，将素材直接导入 After Effects 或 Photoshop。实时获取 AE 项目结构，精准控制图层位置、时间范围、预合成包装。支持重复文件策略（跳过/覆盖/副本/询问）、SVG 形状转换等高级选项。</p>
       </div>
@@ -695,25 +635,25 @@
 
   <!-- ============= QUICK START ============= -->
   <section class="section" id="quickstart">
-    <div class="section-label">快速开始</div>
-    <h2>三步安装，即刻使用</h2>
+    <div class="section-label reveal">快速开始</div>
+    <h2 class="reveal reveal-delay-1">三步安装，即刻使用</h2>
 
-    <div class="qs-block primary">
+    <div class="qs-block primary reveal reveal-delay-2">
       <h4><span class="qs-step-num">1</span> 安装浏览器扩展</h4>
       <p>从 Chrome Web Store 安装，或克隆仓库后在 <code>chrome://extensions</code> 中以开发者模式加载 <code>browser-ext/</code> 目录。支持 Chrome / Edge / Arc 等 Chromium 内核浏览器。</p>
       <div class="code-block">
-        <button class="copy-btn" aria-label="复制克隆命令" data-text="git clone https://github.com/yancongya/NexusSnap.git" onclick="copyCode(this)">复制</button>
+        <button class="copy-btn" aria-label="复制克隆命令" data-text="git clone https://github.com/yancongya/NexusSnap.git">复制</button>
         <span class="cm"># 克隆仓库（私有仓库需授权）</span>
 git clone https://github.com/yancongya/NexusSnap.git
 <span class="cm"># 在 chrome://extensions 中"加载已解压的扩展程序"，选择 browser-ext/</span>
       </div>
     </div>
 
-    <div class="qs-block">
+    <div class="qs-block reveal reveal-delay-3">
       <h4><span class="qs-step-num">2</span> 安装 AE/PS CEP 扩展</h4>
       <p>将 <code>ae-cep-ext/</code> 目录复制或软链接到 Adobe CEP 扩展目录。需要先启用 CEP 调试模式。</p>
       <div class="code-block">
-        <button class="copy-btn" aria-label="复制软链接命令" data-text='ln -s "$(pwd)/ae-cep-ext" "$HOME/Library/Application Support/Adobe/CEP/extensions/NexusSnap"' onclick="copyCode(this)">复制</button>
+        <button class="copy-btn" aria-label="复制软链接命令" data-text='ln -s "$(pwd)/ae-cep-ext" "$HOME/Library/Application Support/Adobe/CEP/extensions/NexusSnap"'>复制</button>
         <span class="cm"># macOS：创建软链接到 CEP 扩展目录</span>
 ln -s "$(pwd)/ae-cep-ext" \
   "$HOME/Library/Application Support/Adobe/CEP/extensions/NexusSnap"
@@ -721,33 +661,44 @@ ln -s "$(pwd)/ae-cep-ext" \
       </div>
     </div>
 
-    <div class="qs-block">
+    <div class="qs-block reveal reveal-delay-4">
       <h4><span class="qs-step-num">3</span> 开始采集与导入</h4>
       <p>启动 After Effects 或 Photoshop → 浏览器浏览任意网页 → 点击扩展图标查看嗅探到的媒体 → 选中资源发送。或使用 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板。</p>
     </div>
   </section>
 
-  <!-- ============= COMPAT NOTE ============= -->
+  <!-- ============= COMPAT ============= -->
   <section class="section">
-    <div class="section-label">兼容性</div>
-    <h2>环境要求</h2>
-    <p class="section-desc">请确保你的环境满足以下最低要求。</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
-        <div style="font-weight:800;font-size:14px;margin-bottom:6px;">浏览器</div>
-        <div style="color:var(--muted);font-size:13px;">Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。</div>
+    <div class="section-label reveal">兼容性</div>
+    <h2 class="reveal reveal-delay-1">环境要求</h2>
+    <div class="compat-grid reveal reveal-delay-2">
+      <div class="compat-card">
+        <div class="cc-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          浏览器
+        </div>
+        <p>Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。</p>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
-        <div style="font-weight:800;font-size:14px;margin-bottom:6px;">After Effects</div>
-        <div style="color:var(--muted);font-size:13px;">AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。</div>
+      <div class="compat-card">
+        <div class="cc-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          After Effects
+        </div>
+        <p>AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。</p>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
-        <div style="font-weight:800;font-size:14px;margin-bottom:6px;">Photoshop</div>
-        <div style="color:var(--muted);font-size:13px;">PS 23.0+ (PHXS)，支持图片和 SVG 导入，智能对象或像素图层两种模式。</div>
+      <div class="compat-card">
+        <div class="cc-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Photoshop
+        </div>
+        <p>PS 23.0+ (PHXS)，支持图片和 SVG 导入，智能对象或像素图层两种模式。</p>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
-        <div style="font-weight:800;font-size:14px;margin-bottom:6px;">隐私</div>
-        <div style="color:var(--muted);font-size:13px;">所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。</div>
+      <div class="compat-card">
+        <div class="cc-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          隐私
+        </div>
+        <p>所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。</p>
       </div>
     </div>
   </section>
@@ -765,24 +716,44 @@ ln -s "$(pwd)/ae-cep-ext" \
 </footer>
 
 <script>
-function copyCode(btn) {
-  var text = btn.getAttribute('data-text');
-  if (!text) { text = btn.parentElement.innerText.replace(/^复制\s*/, ''); }
-  var done = function() {
-    btn.classList.add('done'); btn.textContent = '已复制';
-    setTimeout(function() { btn.classList.remove('done'); btn.textContent = '复制'; }, 1500);
-  };
-  var fallback = function() {
-    var ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); done(); } catch(e) {}
-    document.body.removeChild(ta);
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(done).catch(fallback);
-  } else { fallback(); }
-}
+// Copy button
+document.querySelectorAll('.copy-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var text = btn.getAttribute('data-text');
+    if (!text) { text = btn.parentElement.innerText.replace(/^复制\s*/, ''); }
+    var done = function() {
+      btn.classList.add('done'); btn.textContent = '已复制';
+      setTimeout(function() { btn.classList.remove('done'); btn.textContent = '复制'; }, 1500);
+    };
+    var fallback = function() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) {}
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    } else { fallback(); }
+  });
+});
+
+// Scroll reveal with IntersectionObserver
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    observer.observe(el);
+  });
+})();
 </script>
 </body>
 </html>
