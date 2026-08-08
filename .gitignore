@@ -1,0 +1,7 @@
+.DS_Store
+.omo/
+.playwright-cli/
+
+# Generated locally and uploaded to GitHub Releases.
+release-assets/*
+!release-assets/README.md

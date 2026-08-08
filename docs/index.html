@@ -4,732 +4,1211 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<meta name="description" content="NexusSnap — 浏览器媒体嗅探与 Adobe 创作工具导入桥梁：在浏览器中捕获网页图片、视频、音频，一键发送到 After Effects 或 Photoshop。支持 YouTube、Bilibili、小红书等 11 个主流平台深度解析。">
-<meta name="theme-color" content="#0a0a0e">
+<meta name="description" content="NexusSnap — 浏览器媒体嗅探与 Adobe 创作工具导入桥梁：散落各处的素材，一键归位到 AE / PS。支持 YouTube、Bilibili、小红书等 11 个主流平台深度解析。">
+<meta name="theme-color" content="#0a0a0f">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="apple-touch-icon" href="logo.svg">
-<title>NexusSnap · 浏览器到 AE/PS，一键直达</title>
+<title>NexusSnap · 散落各处的素材，一键归位到 AE / PS</title>
 <style>
+/* ============================================================
+   NexusSnap — 沉浸式交互落地页 · 单文件零构建
+   双蓝主题：AE #9999ff 系 / PS #31a8ff 系 · 深色默认
+   ============================================================ */
+:root {
+  --bg: #0a0a0f; --surface: #0f0f16; --card: #14141c; --elev: #1a1a24;
+  --ink: #ececf4; --muted: #90909f; --subtle: #5d5d6d;
+  --border: #1f1f2a; --border-strong: #34343f;
+  --ae: #9999ff; --ae-deep: #7d7dff; --ae-ink: #14142e; --ae-wash: rgba(153,153,255,.12);
+  --ps: #31a8ff; --ps-deep: #0e8ff0; --ps-ink: #06263f; --ps-wash: rgba(49,168,255,.12);
+  --green: #4ade80; --orange: #fbbf24; --red: #f87171;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --accent: var(--ae); --accent-wash: var(--ae-wash);
+}
+@media (prefers-color-scheme: light) {
   :root {
-    --bg: #0a0a0e; --surface: #111116; --card: #16161c;
-    --ink: #e8e8ee; --muted: #8a8a9a; --subtle: #5a5a6a;
-    --border: #22222c; --border-strong: #333344;
-    --accent: #7c3aed; --accent-glow: rgba(124,58,237,.2);
-    --green: #55b84a; --orange: #ef7651;
-    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --bg: #f6f6fa; --surface: #ffffff; --card: #fbfbfd; --elev: #ffffff;
+    --ink: #15151f; --muted: #56566a; --subtle: #8b8b9c;
+    --border: #e7e7ef; --border-strong: #c9c9d8;
+    --ae: #5b5bd6; --ae-deep: #4848c4; --ae-wash: rgba(91,91,214,.1);
+    --ps: #0e82e8; --ps-deep: #0b6cc4; --ps-wash: rgba(14,130,232,.1);
   }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #f8f6fa; --surface: #ffffff; --card: #faf9fc;
-      --ink: #1a1528; --muted: #5c5470; --subtle: #9088a8;
-      --border: #e8e4f2; --border-strong: #d4cee4;
-      --accent: #7c3aed; --accent-glow: rgba(124,58,237,.1);
-      --green: #3da04e; --orange: #d9643f;
-    }
-  }
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: auto; }
-  body {
-    background: var(--bg); color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    font-size: 16px; line-height: 1.6; -webkit-text-size-adjust: 100%; overflow-x: hidden;
-  }
-  ::selection { background: var(--accent); color: #fff; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-  code { font-family: var(--mono); font-size: .88em; background: rgba(124,58,237,.1); color: var(--accent); padding: .1em .4em; border-radius: 4px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.6;
+  -webkit-text-size-adjust: 100%; overflow-x: hidden;
+}
+::selection { background: var(--accent); color: #fff; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+button { font-family: inherit; }
+code, .mono { font-family: var(--mono); }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-  /* ========== NAV ========== */
-  .nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 0 28px; height: 60px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid var(--border);
-    transition: transform .4s cubic-bezier(.16,1,.3,1), opacity .4s;
-  }
-  .nav.hidden { transform: translateY(-100%); opacity: 0; }
-  .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; letter-spacing: -.01em; color: var(--ink); }
-  .nav-brand:hover { text-decoration: none; }
-  .nav-brand svg { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; }
-  .nav-links { display: flex; align-items: center; gap: 26px; font-size: 13.5px; font-weight: 500; }
-  .nav-links a { color: var(--muted); transition: color .2s; position: relative; }
-  .nav-links a::after { content: ""; position: absolute; bottom: -4px; left: 0; width: 0; height: 1.5px; background: var(--accent); transition: width .3s cubic-bezier(.16,1,.3,1); }
-  .nav-links a:hover { color: var(--ink); text-decoration: none; }
-  .nav-links a:hover::after { width: 100%; }
-  .nav-cta {
-    display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px;
-    border-radius: 10px; font-size: 13px; font-weight: 600; background: var(--accent); color: #fff !important;
-    transition: filter .2s, transform .2s;
-  }
-  .nav-cta:hover { filter: brightness(1.15); text-decoration: none; transform: translateY(-1px); }
-  .nav-cta::after { display: none !important; }
-  @media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } .nav { padding: 0 16px; } }
+/* ============ NAV ============ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 58px; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: color-mix(in srgb, var(--bg) 76%, transparent);
+  backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px);
+  border-bottom: 1px solid var(--border);
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+.nav.hidden { transform: translateY(-100%); }
+.nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; letter-spacing: -.01em; color: var(--ink); cursor: pointer; }
+.nav-brand svg { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; }
+.nav-brand b { color: var(--ae); font-weight: 800; }
+.nav-links { display: flex; align-items: center; gap: 4px; font-size: 13.5px; font-weight: 500; }
+.nav-links a {
+  color: var(--muted); padding: 7px 11px; border-radius: 8px; position: relative;
+  transition: color .2s, background .2s;
+}
+.nav-links a:hover { color: var(--ink); background: var(--card); }
+.nav-links a.active { color: var(--accent); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px;
+  border-radius: 9px; font-size: 13px; font-weight: 600;
+  background: var(--accent); color: #fff !important;
+  transition: filter .2s, transform .2s;
+}
+.nav-cta:hover { filter: brightness(1.12); transform: translateY(-1px); }
+@media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } .nav { padding: 0 14px; } }
 
-  /* ========== HERO ========== */
-  .hero { padding: 140px 24px 100px; text-align: center; position: relative; overflow: hidden; }
-  .hero-bg {
-    position: absolute; inset: -150px 0 0 0; pointer-events: none;
-    background: radial-gradient(ellipse 70% 50% at 50% 30%, var(--accent-glow) 0%, transparent 70%);
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600;
-    letter-spacing: .1em; color: var(--accent); margin-bottom: 28px; position: relative;
-  }
-  .motion-ready .hero-badge { opacity: 0; transform: translateY(20px); }
-  .hero-badge::before { content: ""; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse-dot 2s ease infinite; }
-  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(1.5); } }
+/* ============ STAGE BAR ============ */
+.stage-bar {
+  position: fixed; top: 58px; left: 0; right: 0; z-index: 190;
+  height: 30px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  pointer-events: none; font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em;
+  color: var(--subtle); background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: top .4s cubic-bezier(.16,1,.3,1);
+}
+.nav.hidden + .stage-bar { top: 0; }
+.stage-bar .seg { display: flex; align-items: center; gap: 6px; opacity: .4; transition: opacity .3s, color .3s; }
+.stage-bar .seg.on { color: var(--accent); opacity: 1; }
+.stage-bar .seg i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.stage-bar .sep { opacity: .3; }
 
-  .hero h1 {
-    font-size: clamp(38px, 7vw, 72px); line-height: 1.04; letter-spacing: -.03em;
-    font-weight: 800; max-width: 740px; margin: 0 auto 22px; position: relative;
-  }
-  .hero h1 .word { display: inline-block; overflow: hidden; }
-  .hero h1 .word > span { display: inline-block; }
-  .motion-ready .hero h1 .word > span { transform: translateY(110%); }
-  .hero h1 em {
-    font-style: normal;
-    background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 50%, var(--orange) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .hero p {
-    color: var(--muted); font-size: 17px; max-width: 580px; margin: 0 auto 36px; position: relative;
-  }
-  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
-  .motion-ready .hero p, .motion-ready .hero-actions .btn { opacity: 0; transform: translateY(20px); }
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    min-height: 48px; padding: 0 26px; border-radius: 12px;
-    font-weight: 700; font-size: 14.5px; border: 1px solid transparent;
-    cursor: pointer; font-family: inherit; position: relative; overflow: hidden;
-    transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s;
-  }
-  .btn:hover { transform: translateY(-2px); text-decoration: none; }
-  .btn:active { transform: translateY(0); }
-  .btn-primary {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-    box-shadow: 0 4px 20px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.15);
-  }
-  .btn-primary:hover { box-shadow: 0 8px 32px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.15); }
-  .btn-primary::before {
-    content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-    transition: left .5s;
-  }
-  .btn-primary:hover::before { left: 100%; }
-  .btn-outline { background: transparent; color: var(--ink); border-color: var(--border-strong); }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-icon { width: 18px; height: 18px; flex-shrink: 0; }
+/* ============ SCENE SHELL ============ */
+.scene { position: relative; min-height: 100svh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.scene-pin { width: 100%; }
+.scene-inner { width: min(1120px, 92vw); margin: 0 auto; position: relative; padding: 84px 0 70px; }
+.scene-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .16em;
+  color: var(--accent); text-transform: uppercase;
+  border: 1px solid var(--border-strong); border-radius: 999px;
+  padding: 5px 14px; background: var(--card); margin-bottom: 18px;
+}
+.scene-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
 
-  /* Hero abstract illustration */
-  .hero-visual { max-width: 820px; margin: 56px auto 0; position: relative; }
-  .motion-ready .hero-visual { opacity: 0; transform: translateY(40px) scale(.96); }
-  .hero-illust {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; overflow: hidden; padding: 36px 28px;
-    box-shadow: 0 4px 40px rgba(0,0,0,.3), 0 0 80px var(--accent-glow);
-  }
-  .hero-illust svg { display: block; width: 100%; height: auto; }
-  .flow-line { stroke-dasharray: 6 5; animation: dash-flow 1.5s linear infinite; }
-  .flow-line.l2 { animation-delay: .2s; animation-duration: 1.8s; }
-  .flow-line.l3 { animation-delay: .4s; animation-duration: 2.2s; }
-  @keyframes dash-flow { to { stroke-dashoffset: -22; } }
-  .media-float { animation: media-bob 3s ease-in-out infinite; }
-  .media-float:nth-child(2) { animation-delay: .4s; animation-duration: 3.5s; }
-  .media-float:nth-child(3) { animation-delay: .8s; animation-duration: 4s; }
-  @keyframes media-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-  .glow-pulse { animation: glow-p 3s ease-in-out infinite; }
-  .glow-pulse.p2 { animation-delay: .6s; }
-  @keyframes glow-p { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
+.cursor-glow {
+  position: fixed; top: 0; left: 0; width: 440px; height: 440px; z-index: 1;
+  pointer-events: none; border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-wash) 0%, transparent 62%);
+  transform: translate(-50%, -50%); opacity: 0; transition: opacity .4s;
+}
+html.has-cursor .cursor-glow { opacity: 1; }
 
-  /* Stats with animated counters */
-  .stats-row { display: flex; justify-content: center; gap: 52px; margin-top: 52px; flex-wrap: wrap; }
-  .stat-item { text-align: center; }
-  .motion-ready .stat-item { opacity: 0; transform: translateY(20px); }
-  .stat-item strong {
-    display: flex; align-items: baseline; justify-content: center; gap: 2px;
-    min-height: 42px; font-family: var(--mono); font-size: 28px;
-    line-height: 1.2; font-weight: 700; letter-spacing: -.035em; color: var(--ink);
-  }
-  .stat-item .stat-num, .stat-item .stat-value { display: inline-block; color: inherit; }
-  .stat-item .stat-prefix, .stat-item .stat-unit {
-    font-size: .56em; line-height: 1; font-weight: 600; letter-spacing: 0; color: var(--muted);
-  }
-  .stat-item > span:last-child {
-    font-size: 11px; color: var(--subtle); font-family: var(--mono);
-    letter-spacing: .06em; text-transform: uppercase;
-  }
+/* ============ IMMERSIVE TOUR GUIDE ============ */
+.tour-guide {
+  position: fixed; right: 22px; bottom: 22px; z-index: 205;
+  display: flex; align-items: center; gap: 11px; max-width: min(330px, calc(100vw - 28px));
+  padding: 10px 13px 10px 10px; border: 1px solid var(--border-strong); border-radius: 14px;
+  background: color-mix(in srgb, var(--elev) 90%, transparent);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 34px rgba(0,0,0,.32); pointer-events: none;
+  opacity: 0; transform: translateY(12px); transition: opacity .3s, transform .3s;
+}
+.tour-guide.show { opacity: 1; transform: translateY(0); }
+.tour-mouse {
+  width: 25px; height: 36px; border: 1.5px solid var(--ink); border-radius: 13px;
+  background: var(--card); position: relative; flex: 0 0 auto;
+}
+.tour-mouse::before {
+  content: ""; position: absolute; left: 50%; top: 0; height: 17px;
+  border-left: 1px solid var(--border-strong);
+}
+.tour-mouse::after {
+  content: ""; position: absolute; left: 5px; top: 4px; width: 6px; height: 9px;
+  border-radius: 6px 2px 3px 2px; background: var(--accent); opacity: .35;
+}
+.tour-wheel {
+  position: absolute; left: 50%; top: 5px; width: 3px; height: 7px;
+  margin-left: -1.5px; border-radius: 3px; background: var(--accent); opacity: 0;
+}
+.tour-guide[data-mode="scroll"] .tour-wheel { opacity: 1; animation: tour-wheel 1.4s ease-in-out infinite; }
+.tour-guide[data-mode="click"] .tour-mouse::after { animation: tour-click 1.35s ease-in-out infinite; }
+.tour-guide[data-mode="hold"] .tour-mouse::after { animation: tour-hold 1.8s ease-in-out infinite; }
+.tour-guide[data-mode="confirm"] .tour-mouse::after { animation: tour-click 1.35s ease-in-out infinite; }
+.tour-copy { min-width: 0; }
+.tour-step { font-family: var(--mono); font-size: 8.5px; letter-spacing: .14em; color: var(--accent); margin-bottom: 2px; }
+.tour-text { color: var(--ink); font-size: 11.5px; line-height: 1.45; }
+@keyframes tour-wheel { 0% { transform: translateY(0); opacity: 1; } 72% { transform: translateY(9px); opacity: 0; } 100% { opacity: 0; } }
+@keyframes tour-click { 0%,42%,100% { opacity: .3; transform: scaleY(1); } 52%,68% { opacity: 1; transform: scaleY(.72); transform-origin: top; } }
+@keyframes tour-hold { 0%,18%,100% { opacity: .3; } 28%,82% { opacity: 1; box-shadow: 0 0 0 4px var(--accent-wash); } }
+@media (max-width: 700px) {
+  .tour-guide { right: 14px; bottom: 14px; max-width: calc(100vw - 28px); }
+  .tour-text { font-size: 10.5px; }
+}
 
-  /* ========== SECTIONS ========== */
-  .section { max-width: 1040px; margin: 0 auto; padding: 90px 24px; }
-  .section-label {
-    font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--accent);
-    text-transform: uppercase; margin-bottom: 14px;
-  }
-  .section h2 {
-    font-size: clamp(26px, 3.5vw, 38px); letter-spacing: -.02em; font-weight: 800;
-    margin-bottom: 12px;
-  }
-  .section-desc { color: var(--muted); font-size: 16px; max-width: 600px; margin-bottom: 44px; }
-  .motion-ready .section-label { opacity: 0; transform: translateX(-20px); }
-  .motion-ready .section h2, .motion-ready .section-desc { opacity: 0; transform: translateY(20px); }
+/* ============ SCENE 0 — HERO ============ */
+.hero {
+  background:
+    radial-gradient(ellipse 65% 46% at 50% 30%, var(--ae-wash) 0%, transparent 68%),
+    radial-gradient(ellipse 42% 36% at 74% 70%, var(--ps-wash) 0%, transparent 70%),
+    var(--bg);
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(36px, 6.4vw, 66px); line-height: 1.07; letter-spacing: -.035em;
+  font-weight: 800; max-width: 800px; margin: 0 auto 20px;
+}
+.hero h1 .hl-ae { color: var(--ae); }
+.hero h1 .hl-ps { color: var(--ps); }
+.hero .sub { color: var(--muted); font-size: 16.5px; max-width: 640px; margin: 0 auto 32px; }
+.hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 46px; padding: 0 24px; border-radius: 12px;
+  font-weight: 700; font-size: 14.5px; border: 1px solid transparent;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s, border-color .25s, color .25s, background .25s, filter .2s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 20px var(--accent-wash); }
+.btn-primary:hover { box-shadow: 0 8px 30px var(--accent-wash); filter: brightness(1.1); }
+.btn-outline { background: transparent; color: var(--ink); border-color: var(--border-strong); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.btn-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.mirror-download {
+  display: inline-flex; align-items: center; min-height: 38px; padding: 0 14px;
+  border: 1px solid var(--border-strong); border-radius: 10px;
+  color: var(--muted); font-size: 12px; font-weight: 700;
+}
+.mirror-download:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ========== FEATURE ROWS ========== */
-  .feat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: center; margin-bottom: 72px; }
-  .feat-row:last-child { margin-bottom: 0; }
-  .feat-row.reverse .feat-visual { order: -1; }
-  .feat-visual {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 18px; padding: 32px;
-    display: flex; align-items: center; justify-content: center;
-    min-height: 260px; position: relative; overflow: hidden;
-  }
-  .feat-visual::before {
-    content: ""; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 50%, rgba(124,58,237,.03) 0%, transparent 70%);
-  }
-  .feat-visual-inner { text-align: center; color: var(--subtle); font-family: var(--mono); font-size: 12px; position: relative; }
-  .feat-illust { width: 100%; max-width: 320px; margin: 0 auto; }
+.hero-flow { width: min(760px, 100%); margin: 44px auto 0; }
+.flow-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+  padding: 24px 20px; box-shadow: 0 10px 40px rgba(0,0,0,.25);
+}
+.flow-card svg { display: block; width: 100%; height: auto; }
+.flow-dash { stroke-dasharray: 5 6; animation: dash-flow 1.4s linear infinite; }
+.flow-dash.d2 { animation-duration: 1.9s; }
+.flow-dash.d3 { animation-duration: 2.4s; }
+@keyframes dash-flow { to { stroke-dashoffset: -22; } }
+.flow-bob { animation: bob 3.2s ease-in-out infinite; }
+.flow-bob:nth-child(2) { animation-delay: .5s; }
+.flow-bob:nth-child(3) { animation-delay: 1s; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-  /* Interactive capture demo */
-  .capture-demo {
-    width: min(100%, 360px); padding: 14px;
-    background: color-mix(in srgb, var(--surface) 90%, transparent);
-    border: 1px solid var(--border-strong); border-radius: 14px;
-    box-shadow: 0 18px 40px rgba(0,0,0,.18); text-align: left;
-  }
-  .capture-head { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
-  .capture-status { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(85,184,74,.1); }
-  .capture-head b { font-family: var(--mono); font-size: 10px; letter-spacing: .04em; color: var(--muted); }
-  .capture-head span:last-child { margin-left: auto; font-family: var(--mono); font-size: 9px; color: var(--subtle); }
-  .capture-stage {
-    min-height: 116px; border-radius: 10px; border: 1px solid var(--border);
-    background: var(--bg); display: grid; place-items: center; position: relative; overflow: hidden;
-  }
-  .capture-stage::before {
-    content: ""; position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 40%, rgba(124,58,237,.12), transparent 62%);
-  }
-  .capture-stage-icon { position: relative; width: 42px; height: 42px; color: var(--accent); transition: transform .28s ease, opacity .2s; }
-  .capture-meta {
-    position: absolute; left: 10px; right: 10px; bottom: 9px;
-    display: flex; align-items: center; gap: 7px; font-family: var(--mono);
-    font-size: 8px; color: var(--subtle);
-  }
-  .capture-meta strong { color: var(--muted); font-weight: 600; }
-  .capture-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 9px; }
-  .capture-option {
-    min-height: 32px; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-    border: 1px solid var(--border); border-radius: 8px;
-    background: var(--bg); color: var(--subtle); font: 600 9px/1 var(--mono);
-    cursor: pointer; transition: border-color .2s, color .2s, background .2s, transform .2s;
-  }
-  .capture-option:hover { border-color: var(--border-strong); color: var(--ink); transform: translateY(-1px); }
-  .capture-option.active { border-color: var(--accent); color: var(--accent); background: rgba(124,58,237,.1); }
-  .capture-option svg { width: 13px; height: 13px; }
-  .capture-footer { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 9px; }
-  .capture-target {
-    min-height: 34px; border: 1px solid var(--border); border-radius: 8px;
-    background: var(--bg); color: var(--muted); font: 600 9px/1 var(--mono);
-    padding: 0 10px; cursor: pointer;
-  }
-  .capture-send {
-    min-height: 34px; padding: 0 14px; border: 0; border-radius: 8px;
-    background: var(--accent); color: #fff; font: 700 9px/1 var(--mono);
-    cursor: pointer; box-shadow: 0 5px 16px var(--accent-glow);
-    transition: transform .2s, filter .2s;
-  }
-  .capture-send:hover { transform: translateY(-1px); filter: brightness(1.12); }
-  .capture-send.done { background: var(--green); }
-  .capture-stage.switching .capture-stage-icon { transform: scale(.72) rotate(-5deg); opacity: .25; }
+.scroll-hint {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .22em; color: var(--subtle);
+  animation: hint-pulse 2.2s ease-in-out infinite; z-index: 5;
+}
+.scroll-hint .wheel { width: 20px; height: 32px; border: 1.5px solid var(--border-strong); border-radius: 10px; position: relative; }
+.scroll-hint .wheel::after {
+  content: ""; position: absolute; top: 6px; left: 50%; width: 3px; height: 6px;
+  margin-left: -1.5px; border-radius: 2px; background: var(--accent);
+  animation: wheel-dot 1.6s ease-in-out infinite;
+}
+@keyframes wheel-dot { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(10px); opacity: 0; } 100% { opacity: 0; } }
+@keyframes hint-pulse { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
 
-  .feat-text { position: relative; }
-  .feat-text h3 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 12px; }
-  .feat-text p { color: var(--muted); font-size: 15px; line-height: 1.7; }
-  .feat-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-  .feat-tag {
-    font-family: var(--mono); font-size: 11px; font-weight: 600;
-    color: var(--muted); border: 1px solid var(--border-strong);
-    border-radius: 6px; padding: 4px 12px; transition: border-color .2s, color .2s;
-  }
-  .feat-tag:hover { border-color: var(--accent); color: var(--accent); }
-  @media (max-width: 760px) {
-    .feat-row { grid-template-columns: 1fr; gap: 32px; margin-bottom: 56px; }
-    .feat-row.reverse .feat-visual { order: 0; }
-    .feat-visual { min-height: 200px; }
-  }
+/* ============ SCENE 1 — PAIN ============ */
+.pain {
+  background:
+    radial-gradient(ellipse 50% 40% at 24% 30%, var(--ae-wash) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 38% at 78% 72%, var(--ps-wash) 0%, transparent 60%),
+    var(--bg);
+}
+.pain-head { text-align: center; max-width: 680px; margin: 0 auto 34px; }
+.pain-head h2 { font-size: clamp(25px, 3.5vw, 38px); font-weight: 800; letter-spacing: -.02em; margin-bottom: 10px; }
+.pain-head p { color: var(--muted); font-size: 14.5px; }
+.pain-head p b { color: var(--ink); }
+.pain-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.zone {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 16px 16px 12px; transition: border-color .3s;
+}
+.zone:hover { border-color: var(--border-strong); }
+.zone-label {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+  color: var(--subtle); text-transform: uppercase; margin-bottom: 11px;
+}
+.zone-label svg { width: 14px; height: 14px; color: var(--accent); }
+.zone-count { margin-left: auto; font-size: 9.5px; color: var(--subtle); letter-spacing: 0; }
+.media-cards { display: flex; gap: 8px; flex-wrap: wrap; }
+.media-card {
+  width: 96px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); padding: 8px; cursor: pointer; position: relative;
+  transition: border-color .2s, transform .2s, box-shadow .2s; user-select: none;
+}
+.media-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px var(--accent-wash); }
+.media-card:active { transform: scale(.96); }
+.mc-thumb { height: 46px; border-radius: 7px; margin-bottom: 7px; display: grid; place-items: center; }
+.mc-thumb svg { width: 18px; height: 18px; }
+.mc-thumb.video { background: var(--ae-wash); color: var(--ae); }
+.mc-thumb.image { background: var(--ps-wash); color: var(--ps); }
+.mc-thumb.audio { background: rgba(251,191,36,.16); color: var(--orange); }
+.mc-name { font-family: var(--mono); font-size: 8.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mc-meta { font-family: var(--mono); font-size: 7.5px; color: var(--subtle); margin-top: 2px; }
+.media-card.caught { border-color: var(--green); }
+.media-card.caught .mc-thumb::after {
+  content: "✓"; position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 14px; font-weight: 800; color: #fff; background: rgba(74,222,128,.55);
+}
+.zone-hint { font-family: var(--mono); font-size: 9px; color: var(--subtle); margin-top: 10px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.zone-hint kbd {
+  font-family: var(--mono); font-size: 8px; background: var(--elev);
+  border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px;
+}
+@media (max-width: 700px) {
+  .pain-zones { grid-template-columns: 1fr; }
+  .media-card { width: calc(33.33% - 6px); }
+}
 
-  /* ========== PLATFORM GRID with 3D tilt ========== */
-  .plat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; perspective: 800px; }
-  .plat-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 24px 18px; text-align: center;
-    transition: border-color .3s, background .3s, transform .3s, box-shadow .3s;
-    transform-style: preserve-3d; cursor: default;
-  }
-  .plat-card:hover {
-    border-color: var(--accent); background: rgba(124,58,237,.05);
-    box-shadow: 0 12px 40px rgba(124,58,237,.1);
-  }
-  .plat-icon { margin-bottom: 12px; display: flex; justify-content: center; }
-  .plat-icon svg { width: 30px; height: 30px; color: var(--accent); transition: color .3s; }
-  .plat-name { font-weight: 700; font-size: 14px; color: var(--ink); margin-bottom: 5px; }
-  .plat-detail { font-size: 11px; color: var(--subtle); font-family: var(--mono); }
+.dock {
+  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 12px;
+  background: var(--elev); border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 9px 18px; box-shadow: 0 10px 34px rgba(0,0,0,.35);
+  z-index: 4;
+}
+.dock .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(74,222,128,.14); }
+.dock b { font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em; }
+.dock span { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.dock .count { color: var(--accent); font-weight: 700; min-width: 20px; text-align: center; }
+/* ============ SCENE 2 — CAPTURE ============ */
+.capture { background: var(--bg); }
+.cap-head { text-align:center; margin-bottom: 26px; }
+.cap-head h2 { font-size: clamp(23px, 3.2vw, 34px); font-weight: 800; letter-spacing: -.02em; }
+.capture-panel {
+  width: min(560px, 94vw); margin: 0 auto; position: relative;
+  background: var(--surface); border: 1px solid var(--border-strong); border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35); overflow: hidden;
+}
+.cp-head { display: flex; align-items: center; gap: 10px; padding: 13px 18px; border-bottom: 1px solid var(--border); }
+.cp-head .st { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(74,222,128,.13); }
+.cp-head b { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; }
+.cp-head .live { font-family: var(--mono); font-size: 9.5px; color: var(--muted); white-space: nowrap; }
+.cp-host { margin-left: auto; display: inline-flex; background: var(--card); border: 1px solid var(--border); border-radius: 9px; padding: 3px; gap: 2px; }
+.host-pill { padding: 5px 12px; border-radius: 7px; font-family: var(--mono); font-size: 10.5px; font-weight: 700; cursor: pointer; color: var(--subtle); border: 0; background: transparent; transition: all .2s; }
+.host-pill.on-ae { background: var(--ae); color: #fff; box-shadow: 0 2px 10px var(--ae-wash); }
+.host-pill.on-ps { background: var(--ps); color: #fff; box-shadow: 0 2px 10px var(--ps-wash); }
+.cp-body { padding: 18px; }
+.cp-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.cp-tab {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 40px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); color: var(--muted); font-size: 12.5px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.cp-tab svg { width: 15px; height: 15px; }
+.cp-tab .n { font-family: var(--mono); font-size: 10px; color: var(--subtle); }
+.cp-tab.active { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
+.cp-tab.active .n { color: var(--accent); }
+.cp-preview {
+  height: 128px; border-radius: 12px; border: 1px dashed var(--border-strong);
+  background: var(--card); display: grid; place-items: center; position: relative; overflow: hidden; margin-bottom: 16px;
+}
+.cp-preview svg { width: 40px; height: 40px; color: var(--accent); }
+.cp-preview .meta { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; gap: 9px; font-family: var(--mono); font-size: 9px; color: var(--subtle); }
+.cp-preview .meta b { color: var(--muted); font-weight: 600; }
+.cp-rows { display: grid; gap: 10px; }
+.cp-row { display: flex; align-items: center; gap: 10px; }
+.cp-row .rk { font-family: var(--mono); font-size: 9.5px; color: var(--subtle); width: 40px; flex-shrink: 0; }
+.cp-target-wrap { position: relative; flex: 1; display: flex; }
+.cp-target {
+  flex: 1; min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--card);
+  padding: 0 12px; font-size: 12.5px; color: var(--ink); cursor: pointer; transition: border-color .2s;
+}
+.cp-target:hover { border-color: var(--accent); }
+.cp-target .chev { width: 14px; height: 14px; color: var(--subtle); }
+.cp-target-menu {
+  position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 4px);
+  background: var(--elev); border: 1px solid var(--border-strong); border-radius: 10px;
+  overflow: hidden; box-shadow: 0 14px 40px rgba(0,0,0,.4); display: none;
+}
+.cp-target-menu.open { display: block; }
+.cp-target-menu button {
+  display: block; width: 100%; text-align: left; padding: 10px 14px; font-size: 12.5px;
+  background: transparent; border: 0; color: var(--ink); cursor: pointer;
+}
+.cp-target-menu button:hover { background: var(--card); color: var(--accent); }
+.cp-path {
+  flex: 1; min-height: 38px; display: flex; align-items: center; gap: 4px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 0 12px;
+  font-family: var(--mono); font-size: 11.5px; color: var(--accent);
+}
+.cp-path input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--ink); font-family: var(--mono); font-size: 11.5px; }
+.cp-send {
+  width: 100%; min-height: 48px; margin-top: 16px; border: 0; border-radius: 12px;
+  font-size: 14px; font-weight: 800; cursor: pointer; color: #fff;
+  background: var(--accent); box-shadow: 0 6px 22px var(--accent-wash);
+  transition: filter .2s, transform .2s;
+}
+.cp-send:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.cp-hint { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--subtle); margin-top: 10px; }
+.cp-hint kbd { font-size: 9px; background: var(--elev); border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; }
+.cp-hint .key { color: var(--accent); font-weight: 700; font-family: var(--mono); }
 
-  /* ========== WORKFLOW TIMELINE ========== */
-  .steps-line { position: relative; padding-left: 44px; }
-  .steps-line::before {
-    content: ""; position: absolute; left: 16px; top: 8px; bottom: 8px;
-    width: 2px; background: var(--border-strong);
+/* ============ SCENE 3 — ACTION ORBIT ============ */
+.orbit { background: radial-gradient(ellipse 55% 42% at 50% 46%, var(--accent-wash) 0%, transparent 66%), var(--bg); }
+.orbit-head { text-align: center; margin-bottom: 12px; }
+.orbit-head h2 { font-size: clamp(23px, 3.2vw, 34px); font-weight: 800; letter-spacing: -.02em; }
+.orbit-head p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+.orbit-head p b { color: var(--accent); }
+.orbit-stage {
+  position: relative; width: min(660px, 94vw); height: min(520px, 70vh); margin: 0 auto;
+  display: grid; place-items: center; touch-action: none; user-select: none;
+}
+.orbit-center {
+  position: relative; width: 108px; height: 108px; border-radius: 50%; z-index: 12;
+  border: 0; cursor: pointer; color: #fff; font-size: 15px; font-weight: 800;
+  background: var(--accent); box-shadow: 0 10px 34px var(--accent-wash), inset 0 1px 0 rgba(255,255,255,.2);
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px;
+  transition: transform .25s cubic-bezier(.16,1,.3,1); font-family: var(--sans);
+}
+.orbit-center small { font-size: 9px; font-weight: 700; opacity: .85; letter-spacing: .05em; }
+.orbit-center.armed { transform: scale(1.08); }
+.hold-ring { position: absolute; inset: -4px; border-radius: 50%; z-index: 0; pointer-events: none; }
+.hold-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.hold-ring .track { fill: none; stroke: rgba(255,255,255,.25); stroke-width: 3; }
+.hold-ring .fill { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.orbit-rings { position: absolute; inset: 0; z-index: 5; opacity: .5; transition: opacity .3s; display: grid; place-items: center; pointer-events: none; }
+.ring { grid-area: 1 / 1; width: auto; height: 100%; aspect-ratio: 1 / 1; border-radius: 50%; border: 1px solid var(--border-strong); }
+.ring.mid { height: 62%; }
+.ring.low { height: 48%; }
+.ring.q4 { height: 24%; }
+.orbit-nodes { position: absolute; inset: 0; z-index: 8; }
+.orbit-node {
+  position: absolute; transform: translate(-50%, -50%);
+  min-width: 92px; text-align: center;
+  background: var(--elev); border: 1px solid var(--border-strong); border-radius: 12px;
+  padding: 9px 12px; font-size: 12.5px; font-weight: 600; color: var(--ink);
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  transition: border-color .15s, background .15s, color .15s;
+  pointer-events: none;
+}
+.orbit-node .sub { display: block; font-family: var(--mono); font-size: 8.5px; color: var(--subtle); margin-top: 2px; }
+.orbit-node.armed { border-color: var(--accent); background: var(--accent); color: #fff; }
+.orbit-node.armed .sub { color: rgba(255,255,255,.85); }
+.orbit-node.leaf { border-style: dashed; }
+.orbit-node.leaf.armed { border-style: solid; }
+.orbit-crumbs {
+  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 4px; white-space: nowrap;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border);
+  opacity: 0; transition: opacity .3s; max-width: 92%; overflow: hidden; z-index: 6;
+}
+.orbit-crumbs.show { opacity: 1; }
+.orbit-crumbs b { color: var(--accent); font-weight: 700; }
+.orbit-hint {
+  position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 10px; color: var(--subtle); text-align: center;
+  white-space: nowrap; max-width: 94%; z-index: 6;
+}
+.orbit-hint kbd { font-size: 9px; background: var(--elev); border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; }
+.orbit-flash {
+  position: absolute; left: 50%; top: 50%; width: 240px; height: 240px;
+  transform: translate(-50%, -50%); border-radius: 50%; z-index: 9; pointer-events: none;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 62%); opacity: 0;
+}
+.orbit-guide {
+  position: absolute; inset: 0; z-index: 20; pointer-events: none;
+  opacity: 1; transition: opacity .28s;
+}
+.orbit-stage.guide-dismissed .orbit-guide { opacity: 0; }
+.orbit-guide-cursor {
+  position: absolute; left: calc(50% + 24px); top: calc(50% + 18px);
+  width: 26px; height: 38px; border: 2px solid var(--ink); border-radius: 14px;
+  background: var(--elev); box-shadow: 0 7px 22px rgba(0,0,0,.38);
+  animation: orbit-guide-drag 3.6s cubic-bezier(.65,0,.35,1) infinite;
+}
+.orbit-guide-cursor::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 19px;
+  border-left: 1px solid var(--border-strong);
+}
+.orbit-guide-cursor::after {
+  content: ""; position: absolute; left: 4px; top: 4px; width: 7px; height: 11px;
+  border-radius: 7px 2px 3px 2px; background: var(--accent);
+  animation: orbit-guide-press 3.6s ease infinite;
+}
+.orbit-guide-label {
+  position: absolute; left: calc(50% + 58px); top: calc(50% + 22px);
+  padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: 8px;
+  background: var(--elev); color: var(--muted); font-family: var(--mono); font-size: 9px;
+  white-space: nowrap; box-shadow: 0 7px 22px rgba(0,0,0,.28);
+  animation: orbit-guide-label 3.6s ease infinite;
+}
+@keyframes orbit-guide-drag {
+  0%,18% { transform: translate(0,0) scale(1); }
+  28%,42% { transform: translate(0,0) scale(.94); }
+  72%,86% { transform: translate(118px,-112px) scale(.94); }
+  100% { transform: translate(118px,-112px) scale(1); }
+}
+@keyframes orbit-guide-press { 0%,20%,92%,100% { opacity: .25; } 28%,86% { opacity: 1; } }
+@keyframes orbit-guide-label { 0%,12%,94%,100% { opacity: 0; } 20%,86% { opacity: 1; } }
+@media (max-width: 700px) {
+  .orbit-stage { height: min(460px, 64vh); }
+  .orbit-center { width: 88px; height: 88px; font-size: 13px; }
+  .orbit-node { min-width: 74px; padding: 7px 8px; font-size: 11px; }
+  .orbit-guide-label { left: calc(50% + 42px); }
+  @keyframes orbit-guide-drag {
+    0%,18% { transform: translate(0,0) scale(1); }
+    28%,42% { transform: translate(0,0) scale(.94); }
+    72%,86% { transform: translate(78px,-88px) scale(.94); }
+    100% { transform: translate(78px,-88px) scale(1); }
   }
-  .step-progress {
-    position: absolute; left: 16px; top: 8px; width: 2px;
-    background: var(--accent); transform-origin: top;
-  }
-  .step-node { position: relative; margin-bottom: 40px; }
-  .motion-ready .step-node { opacity: 0; transform: translateX(30px); }
-  .step-node:last-child { margin-bottom: 0; }
-  .step-dot {
-    position: absolute; left: -32px; top: 4px;
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--accent); border: 4px solid var(--bg); z-index: 1;
-    box-shadow: 0 0 12px var(--accent-glow);
-  }
-  .step-node h3 { font-size: 18px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; }
-  .step-node p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+}
 
-  /* ========== QUICK START ========== */
-  .qs-block {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 18px; padding: 30px 34px; margin-bottom: 16px;
-    position: relative; overflow: hidden;
-  }
-  .qs-block.primary { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,.06), 0 0 40px rgba(124,58,237,.05); }
-  .qs-block h4 { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .qs-step-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--accent); color: #fff; font-size: 13px; font-weight: 800; flex-shrink: 0;
-  }
-  .qs-block p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
-  .qs-block .dl-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
-  .code-block {
-    background: #0d0d14; color: #c8c8d8; border: 1px solid rgba(255,255,255,.08);
-    border-radius: 12px; padding: 16px 18px;
-    font-family: var(--mono); font-size: 12.5px; line-height: 1.8;
-    overflow-x: auto; position: relative; margin-top: 14px;
-  }
-  .code-block .cm { color: #6a6a7e; }
-  .copy-btn {
-    position: absolute; top: 10px; right: 10px;
-    min-height: 28px; padding: 0 10px; font-size: 11px; font-weight: 600;
-    font-family: inherit; border-radius: 6px; cursor: pointer;
-    border: 1px solid rgba(255,255,255,.15);
-    background: rgba(255,255,255,.06); color: #c8c8d8;
-    transition: background .2s;
-  }
-  .copy-btn:hover { background: rgba(255,255,255,.12); }
-  .copy-btn.done { border-color: var(--green); color: var(--green); }
+/* ============ SCENE 4 — TRANSFER ============ */
+.transfer {
+  background:
+    radial-gradient(ellipse 52% 40% at 30% 50%, var(--ae-wash) 0%, transparent 64%),
+    radial-gradient(ellipse 44% 36% at 74% 56%, var(--ps-wash) 0%, transparent 62%),
+    var(--bg);
+}
+.tr-head { text-align: center; margin-bottom: 22px; }
+.tr-head h2 { font-size: clamp(23px, 3.2vw, 34px); font-weight: 800; letter-spacing: -.02em; }
+.transfer-stage { width: min(760px, 94vw); margin: 0 auto; min-height: 400px; position: relative; display: grid; place-items: center; }
+.t-card {
+  width: 100%; min-width: 0; background: var(--surface); border: 1px solid var(--border-strong);
+  border-radius: 18px; padding: 26px; box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+.confirm-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.confirm-row .t { font-size: 16.5px; font-weight: 800; }
+.confirm-row .t span { color: var(--accent); font-family: var(--mono); font-size: 13px; }
+.confirm-field { margin-bottom: 16px; }
+.confirm-field label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--subtle); margin-bottom: 7px; text-transform: uppercase; }
+.confirm-field .input-wrap { min-width: 0; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--card); padding: 0 12px; }
+.confirm-field .input-wrap span { font-family: var(--mono); font-size: 11px; color: var(--subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40%; flex-shrink: 1; }
+.confirm-field input {
+  flex: 1; min-width: 0; height: 40px; background: transparent; border: 0; outline: 0;
+  color: var(--ink); font-family: var(--mono); font-size: 12.5px;
+}
+.confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.confirm-actions .btn { min-height: 40px; font-size: 13.5px; padding: 0 20px; }
+.cf-detail { font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-bottom: 18px; line-height: 1.85; }
+.cf-detail b { color: var(--accent); font-weight: 700; }
 
-  /* ========== COMPAT CARDS ========== */
-  .compat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
-  .compat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; transition: border-color .2s; }
-  .compat-card:hover { border-color: var(--border-strong); }
-  .compat-card .cc-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-  .compat-card .cc-title svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--accent); }
-  .compat-card p { color: var(--muted); font-size: 13px; margin: 0; }
+.prog-card { text-align: center; }
+.prog-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.prog-title b { font-family: var(--mono); font-weight: 700; }
+.prog-sub { font-family: var(--mono); font-size: 10.5px; color: var(--subtle); margin-bottom: 22px; }
+.prog-track { width: min(440px, 80%); margin: 0 auto 14px; height: 8px; border-radius: 99px; background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+.prog-fill { height: 100%; width: 0%; border-radius: 99px; background: linear-gradient(90deg, var(--ae), var(--ps)); transition: width .45s cubic-bezier(.4,0,.2,1); }
+.prog-phases { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.prog-phase { font-family: var(--mono); font-size: 10px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border); color: var(--subtle); transition: all .3s; }
+.prog-phase.on { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
+.prog-phase.done { border-color: var(--green); color: var(--green); }
+.prog-done { display: none; font-family: var(--mono); font-size: 12px; color: var(--green); margin-top: 6px; }
+.prog-done.show { display: block; }
 
-  /* ========== FOOTER ========== */
-  .site-footer { border-top: 1px solid var(--border); padding: 36px 24px 48px; text-align: center; }
-  .site-footer .inner { max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-  .site-footer .copy { color: var(--subtle); font-size: 13px; }
-  .site-footer .fl { display: flex; gap: 20px; font-size: 13px; }
-  .site-footer .fl a { color: var(--muted); }
-  @media (max-width: 560px) { .site-footer .inner { flex-direction: column; text-align: center; } }
+.ae-panel {
+  width: 100%; background: var(--surface); border: 1px solid var(--border-strong);
+  border-radius: 18px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  display: none;
+}
+.ae-panel.show { display: grid; grid-template-columns: 230px 1fr; }
+.ap-bar {
+  grid-column: 1 / -1; display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 11px; color: var(--muted); background: var(--card);
+}
+.ap-bar .ok { margin-left: auto; color: var(--green); font-weight: 700; }
+.ap-side { border-right: 1px solid var(--border); padding: 14px; }
+.ap-side .t { font-family: var(--mono); font-size: 10px; color: var(--subtle); margin-bottom: 8px; letter-spacing: .08em; }
+.ap-folder { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; word-break: break-all; }
+.ap-folder b { color: var(--accent); font-weight: 700; }
+.ap-item { display: flex; align-items: center; gap: 8px; padding: 8px 9px; border-radius: 8px; background: var(--card); border: 1px solid var(--border); margin-bottom: 6px; font-family: var(--mono); font-size: 11px; color: var(--ink); }
+.ap-item svg { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0; }
+.ap-item .st { margin-left: auto; font-size: 9px; color: var(--green); }
+.ap-comp-head { padding: 8px 12px; border: 1px solid var(--border); border-bottom: 0; border-radius: 10px 10px 0 0; background: var(--card); font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.ap-comp-head b { color: var(--ae); }
+.ap-main { padding: 14px; }
+.ap-comp { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card); }
+.ap-layer-row { display: flex; align-items: center; gap: 10px; padding: 9px 13px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; }
+.ap-layer-row.hot { background: var(--ae-wash); }
+.ap-layer-row .idx { color: var(--subtle); width: 12px; }
+.ap-layer-row .name { color: var(--ink); }
+.ap-layer-row .where { margin-left: auto; color: var(--ae); font-size: 9.5px; white-space: nowrap; }
+.ap-layer-row svg { flex-shrink: 0; }
+.ap-timeline { position: relative; padding: 12px 14px 8px; }
+.ap-ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 8px; color: var(--subtle); margin-bottom: 6px; }
+.ap-clip { position: relative; height: 22px; margin-bottom: 7px; border-radius: 5px; background: var(--ps-wash); border: 1px solid var(--ps); }
+.ap-clip .lbl { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-family: var(--mono); font-size: 9px; color: var(--ps-ink); font-weight: 700; }
+.ap-clip.alt { opacity: .5; }
+.ap-playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--red); transform: translateX(-50%); }
+.ap-playhead::after { content: ""; position: absolute; top: -3px; left: 50%; transform: translateX(-50%); border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--red); }
+.transfer-reset {
+  position: absolute; top: -8px; right: 0; z-index: 6;
+  font-family: var(--mono); font-size: 10px; color: var(--subtle);
+  background: var(--card); border: 1px solid var(--border-strong); border-radius: 8px;
+  padding: 6px 12px; cursor: pointer; transition: color .2s, border-color .2s;
+}
+.transfer-reset:hover { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 700px) {
+  .ae-panel.show { grid-template-columns: 1fr; }
+  .ap-side { border-right: 0; border-bottom: 1px solid var(--border); }
+  .transfer-reset { position: static; margin-bottom: 10px; justify-self: end; }
+}/* ============ SCENE 5 — INFO ============ */
+.info { padding: 104px 0 20px; }
+.info-inner { width: min(1120px, 92vw); margin: 0 auto; }
+.info-block { margin-bottom: 92px; }
+.info-label { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+.info-block h2 { font-size: clamp(23px, 3.1vw, 33px); font-weight: 800; letter-spacing: -.02em; margin-bottom: 10px; }
+.info-block .desc { color: var(--muted); font-size: 14.5px; max-width: 640px; margin-bottom: 32px; }
 
-  /* ========== REDUCED MOTION ========== */
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .btn, .plat-card, .compat-card, .nav, .nav-links a::after { transition: none; }
-    .hero-badge, .hero p, .hero-actions .btn, .stat-item,
-    .section-label, .section h2, .section-desc, .step-node,
-    .hero-visual, .hero h1 .word > span { opacity: 1 !important; transform: none !important; }
-    .flow-line, .media-float, .glow-pulse, .hero-bg { animation: none !important; }
-    @keyframes none {}
-  }
+.ps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ps-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; transition: border-color .3s, transform .3s; }
+.ps-card:hover { border-color: var(--ps); transform: translateY(-3px); }
+.ps-card .ic { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; background: var(--ps-wash); color: var(--ps); margin-bottom: 16px; }
+.ps-card .ic svg { width: 22px; height: 22px; }
+.ps-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+.ps-card p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.ps-card .tag { display: inline-block; margin-top: 14px; font-family: var(--mono); font-size: 9.5px; color: var(--ps); border: 1px solid var(--ps-wash); background: var(--ps-wash); border-radius: 999px; padding: 3px 10px; }
+@media (max-width: 760px) { .ps-grid { grid-template-columns: 1fr; } }
+
+.plat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
+.plat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 14px; text-align: center; transition: border-color .3s, background .3s, transform .3s; }
+.plat-card:hover { border-color: var(--accent); background: var(--accent-wash); transform: translateY(-2px); }
+.plat-card svg { width: 24px; height: 24px; color: var(--accent); margin-bottom: 9px; }
+.plat-name { font-weight: 700; font-size: 13px; color: var(--ink); margin-bottom: 3px; }
+.plat-detail { font-size: 10px; color: var(--subtle); font-family: var(--mono); }
+
+.qs-block { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 26px 28px; margin-bottom: 16px; position: relative; overflow: hidden; }
+.qs-block.primary { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
+.qs-block h4 { font-size: 15.5px; font-weight: 800; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.qs-num { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12.5px; font-weight: 800; flex-shrink: 0; }
+.qs-block p { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; }
+.qs-block p b { color: var(--ink); }
+.qs-block code { font-family: var(--mono); font-size: .85em; background: var(--elev); color: var(--accent); padding: .12em .45em; border-radius: 5px; border: 1px solid var(--border); }
+.qs-dl { display: flex; gap: 12px; flex-wrap: wrap; }
+.code-block {
+  background: #0c0c14; color: #c6c6d6; border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; font-family: var(--mono); font-size: 12.5px;
+  line-height: 1.85; overflow-x: auto; position: relative; margin-top: 14px;
+}
+.code-block .cm { color: #63637a; }
+@media (prefers-color-scheme: light) {
+  .code-block { background: #f4f4fa; color: #33334a; }
+  .code-block .cm { color: #9292a8; }
+}
+.copy-btn {
+  position: absolute; top: 10px; right: 10px; min-height: 28px; padding: 0 10px;
+  font-size: 11px; font-weight: 600; border-radius: 7px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.07); color: #c6c6d6;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.copy-btn:hover { background: rgba(255,255,255,.14); }
+.copy-btn.done { border-color: var(--green); color: var(--green); }
+@media (prefers-color-scheme: light) {
+  .copy-btn { border-color: var(--border); background: #fff; color: var(--muted); }
+  .copy-btn:hover { background: #ececf6; }
+}
+
+.compat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+.compat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; transition: border-color .25s; }
+.compat-card:hover { border-color: var(--border-strong); }
+.compat-card .t { font-weight: 800; font-size: 13.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.compat-card .t svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+.compat-card p { color: var(--muted); font-size: 12.5px; line-height: 1.7; }
+
+/* ============ FOOTER ============ */
+.site-footer { border-top: 1px solid var(--border); padding: 30px 24px 46px; }
+.site-footer .inner { width: min(1120px, 92vw); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+.site-footer .copy { color: var(--subtle); font-size: 12.5px; }
+.site-footer .fl { display: flex; gap: 18px; font-size: 12.5px; }
+.site-footer .fl a { color: var(--muted); cursor: pointer; }
+.site-footer .fl a:hover { color: var(--accent); }
+@media (max-width: 560px) { .site-footer .inner { flex-direction: column; text-align: center; } }
+
+/* ============ TOAST ============ */
+.toast-root {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 500;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none;
+}
+.toast {
+  display: flex; align-items: center; gap: 9px; max-width: 92vw;
+  background: var(--elev); border: 1px solid var(--border-strong); border-radius: 11px;
+  padding: 11px 18px; font-size: 13px; font-weight: 600; color: var(--ink);
+  box-shadow: 0 14px 40px rgba(0,0,0,.4);
+  animation: toast-in .35s cubic-bezier(.16,1,.3,1);
+}
+.toast .ti { width: 16px; height: 16px; flex-shrink: 0; }
+.toast.ok .ti { color: var(--green); }
+.toast.warn .ti { color: var(--orange); }
+.toast.err .ti { color: var(--red); }
+.toast.out { animation: toast-out .3s forwards; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes toast-out { to { opacity: 0; transform: translateY(10px) scale(.96); } }
+
+/* ============ REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  .flow-dash, .flow-bob, .scroll-hint, .scroll-hint .wheel::after, .toast { animation: none !important; }
+  .cursor-glow { display: none; }
+  .btn, .plat-card, .ps-card, .media-card, .cp-tab, .host-pill { transition: none; }
+  .scroll-hint { display: none; }
+  .orbit-guide-cursor, .orbit-guide-cursor::after, .orbit-guide-label { animation: none; }
+  .orbit-guide-label { opacity: 1; }
+  .tour-wheel, .tour-guide .tour-mouse::after { animation: none !important; }
+}
+
+/* ============ PRELOAD / NO-JS FALLBACK ============ */
+.js .scene-init-hide { opacity: 0; }
 </style>
 </head>
-<body>
+<body class="js">
+<noscript><style>.js .scene-init-hide{opacity:1!important;}</style></noscript>
 
-<nav class="nav">
-  <a class="nav-brand" href="#">
+<!-- ================= NAV ================= -->
+<nav class="nav" id="topNav" aria-label="主导航">
+  <a class="nav-brand" href="#" data-scroll-top aria-label="返回顶部">
     <svg viewBox="0 0 128 128" aria-hidden="true"><defs><mask id="pcm"><rect width="128" height="128" fill="#fff"/><path d="M47 43 82 64 47 85Z" fill="#000"/></mask></defs><g mask="url(#pcm)"><path fill="#55b84a" d="M51 85c8 21 31 34 50 25 13-6 20-17 20-32V29c0-13-15-20-25-12L55 49c-10 8-12 23-4 36Z"/><path fill="#7c3aed" d="M17 102V34c0-16 18-25 31-15l49 38c8 6 8 18 0 25l-22 18c-7 6-18 5-24-2L38 82v20c0 14-21 14-21 0Z"/></g></svg>
-    NexusSnap
+    Nexus<b>Snap</b>
   </a>
   <div class="nav-links">
-    <a href="#features">特性</a>
-    <a href="#platforms">平台</a>
-    <a href="#workflow">工作流</a>
-    <a href="#quickstart">开始</a>
-    <a class="nav-cta" href="#quickstart">下载</a>
+    <a href="#s0" data-nav="s0">体验</a>
+    <a href="#s1" data-nav="s1">痛点</a>
+    <a href="#s2" data-nav="s2">采集</a>
+    <a href="#s3" data-nav="s3">轨道</a>
+    <a href="#s4" data-nav="s4">归位</a>
+    <a href="#s5" data-nav="s5">支持</a>
+    <a class="nav-cta" href="#" data-download="browser">下载</a>
   </div>
 </nav>
 
+<!-- ================= STAGE BAR ================= -->
+<div class="stage-bar" id="stageBar" aria-hidden="true">
+  <span class="seg" data-seg="0"><i></i><span>采集</span></span><span class="sep">→</span>
+  <span class="seg" data-seg="1"><i></i><span>路由</span></span><span class="sep">→</span>
+  <span class="seg" data-seg="2"><i></i><span>归位</span></span>
+</div>
+
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<div class="tour-guide" id="tourGuide" data-mode="scroll" aria-hidden="true">
+  <div class="tour-mouse"><span class="tour-wheel"></span></div>
+  <div class="tour-copy">
+    <div class="tour-step" id="tourStep">01 / 06 · 开始</div>
+    <div class="tour-text" id="tourText">向下滚动，跟随素材完成一次归位。</div>
+  </div>
+</div>
+
 <main>
-  <!-- ============= HERO ============= -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-badge" id="heroBadge">浏览器扩展 + AE / PS CEP 插件</div>
-    <h1 id="heroTitle"><span class="word"><span>浏览器到 AE/PS，</span></span><br><span class="word"><span><em>一键直达</em></span></span></h1>
-    <p id="heroDesc">NexusSnap 是媒体嗅探与 Adobe 创作工具之间的桥梁：在浏览器中快速捕获网页上的图片、视频、音频，直接发送到 After Effects 或 Photoshop，无需下载、整理、拖拽。</p>
-    <div class="hero-actions" id="heroActions">
-      <a class="btn btn-primary" href="#quickstart-browser">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        下载浏览器扩展
-      </a>
-      <a class="btn btn-outline" href="#quickstart-cep">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        下载 CEP 插件
-      </a>
-    </div>
+  <!-- ===================================================
+       SCENE 0 — HERO
+       =================================================== -->
+  <section class="scene hero" id="s0" data-scene="0" aria-label="开场">
+    <div class="scene-pin">
+      <div class="scene-inner">
+        <div class="scene-tag scene-init-hide" data-r="hero">浏览器扩展 + AE / PS CEP 插件</div>
+        <h1 class="scene-init-hide" data-r="hero">
+          散落各处的素材，<br>一键归位到 <span class="hl-ae">AE</span> / <span class="hl-ps">PS</span>
+        </h1>
+        <p class="sub scene-init-hide" data-r="hero">网页媒体、本地文件、剪贴板里的零散素材——嗅探、采集、路由，直达项目指定路径与合成时间线。无需下载、无需整理、无需拖拽。</p>
+        <div class="hero-actions scene-init-hide" data-r="hero">
+          <button class="btn btn-primary" type="button" data-goto="s1">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            进入演示
+          </button>
+          <button class="btn btn-outline" type="button" data-download="browser">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            下载插件
+          </button>
+        </div>
 
-    <div class="hero-visual" id="heroVisual">
-      <div class="hero-illust">
-        <svg viewBox="0 0 740 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NexusSnap 工作流示意：浏览器中发现媒体资源，经 WebSocket 实时传输到 After Effects 和 Photoshop">
-          <defs>
-            <linearGradient id="hgrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#7c3aed" stop-opacity=".06"/>
-              <stop offset="100%" stop-color="#55b84a" stop-opacity=".04"/>
-            </linearGradient>
-          </defs>
-          <rect width="740" height="260" rx="20" fill="url(#hgrad)"/>
-
-          <!-- Browser -->
-          <g transform="translate(60, 40)">
-            <rect x="0" y="0" width="180" height="180" rx="14" fill="#16161c" stroke="#333344" stroke-width="1.5"/>
-            <rect x="0" y="0" width="180" height="32" rx="14" fill="#1a1a22"/>
-            <rect x="0" y="18" width="180" height="14" fill="#1a1a22"/>
-            <circle cx="18" cy="16" r="4.5" fill="#ff5f57"/>
-            <circle cx="32" cy="16" r="4.5" fill="#febc2e"/>
-            <circle cx="46" cy="16" r="4.5" fill="#28c840"/>
-            <rect x="60" y="8" width="106" height="16" rx="8" fill="#0a0a0e" stroke="#22222c" stroke-width=".5"/>
-            <rect x="12" y="42" width="156" height="8" rx="4" fill="#22222c" opacity=".6"/>
-            <rect x="12" y="56" width="100" height="8" rx="4" fill="#22222c" opacity=".4"/>
-            <rect x="12" y="72" width="156" height="50" rx="6" fill="#7c3aed" opacity=".08"/>
-            <rect x="60" y="86" width="64" height="24" rx="4" fill="#7c3aed" opacity=".2"/>
-            <circle cx="92" cy="98" r="8" fill="none" stroke="#7c3aed" stroke-width="2" opacity=".6"/>
-            <polygon points="90,95 90,101 95,98" fill="#7c3aed" opacity=".6"/>
-            <rect x="12" y="130" width="120" height="6" rx="3" fill="#22222c" opacity=".3"/>
-            <rect x="12" y="142" width="80" height="6" rx="3" fill="#22222c" opacity=".2"/>
-            <g class="media-float">
-              <rect x="158" y="48" width="28" height="28" rx="5" fill="#ef7651" opacity=".15" stroke="#ef7651" stroke-width="1" stroke-opacity=".4"/>
-              <polygon points="168,57 168,67 175,62" fill="#ef7651" opacity=".5"/>
-            </g>
-            <g class="media-float">
-              <rect x="164" y="90" width="22" height="22" rx="4" fill="#55b84a" opacity=".15" stroke="#55b84a" stroke-width="1" stroke-opacity=".4"/>
-              <rect x="169" y="96" width="5" height="5" rx="1.5" fill="#55b84a" opacity=".5"/>
-              <circle cx="181" cy="97" r="3" fill="none" stroke="#55b84a" stroke-width="1" opacity=".5"/>
-            </g>
-            <g class="media-float">
-              <rect x="156" y="132" width="24" height="24" rx="12" fill="#7c3aed" opacity=".1" stroke="#7c3aed" stroke-width="1" stroke-opacity=".35"/>
-              <path d="M164 142 l4-4 4 4" stroke="#7c3aed" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
-            </g>
-          </g>
-
-          <!-- Flow lines -->
-          <g>
-            <path d="M250 130 Q310 130 340 100 Q370 70 400 70" fill="none" stroke="#7c3aed" stroke-width="1.8" class="flow-line" stroke-opacity=".4"/>
-            <path d="M260 145 Q320 145 350 140 Q380 135 400 135" fill="none" stroke="#55b84a" stroke-width="1.5" class="flow-line l2" stroke-opacity=".3"/>
-            <path d="M245 155 Q310 160 345 175 Q380 190 400 195" fill="none" stroke="#ef7651" stroke-width="1.2" class="flow-line l3" stroke-opacity=".25"/>
-            <polygon points="400,65 410,70 400,75" fill="#7c3aed" opacity=".4"/>
-            <polygon points="400,130 410,135 400,140" fill="#55b84a" opacity=".35"/>
-            <polygon points="400,190 410,195 400,200" fill="#ef7651" opacity=".3"/>
-            <circle cx="310" cy="127" r="3.5" fill="#7c3aed" class="glow-pulse" opacity=".5"/>
-            <circle cx="355" cy="137" r="3.5" fill="#55b84a" class="glow-pulse p2" opacity=".5"/>
-          </g>
-
-          <!-- Targets -->
-          <g transform="translate(440, 25)">
-            <rect x="0" y="0" width="130" height="100" rx="12" fill="#16161c" stroke="#333344" stroke-width="1.5"/>
-            <rect x="0" y="0" width="130" height="28" rx="12" fill="#1a1a22"/>
-            <rect x="0" y="14" width="130" height="14" fill="#1a1a22"/>
-            <text x="14" y="18" font-family="monospace" font-size="10" font-weight="700" fill="#7c3aed" opacity=".8">After Effects</text>
-            <rect x="10" y="36" width="110" height="54" rx="6" fill="#0a0a0e" stroke="#22222c" stroke-width=".5"/>
-            <rect x="16" y="42" width="52" height="16" rx="3" fill="#7c3aed" opacity=".12" stroke="#7c3aed" stroke-width=".8"/>
-            <text x="22" y="53" font-family="monospace" font-size="7" fill="#7c3aed" opacity=".7">video_1080p</text>
-            <rect x="16" y="62" width="30" height="6" rx="3" fill="#22222c" opacity=".5"/>
-            <rect x="16" y="72" width="98" height="3" rx="1.5" fill="#22222c" opacity=".3"/>
-            <rect x="16" y="78" width="65" height="3" rx="1.5" fill="#22222c" opacity=".2"/>
-            <rect x="150" y="10" width="130" height="100" rx="12" fill="#16161c" stroke="#333344" stroke-width="1.5"/>
-            <rect x="150" y="10" width="130" height="28" rx="12" fill="#1a1a22"/>
-            <rect x="150" y="24" width="130" height="14" fill="#1a1a22"/>
-            <text x="164" y="28" font-family="monospace" font-size="10" font-weight="700" fill="#55b84a" opacity=".7">Photoshop</text>
-            <rect x="160" y="46" width="110" height="54" rx="6" fill="#0a0a0e" stroke="#22222c" stroke-width=".5"/>
-            <rect x="170" y="54" width="40" height="36" rx="3" fill="#55b84a" opacity=".1" stroke="#55b84a" stroke-width=".8"/>
-            <rect x="180" y="60" width="20" height="24" rx="2" fill="#55b84a" opacity=".15"/>
-            <circle cx="190" cy="68" r="5" fill="none" stroke="#55b84a" stroke-width="1" opacity=".4"/>
-          </g>
-          <text x="150" y="240" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#9898a8">浏览器嗅探</text>
-          <text x="370" y="240" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#7c3aed" opacity=".6">WebSocket</text>
-          <text x="560" y="240" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#9898a8">创作工具</text>
-        </svg>
+        <div class="hero-flow scene-init-hide" data-r="hero-flow" aria-hidden="true">
+          <div class="flow-card">
+            <svg viewBox="0 0 720 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bg0" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#9999ff" stop-opacity=".07"/><stop offset="1" stop-color="#31a8ff" stop-opacity=".05"/>
+                </linearGradient>
+              </defs>
+              <rect width="720" height="210" rx="16" fill="url(#bg0)"/>
+              <g class="flow-bob">
+                <rect x="40" y="36" width="120" height="80" rx="10" fill="#14141c" stroke="#34343f" stroke-width="1.2"/>
+                <rect x="52" y="48" width="60" height="38" rx="6" fill="#9999ff" opacity=".18"/>
+                <polygon points="90,56 90,78 106,67" fill="#9999ff" opacity=".7"/>
+                <rect x="52" y="92" width="96" height="8" rx="4" fill="#34343f"/>
+                <rect x="52" y="62" width="24" height="10" rx="3" fill="#31a8ff" opacity=".4"/>
+                <rect x="60" y="110" width="48" height="5" rx="2.5" fill="#34343f"/>
+              </g>
+              <g class="flow-bob">
+                <rect x="52" y="130" width="96" height="40" rx="8" fill="#14141c" stroke="#34343f" stroke-width="1.2"/>
+                <rect x="64" y="140" width="34" height="18" rx="4" fill="#31a8ff" opacity=".25"/>
+                <rect x="64" y="164" width="72" height="4" rx="2" fill="#34343f"/>
+              </g>
+              <g class="flow-bob">
+                <circle cx="196" cy="58" r="18" fill="#fbbf24" opacity=".14" stroke="#fbbf24" stroke-width="1.2"/>
+                <path d="M190 62l4-4 4 4" stroke="#fbbf24" stroke-width="1.6" stroke-linecap="round"/>
+              </g>
+              <g transform="translate(270,26)">
+                <rect width="180" height="156" rx="12" fill="#101016" stroke="#34343f" stroke-width="1.3"/>
+                <rect width="180" height="30" rx="12" fill="#14141c"/>
+                <circle cx="16" cy="15" r="4" fill="#ff5f57"/><circle cx="30" cy="15" r="4" fill="#febc2e"/><circle cx="44" cy="15" r="4" fill="#28c840"/>
+                <rect x="60" y="8" width="104" height="15" rx="7.5" fill="#0a0a0f" stroke="#34343f"/>
+                <rect x="12" y="42" width="156" height="88" rx="8" fill="#14141c"/>
+                <rect x="20" y="50" width="46" height="30" rx="6" fill="#9999ff" opacity=".2"/>
+                <polygon points="37,57 37,73 49,65" fill="#9999ff" opacity=".8"/>
+                <rect x="72" y="50" width="88" height="7" rx="3.5" fill="#34343f"/>
+                <rect x="72" y="62" width="60" height="7" rx="3.5" fill="#2a2a36"/>
+                <rect x="20" y="86" width="88" height="8" rx="4" fill="#9999ff" opacity=".25"/>
+                <rect x="20" y="100" width="56" height="8" rx="4" fill="#31a8ff" opacity=".3"/>
+                <rect x="20" y="114" width="72" height="8" rx="4" fill="#34343f"/>
+                <rect x="12" y="136" width="156" height="1" fill="#2a2a36"/>
+                <rect x="108" y="142" width="48" height="12" rx="6" fill="#9999ff"/>
+                <text x="132" y="151" text-anchor="middle" font-family="monospace" font-size="8" font-weight="700" fill="#101016">发送到 AE</text>
+              </g>
+              <g transform="translate(492,38)">
+                <circle cx="60" cy="62" r="58" fill="none" stroke="#34343f" stroke-width="1" stroke-dasharray="3 4"/>
+                <circle cx="60" cy="62" r="40" fill="none" stroke="#34343f" stroke-width="1" stroke-dasharray="3 4" opacity=".7"/>
+                <circle cx="60" cy="62" r="22" fill="#9999ff" opacity=".25"/>
+                <circle cx="60" cy="62" r="22" fill="none" stroke="#9999ff" stroke-width="1.4"/>
+                <rect x="60" y="4" width="52" height="22" rx="9" fill="#14141c" stroke="#9999ff" stroke-width="1.2"/>
+                <rect x="60" y="98" width="52" height="22" rx="9" fill="#14141c" stroke="#31a8ff" stroke-width="1.2"/>
+                <rect x="8" y="52" width="52" height="22" rx="9" fill="#14141c" stroke="#34343f" stroke-width="1"/>
+                <rect x="112" y="52" width="52" height="22" rx="9" fill="#14141c" stroke="#34343f" stroke-width="1"/>
+                <text x="86" y="18" text-anchor="middle" font-family="monospace" font-size="8" fill="#9999ff">合成</text>
+                <text x="86" y="112" text-anchor="middle" font-family="monospace" font-size="8" fill="#31a8ff">下载</text>
+              </g>
+              <path d="M212 88 Q242 88 258 70 Q266 60 268 58" stroke="#9999ff" stroke-width="1.6" class="flow-dash" fill="none" stroke-opacity=".55"/>
+              <path d="M214 120 Q244 122 258 126 Q268 128 270 128" stroke="#31a8ff" stroke-width="1.4" class="flow-dash d2" fill="none" stroke-opacity=".45"/>
+              <path d="M452 88 Q474 88 488 92" stroke="#9999ff" stroke-width="1.6" class="flow-dash d3" fill="none" stroke-opacity=".5"/>
+              <text x="300" y="198" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9999ff" opacity=".7">Ctrl/⌘ + Shift + 右键</text>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="scroll-hint" aria-hidden="true"><div class="wheel"></div>滚动进入演示</div>
+  </section>
 
-    <div class="stats-row" id="statsRow">
-      <div class="stat-item"><strong><span class="stat-num" data-target="11">0</span></strong><span>站点适配器</span></div>
-      <div class="stat-item"><strong><span class="stat-num" data-target="2">0</span></strong><span>宿主 (AE+PS)</span></div>
-      <div class="stat-item"><strong><span class="stat-prefix">~</span><span class="stat-value">80</span><span class="stat-unit">KB</span></strong><span>核心体积</span></div>
-      <div class="stat-item"><strong><span class="stat-num" data-target="0">0</span></strong><span>外部依赖</span></div>
+  <!-- ===================================================
+       SCENE 1 — PAIN
+       =================================================== -->
+  <section class="scene pain" id="s1" data-scene="1" aria-label="痛点：素材散落各处">
+    <div class="scene-pin">
+      <div class="scene-inner">
+        <div class="pain-head">
+          <div class="scene-tag scene-init-hide" data-r="pain">痛点 · 素材散落各处</div>
+          <h2 class="scene-init-hide" data-r="pain">灵感出现时，素材却在四个角落</h2>
+          <p class="scene-init-hide" data-r="pain">网页上看到的视频、本地攒下的文件、剪贴板里的截图、项目文件夹里的旧素材——<b>采集、下载、改名字、找路径、拖进合成</b>，每一步都在打断创作。<br>点任意一张卡片，体验嗅探。</p>
+        </div>
+
+        <div class="pain-zones">
+          <div class="zone scene-init-hide" data-r="zone" data-zone="web">
+            <div class="zone-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              网页媒体
+              <span class="zone-count">3 个已发现</span>
+            </div>
+            <div class="media-cards">
+              <div class="media-card" data-media="video_1080p.mp4|1920×1080 · 45.2 MB" data-kind="video">
+                <div class="mc-thumb video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <div class="mc-name">video_1080p.mp4</div><div class="mc-meta">1920×1080</div>
+              </div>
+              <div class="media-card" data-media="cover_art.jpg|1280×720 · 2.1 MB" data-kind="image">
+                <div class="mc-thumb image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+                <div class="mc-name">cover_art.jpg</div><div class="mc-meta">1280×720</div>
+              </div>
+              <div class="media-card" data-media="bgm_loop.mp3|320kbps · 6.8 MB" data-kind="audio">
+                <div class="mc-thumb audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+                <div class="mc-name">bgm_loop.mp3</div><div class="mc-meta">320kbps</div>
+              </div>
+            </div>
+            <div class="zone-hint"><kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片体验</div>
+          </div>
+
+          <div class="zone scene-init-hide" data-r="zone" data-zone="local">
+            <div class="zone-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              本地文件
+              <span class="zone-count">2 个待归位</span>
+            </div>
+            <div class="media-cards">
+              <div class="media-card" data-media="title_overlay.png|2048×2048 · 3.4 MB" data-kind="image">
+                <div class="mc-thumb image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
+                <div class="mc-name">title_overlay.png</div><div class="mc-meta">2048²</div>
+              </div>
+              <div class="media-card" data-media="sfx_hit.wav|24bit · 0.4 MB" data-kind="audio">
+                <div class="mc-thumb audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+                <div class="mc-name">sfx_hit.wav</div><div class="mc-meta">0.4 MB</div>
+              </div>
+            </div>
+            <div class="zone-hint">拖入扩展图标即可收集</div>
+          </div>
+
+          <div class="zone scene-init-hide" data-r="zone" data-zone="clip">
+            <div class="zone-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+              剪贴板
+              <span class="zone-count">1 项待处理</span>
+            </div>
+            <div class="media-cards">
+              <div class="media-card" data-media="screenshot_0342.png|1200×675 · 1.8 MB" data-kind="image">
+                <div class="mc-thumb image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+                <div class="mc-name">screenshot_0342</div><div class="mc-meta">1200×675</div>
+              </div>
+            </div>
+            <div class="zone-hint">截图后自动出现在采集面板</div>
+          </div>
+
+          <div class="zone scene-init-hide" data-r="zone" data-zone="proj">
+            <div class="zone-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              项目文件夹
+              <span class="zone-count">目标：…/NexusSnap</span>
+            </div>
+            <div class="media-cards">
+              <div class="media-card" data-media="comp_prev.mp4|720p · 12.0 MB" data-kind="video">
+                <div class="mc-thumb video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <div class="mc-name">comp_prev.mp4</div><div class="mc-meta">720p</div>
+              </div>
+            </div>
+            <div class="zone-hint">旧素材复用，等待一键归位</div>
+          </div>
+        </div>
+
+        <div class="dock scene-init-hide" data-r="dock" aria-hidden="true">
+          <span class="dot"></span>
+          <b>采集托盘</b>
+          <span>已嗅探</span>
+          <span class="count" id="dockCount">0</span><span>项</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===================================================
+       SCENE 2 — CAPTURE
+       =================================================== -->
+  <section class="scene capture" id="s2" data-scene="2" aria-label="采集面板">
+    <div class="scene-pin">
+      <div class="scene-inner">
+        <div class="cap-head">
+          <div class="scene-tag scene-init-hide" data-r="cap">采集 · 不离开网页</div>
+          <h2 class="scene-init-hide" data-r="cap">面板即工作台：选中、改目标、发送</h2>
+        </div>
+
+        <div class="capture-panel scene-init-hide" id="capturePanel" data-r="cap-panel" role="group" aria-label="采集面板演示">
+          <div class="cp-head">
+            <span class="st"></span>
+            <b>QUICK CAPTURE</b>
+            <span class="live" id="cpLive">0 个资源已嗅探</span>
+            <div class="cp-host" role="tablist" aria-label="选择宿主">
+              <button class="host-pill on-ae" type="button" data-host="ae" role="tab" aria-selected="true">AE</button>
+              <button class="host-pill" type="button" data-host="ps" role="tab" aria-selected="false">PS</button>
+            </div>
+          </div>
+          <div class="cp-body">
+            <div class="cp-tabs" role="tablist" aria-label="媒体类型">
+              <button class="cp-tab active" type="button" data-tab="video" role="tab" aria-selected="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>视频<span class="n">1</span>
+              </button>
+              <button class="cp-tab" type="button" data-tab="image" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>图片<span class="n">3</span>
+              </button>
+              <button class="cp-tab" type="button" data-tab="audio" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>音频<span class="n">2</span>
+              </button>
+            </div>
+
+            <div class="cp-preview">
+              <svg id="cpIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <div class="meta"><b id="cpName">video_1080p.mp4</b><span id="cpMeta">1920×1080 · 45.2 MB</span></div>
+            </div>
+
+            <div class="cp-rows">
+              <div class="cp-row">
+                <span class="rk">目标</span>
+                <div class="cp-target-wrap">
+                  <button class="cp-target" type="button" id="cpTargetBtn" aria-haspopup="listbox" aria-expanded="false">
+                    <span id="cpTargetLabel">文件夹 · 项目根目录</span>
+                    <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="cp-target-menu" id="cpTargetMenu" role="listbox"></div>
+                </div>
+              </div>
+              <div class="cp-row">
+                <span class="rk">路径</span>
+                <div class="cp-path">
+                  <span>{projectPath}/</span>
+                  <input id="cpPath" value="NexusSnap" spellcheck="false" aria-label="项目子路径">
+                </div>
+              </div>
+            </div>
+
+            <button class="cp-send" id="cpSend" type="button">
+              <span id="cpSendLabel">发送到 AE</span>
+            </button>
+            <p class="cp-hint">点击发送 = 按默认目标直达 · <kbd>长按</kbd> 发送 = 打开 <span class="key">Action Orbit</span> 精确路由</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ============= FEATURES ============= -->
-  <section class="section" id="features">
-    <div class="section-label" data-reveal="slide-left">核心能力</div>
-    <h2 data-reveal="fade-up">不只是下载，是从浏览器到画布的全链路</h2>
-    <p class="section-desc" data-reveal="fade-up">DOM 扫描 + 网络拦截 + 站点适配器，自动发现页面上所有媒体资源。原生架构，极速响应。</p>
+  <!-- ===================================================
+       SCENE 3 — ACTION ORBIT
+       =================================================== -->
+  <section class="scene orbit" id="s3" data-scene="3" aria-label="Action Orbit 精确路由">
+    <div class="scene-pin">
+      <div class="scene-inner">
+        <div class="orbit-head">
+          <div class="scene-tag scene-init-hide" data-r="orbit">路由 · Action Orbit</div>
+          <h2 class="scene-init-hide" data-r="orbit">一次手势，完成全部决策</h2>
+          <p class="scene-init-hide" data-r="orbit">按住发送按钮，拖动指针穿过层级节点，松手即执行——<b>松手于有效叶节点执行，松手于空白处自动取消</b>，回中心或按 Esc 退一级。</p>
+        </div>
 
-    <div class="feat-row" data-reveal="fade-up">
-      <div class="feat-visual">
-        <div class="feat-visual-inner">
-          <div class="capture-demo" data-capture-demo>
-            <div class="capture-head">
-              <span class="capture-status"></span><b>QUICK CAPTURE</b><span>3 个资源已发现</span>
+        <div class="orbit-stage scene-init-hide" id="orbitStage" data-r="orbit-stage">
+          <div class="orbit-rings" id="orbitRings" aria-hidden="true">
+            <div class="ring" data-ring="1"></div>
+            <div class="ring mid" data-ring="2"></div>
+            <div class="ring low" data-ring="3"></div>
+            <div class="ring q4" data-ring="4"></div>
+          </div>
+          <div class="orbit-nodes" id="orbitNodes" aria-hidden="true"></div>
+          <div class="orbit-flash" id="orbitFlash" aria-hidden="true"></div>
+          <div class="orbit-crumbs" id="orbitCrumbs" aria-hidden="true"></div>
+          <button class="orbit-center" id="orbitHub" type="button" aria-label="长按打开 Action Orbit">
+            <span id="hubMain">发送到 AE</span>
+            <small>长按 380ms</small>
+            <span class="hold-ring" id="holdRing" aria-hidden="true">
+              <svg viewBox="0 0 108 108"><circle class="track" cx="54" cy="54" r="50"/><circle class="fill" id="holdFill" cx="54" cy="54" r="50"/></svg>
+            </span>
+          </button>
+          <div class="orbit-guide" id="orbitGuide" aria-hidden="true">
+            <div class="orbit-guide-cursor"></div>
+            <div class="orbit-guide-label">按住左键 · 拖向目标 · 松开</div>
+          </div>
+          <div class="orbit-hint" id="orbitHint">
+            <kbd>按住</kbd> 0.38s 呼出轨道 · 拖动穿过节点 · <kbd>Esc</kbd> 取消 · 回中心退一级
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===================================================
+       SCENE 4 — TRANSFER / CEP
+       =================================================== -->
+  <section class="scene transfer" id="s4" data-scene="4" aria-label="确认、传输与归位">
+    <div class="scene-pin">
+      <div class="scene-inner">
+        <div class="tr-head">
+          <div class="scene-tag scene-init-hide" data-r="tr">归位 · 直达 AE 项目</div>
+          <h2 class="scene-init-hide" data-r="tr">确认 → 传输 → 精确落位</h2>
+        </div>
+
+        <div class="transfer-stage scene-init-hide" data-r="tr-stage">
+          <button class="transfer-reset" id="transferReset" type="button" aria-label="重新演示">↻ 重新演示</button>
+
+          <div class="t-card" id="confirmCard" style="display:none;">
+            <div class="confirm-row">
+              <div class="t">确认导入 <span id="cfName">video_1080p.mp4</span></div>
+              <div style="font-family:var(--mono);font-size:10.5px;color:var(--subtle);">已选 1 项</div>
             </div>
-            <div class="capture-stage" data-capture-stage>
-              <svg class="capture-stage-icon" data-media-icon="video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              <div class="capture-meta"><strong data-media-name>video_1080p.mp4</strong><span data-media-meta>1920×1080 · 45.2 MB</span></div>
+            <div class="confirm-field">
+              <label for="cfInput">文件名</label>
+              <div class="input-wrap">
+                <span>{projectPath}/NexusSnap/</span>
+                <input id="cfInput" value="video_1080p.mp4" spellcheck="false">
+              </div>
             </div>
-            <div class="capture-options" role="group" aria-label="选择媒体类型">
-              <button class="capture-option active" type="button" data-media="video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>视频</button>
-              <button class="capture-option" type="button" data-media="image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>图片</button>
-              <button class="capture-option" type="button" data-media="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>音频</button>
+            <div class="cf-detail" id="cfDetail">
+              目标：<b id="cfTarget">文件夹 · 项目根目录</b><br>
+              图层：<b id="cfLayer">最上层 / 合成起点 / 普通素材</b>
             </div>
-            <div class="capture-footer">
-              <button class="capture-target" type="button" data-target-toggle aria-label="切换发送目标">发送至：After Effects</button>
-              <button class="capture-send" type="button" data-send>发送到 AE</button>
+            <div class="confirm-actions">
+              <button class="btn btn-outline" type="button" id="cfCancel">取消</button>
+              <button class="btn btn-primary" type="button" id="cfOk">继续</button>
+            </div>
+          </div>
+
+          <div class="t-card prog-card" id="progCard" style="display:none;">
+            <div class="prog-title">正在传输 <b id="pgName">video_1080p.mp4</b></div>
+            <div class="prog-sub">本地 WebSocket · 媒体流不经服务器</div>
+            <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+            <div class="prog-phases">
+              <span class="prog-phase" data-phase="0">下载中</span>
+              <span class="prog-phase" data-phase="1">导入中</span>
+              <span class="prog-phase" data-phase="2">完成</span>
+            </div>
+            <div class="prog-done" id="progDone">✓ 已导入 AE 项目 · 归位成功</div>
+          </div>
+
+          <div class="ae-panel" id="aePanel" role="img" aria-label="After Effects 项目面板演示">
+            <div class="ap-bar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ae)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              After Effects · 项目
+              <span class="ok">✓ 已连接 · 实时同步</span>
+            </div>
+            <div class="ap-side">
+              <div class="t">项目面板</div>
+              <div class="ap-folder">📁 <b>{projectPath}/NexusSnap/</b></div>
+              <div class="ap-item" id="apItem">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span id="apItemName">video_1080p.mp4</span><span class="st">✓</span>
+              </div>
+              <div class="t" style="margin-top:16px;">当前合成</div>
+              <div class="ap-comp-head"><b>main_comp</b> · 1280×720 · 30fps</div>
+            </div>
+            <div class="ap-main">
+              <div class="ap-comp">
+                <div class="ap-comp-head">时间线 · main_comp</div>
+                <div class="ap-layer-row hot">
+                  <span class="idx">1</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ae)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span class="name" id="apLayerName">video_1080p.mp4</span>
+                  <span class="where" id="apLayerWhere">合成起点 ▸ 最上层</span>
+                </div>
+                <div class="ap-layer-row">
+                  <span class="idx">2</span>
+                  <span class="name" style="color:var(--subtle);">title_overlay.png</span>
+                </div>
+                <div class="ap-timeline">
+                  <div class="ap-ticks"><span>00:00</span><span>00:02</span><span>00:04</span><span>00:06</span><span>00:08</span></div>
+                  <div class="ap-clip"><span class="lbl">video_1080p.mp4</span></div>
+                  <div class="ap-clip alt"><span class="lbl">title_overlay.png</span></div>
+                  <div class="ap-playhead"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="feat-text">
-        <h3>Ctrl+Shift+右键：不离开网页，即刻采集</h3>
-        <p>在任何网页上按下快捷键，弹出 Eagle 风格的双栏采集面板——左侧预览媒体、查看元数据，右侧一键选择发送目标。支持图片、视频、音频预览，HLS 直播流实时播放。</p>
-        <div class="feat-tags">
-          <span class="feat-tag">批量采集</span>
-          <span class="feat-tag">文件名编辑</span>
-          <span class="feat-tag">HLS 预览</span>
-          <span class="feat-tag">元数据展示</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="feat-row reverse" data-reveal="fade-up">
-      <div class="feat-visual">
-        <div class="feat-visual-inner">
-          <svg class="feat-illust" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="150" cy="100" r="28" fill="var(--accent)" opacity=".8"/>
-            <text x="150" y="104" text-anchor="middle" font-family="monospace" font-size="9" font-weight="700" fill="#fff">发送</text>
-            <circle cx="150" cy="100" r="48" fill="none" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="4 3"/>
-            <circle cx="150" cy="100" r="78" fill="none" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 3"/>
-            <circle cx="150" cy="100" r="108" fill="none" stroke="var(--border)" stroke-width=".5" stroke-dasharray="4 4"/>
-            <rect x="172" y="52" width="54" height="22" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width=".5"/>
-            <text x="199" y="66" text-anchor="middle" font-family="monospace" font-size="7" fill="var(--ink)">保存+导入</text>
-            <rect x="192" y="82" width="54" height="22" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="1.5"/>
-            <text x="219" y="96" text-anchor="middle" font-family="monospace" font-size="7" fill="var(--accent)">合成目标</text>
-            <rect x="80" y="82" width="54" height="22" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width=".5"/>
-            <text x="107" y="96" text-anchor="middle" font-family="monospace" font-size="7" fill="var(--ink)">仅保存</text>
-          </svg>
-        </div>
-      </div>
-      <div class="feat-text">
-        <h3>Action Orbit：一次手势，完成全部决策</h3>
-        <p>长按"发送"按钮打开圆形轨道菜单，四级渐进式选择——磁盘行为 → AE 目标 → 图层/时间 → 资源包装。松手于无效区域自动取消，只有松手于有效叶节点才执行。一个手势，不离开工作流。</p>
-        <div class="feat-tags">
-          <span class="feat-tag">长按触发</span>
-          <span class="feat-tag">四级渐进</span>
-          <span class="feat-tag">安全取消</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="feat-row" data-reveal="fade-up">
-      <div class="feat-visual">
-        <div class="feat-visual-inner">
-          <svg class="feat-illust" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="300" height="200" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
-            <text x="20" y="24" font-family="monospace" font-size="9" font-weight="700" fill="var(--accent)">After Effects · 项目浏览器</text>
-            <rect x="20" y="36" width="260" height="1" fill="var(--border)"/>
-            <rect x="20" y="48" width="120" height="140" rx="6" fill="var(--bg)" stroke="var(--border)" stroke-width=".5"/>
-            <text x="30" y="66" font-family="monospace" font-size="8" fill="var(--subtle)">项目面板</text>
-            <rect x="28" y="76" width="104" height="20" rx="3" fill="var(--accent-glow)" opacity=".6"/>
-            <polygon points="34,83 34,91 40,87" fill="var(--accent)" opacity=".8"/>
-            <text x="44" y="89" font-family="monospace" font-size="7" fill="var(--accent)">video_1080p.mp4</text>
-            <rect x="28" y="100" width="104" height="18" rx="3"/>
-            <path d="M35 112v-7l7-1v7" fill="none" stroke="var(--subtle)" stroke-width="1"/>
-            <text x="46" y="112" font-family="monospace" font-size="7" fill="var(--subtle)">bgm.mp3</text>
-            <rect x="28" y="122" width="104" height="18" rx="3"/>
-            <rect x="34" y="127" width="8" height="7" rx="1" fill="none" stroke="var(--subtle)" stroke-width=".8"/>
-            <text x="46" y="134" font-family="monospace" font-size="7" fill="var(--subtle)">cover.jpg</text>
-            <rect x="154" y="48" width="126" height="140" rx="6" fill="var(--bg)" stroke="var(--border)" stroke-width=".5"/>
-            <text x="164" y="66" font-family="monospace" font-size="8" fill="var(--subtle)">当前合成</text>
-            <rect x="162" y="76" width="110" height="102" rx="4" fill="var(--card)"/>
-            <rect x="168" y="82" width="98" height="30" rx="3" fill="var(--accent)" opacity=".12"/>
-            <text x="174" y="100" font-family="monospace" font-size="7" fill="var(--accent)">图层: video_1080p</text>
-            <rect x="168" y="118" width="98" height="4" rx="2" fill="var(--border)"/>
-            <circle cx="178" cy="163" r="4" fill="none" stroke="var(--subtle)" stroke-width=".8"/>
-            <path d="M178 160.5v2.5l2 1" fill="none" stroke="var(--subtle)" stroke-width=".8" stroke-linecap="round"/>
-            <text x="186" y="166" font-family="monospace" font-size="7" fill="var(--subtle)">播放头 00:05:12</text>
-          </svg>
-        </div>
-      </div>
-      <div class="feat-text">
-        <h3>AE/PS 深度集成：实时双向通信</h3>
-        <p>通过 WebSocket 实时获取 AE 项目结构——当前合成、文件夹树、图层信息。导入时精确控制：图层位置（最上层/选中层之上/最下层）、时间范围（播放头/合成起点）、预合成包装、SVG 形状转换。</p>
-        <div class="feat-tags">
-          <span class="feat-tag">实时状态同步</span>
-          <span class="feat-tag">图层精准控制</span>
-          <span class="feat-tag">重复文件策略</span>
-          <span class="feat-tag">预合成包装</span>
-        </div>
-      </div>
     </div>
   </section>
 
-  <!-- ============= PLATFORMS ============= -->
-  <section class="section" id="platforms">
-    <div class="section-label" data-reveal="slide-left">深度适配</div>
-    <h2 data-reveal="fade-up">11 个主流平台专属解析 + 通用嗅探</h2>
-    <p class="section-desc" data-reveal="fade-up">绕过前端反爬，直达原始高清资源。同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
-    <div class="plat-grid" id="platGrid">
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.94 29.94 0 0 0 1 12a29.94 29.94 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29.94 29.94 0 0 0 23 12a29.94 29.94 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></div><div class="plat-name">YouTube</div><div class="plat-detail">InnerTube API · 全清晰度</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="plat-name">Bilibili</div><div class="plat-detail">__playinfo__ · 音视频分离</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div class="plat-name">小红书</div><div class="plat-detail">笔记图片/视频提取</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><div class="plat-name">Instagram</div><div class="plat-detail">帖子媒体源解析</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div><div class="plat-name">Twitter / X</div><div class="plat-detail">媒体源地址还原</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><div class="plat-name">Pinterest</div><div class="plat-detail">Pin 原图提取</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div><div class="plat-name">Reddit</div><div class="plat-detail">视频/图片源提取</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="plat-name">微博</div><div class="plat-detail">高清原图 URL 解析</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div><div class="plat-name">淘宝</div><div class="plat-detail">商品图/视频提取</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
-      <div class="plat-card" data-reveal="scale"><div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="plat-name">通用网页</div><div class="plat-detail">DOM 扫描 + 网络嗅探</div></div>
-    </div>
-  </section>
+  <!-- ===================================================
+       SCENE 5 — INFO
+       =================================================== -->
+  <section class="info" id="s5" data-scene="5" aria-label="支持与安装">
+    <div class="info-inner">
+      <div class="info-block">
+        <div class="info-label scene-init-hide" data-r="info">Photoshop 支持</div>
+        <h2 class="scene-init-hide" data-r="info">同样的归位逻辑，同样支持 PS</h2>
+        <p class="desc scene-init-hide" data-r="info">图片素材可按三种形态进入 Photoshop，导入行为与 AE 侧完全对称。</p>
+        <div class="ps-grid scene-init-hide" data-r="info">
+          <div class="ps-card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="12" y="6" width="10" height="8" rx="1"/></svg></div>
+            <h3>智能对象</h3>
+            <p>以智能对象导入，保留原始数据，PS 内无损缩放、反复编辑不损画质。</p>
+            <span class="tag">SMART OBJECT</span>
+          </div>
+          <div class="ps-card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
+            <h3>普通图层</h3>
+            <p>直接栅格化为普通图层，落在当前画布对应位置，一步到位。</p>
+            <span class="tag">RASTER LAYER</span>
+          </div>
+          <div class="ps-card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+            <h3>本地图片</h3>
+            <p>仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。</p>
+            <span class="tag">SAVE ONLY</span>
+          </div>
+        </div>
+      </div>
 
-  <!-- ============= WORKFLOW ============= -->
-  <section class="section" id="workflow">
-    <div class="section-label" data-reveal="slide-left">工作流</div>
-    <h2 data-reveal="fade-up">三步：发现 → 选中 → 发送</h2>
-    <p class="section-desc" data-reveal="fade-up">不需要下载、找文件、拖拽。在网页上看到任何媒体素材，直接发送到你的创作工具。</p>
-    <div class="steps-line" id="stepsLine">
-      <div class="step-progress" id="stepProgress" style="height:0;"></div>
-      <div class="step-node">
-        <div class="step-dot"></div>
-        <h3>智能嗅探，自动发现</h3>
-        <p>浏览器扩展自动扫描页面 DOM 中的图片、视频、音频元素，同时通过 webRequest API 拦截网络请求，捕获 AJAX/XHR 加载的隐藏媒体 URL。内嵌 hls.js 和 mpegts.js 解析 HLS、DASH、FLV 等流媒体协议，自动识别多清晰度源。</p>
+      <div class="info-block">
+        <div class="info-label scene-init-hide" data-r="info">深度适配</div>
+        <h2 class="scene-init-hide" data-r="info">11 个主流平台专属解析 + 通用嗅探</h2>
+        <p class="desc scene-init-hide" data-r="info">绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
+        <div class="plat-grid scene-init-hide" data-r="info">
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.94 29.94 0 0 0 1 12a29.94 29.94 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29.94 29.94 0 0 0 23 12a29.94 29.94 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg><div class="plat-name">YouTube</div><div class="plat-detail">InnerTube API · 全清晰度</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="plat-name">Bilibili</div><div class="plat-detail">__playinfo__ · 音视频分离</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><div class="plat-name">小红书</div><div class="plat-detail">笔记图片/视频提取</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><div class="plat-name">Instagram</div><div class="plat-detail">帖子媒体源解析</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg><div class="plat-name">Twitter / X</div><div class="plat-detail">媒体源地址还原</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg><div class="plat-name">Pinterest</div><div class="plat-detail">Pin 原图提取</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg><div class="plat-name">Reddit</div><div class="plat-detail">视频/图片源提取</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="plat-name">微博</div><div class="plat-detail">高清原图 URL 解析</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><div class="plat-name">淘宝</div><div class="plat-detail">商品图/视频提取</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
+          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><div class="plat-name">通用网页</div><div class="plat-detail">DOM 扫描 + 网络嗅探</div></div>
+        </div>
       </div>
-      <div class="step-node">
-        <div class="step-dot"></div>
-        <h3>快捷采集，即时预览</h3>
-        <p>Ctrl+Shift+右键 呼出采集面板——左侧预览媒体内容和元数据（尺寸、格式、时长、分辨率），右侧选择发送目标和导入选项。支持 HLS 直播流实时预览播放，批量采集一次性发送多资源。</p>
-      </div>
-      <div class="step-node">
-        <div class="step-dot"></div>
-        <h3>一键导入，开始创作</h3>
-        <p>通过本地 WebSocket 通信，将素材直接导入 After Effects 或 Photoshop。实时获取 AE 项目结构，精准控制图层位置、时间范围、预合成包装。支持重复文件策略（跳过/覆盖/副本/询问）、SVG 形状转换等高级选项。</p>
-      </div>
-    </div>
-  </section>
+      <div class="info-block" id="quickstart">
+        <div class="info-label scene-init-hide" data-r="info">快速开始</div>
+        <h2 class="scene-init-hide" data-r="info">下载安装，即刻使用</h2>
+        <div class="qs-block primary scene-init-hide" data-r="info">
+          <h4><span class="qs-num">1</span> 安装浏览器扩展</h4>
+          <p>下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>选择解压文件夹。支持 Chrome / Edge / Arc 等 Chromium 内核。</p>
+          <div class="qs-dl">
+            <button class="btn btn-primary" type="button" data-download="browser">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              下载浏览器扩展 (.zip)
+            </button>
+          </div>
+          <p style="margin-top:12px;font-size:12.5px;color:var(--subtle);">macOS 用户解压后执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 去除安全隔离标记。</p>
+        </div>
 
-  <!-- ============= QUICK START ============= -->
-  <section class="section" id="quickstart">
-    <div class="section-label" data-reveal="slide-left">快速开始</div>
-    <h2 data-reveal="fade-up">下载安装，即刻使用</h2>
-
-    <div class="qs-block primary" id="quickstart-browser" data-reveal="fade-up">
-      <h4><span class="qs-step-num">1</span> 安装浏览器扩展</h4>
-      <p>下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>，选择解压后的文件夹即可。支持 Chrome / Edge / Arc 等 Chromium 内核浏览器。</p>
-      <div class="dl-row">
-        <a class="btn btn-primary" href="#download-browser">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          下载浏览器扩展 (.zip)
-        </a>
-      </div>
-      <p style="margin-top:14px;font-size:13px;color:var(--subtle);">macOS 用户下载后解压，在终端执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 以去除安全隔离标记。</p>
-    </div>
-
-    <div class="qs-block" id="quickstart-cep" data-reveal="fade-up">
-      <h4><span class="qs-step-num">2</span> 安装 AE/PS CEP 插件</h4>
-      <p>下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录。需要先启用 CEP 调试模式（<code>PlayerDebugMode = 1</code>）。</p>
-      <div class="dl-row">
-        <a class="btn btn-primary" href="#download-cep-mac">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          下载 CEP 插件 (macOS)
-        </a>
-        <a class="btn btn-outline" href="#download-cep-win">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          下载 CEP 插件 (Windows)
-        </a>
-      </div>
-      <div class="code-block">
-        <button class="copy-btn" aria-label="复制 CEP 安装路径">复制</button>
-        <span class="cm"># macOS CEP 扩展目录</span>
+        <div class="qs-block scene-init-hide" data-r="info">
+          <h4><span class="qs-num">2</span> 安装 AE/PS CEP 插件</h4>
+          <p>下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录，并确保 <code>PlayerDebugMode = 1</code>。</p>
+          <div class="qs-dl">
+            <button class="btn btn-primary" type="button" data-download="cep">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              下载 CEP 插件
+            </button>
+          </div>
+          <div class="code-block">
+            <button class="copy-btn" type="button" data-copy aria-label="复制 CEP 安装路径">复制</button>
+            <span class="cm"># macOS CEP 扩展目录</span>
 ~/Library/Application Support/Adobe/CEP/extensions/
 <span class="cm"># Windows CEP 扩展目录</span>
 C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 <span class="cm"># 放入后确保 PlayerDebugMode = 1（启用 CEP 调试）</span>
-      </div>
-    </div>
+          </div>
+        </div>
 
-    <div class="qs-block" data-reveal="fade-up">
-      <h4><span class="qs-step-num">3</span> 开始采集与导入</h4>
-      <p>启动 After Effects 或 Photoshop → 浏览器浏览任意网页 → 点击扩展图标查看嗅探到的媒体 → 选中资源发送。或使用 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板。</p>
-    </div>
-  </section>
+        <div class="qs-block scene-init-hide" data-r="info">
+          <h4><span class="qs-num">3</span> 开始采集与导入</h4>
+          <p>启动 After Effects 或 Photoshop → 浏览任意网页 → 点击扩展图标查看嗅探媒体并选中发送；或 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板，长按发送打开 Action Orbit 精确路由。</p>
+        </div>
+      </div>
 
-  <!-- ============= COMPAT ============= -->
-  <section class="section">
-    <div class="section-label" data-reveal="slide-left">兼容性</div>
-    <h2 data-reveal="fade-up">环境要求</h2>
-    <div class="compat-grid" data-reveal="fade-up">
-      <div class="compat-card">
-        <div class="cc-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          浏览器
+      <div class="info-block">
+        <div class="info-label scene-init-hide" data-r="info">兼容性</div>
+        <h2 class="scene-init-hide" data-r="info">环境要求</h2>
+        <div class="compat-grid scene-init-hide" data-r="info">
+          <div class="compat-card">
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>浏览器</div>
+            <p>Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。</p>
+          </div>
+          <div class="compat-card">
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>After Effects</div>
+            <p>AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。</p>
+          </div>
+          <div class="compat-card">
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Photoshop</div>
+            <p>PS 23.0+ (PHXS)，支持图片与 SVG 导入，智能对象或像素图层两种模式。</p>
+          </div>
+          <div class="compat-card">
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>隐私</div>
+            <p>所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。</p>
+          </div>
         </div>
-        <p>Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。</p>
-      </div>
-      <div class="compat-card">
-        <div class="cc-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          After Effects
-        </div>
-        <p>AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。</p>
-      </div>
-      <div class="compat-card">
-        <div class="cc-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          Photoshop
-        </div>
-        <p>PS 23.0+ (PHXS)，支持图片和 SVG 导入，智能对象或像素图层两种模式。</p>
-      </div>
-      <div class="compat-card">
-        <div class="cc-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          隐私
-        </div>
-        <p>所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。</p>
       </div>
     </div>
   </section>
@@ -737,228 +1216,943 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
 <footer class="site-footer">
   <div class="inner">
-    <div class="copy">NexusSnap · 浏览器媒体嗅探与 Adobe 创作工具导入桥梁</div>
+    <div class="copy">© 2026 NexusSnap · 浏览器到 AE/PS 的素材归位桥梁</div>
     <div class="fl">
-      <a href="#quickstart">下载</a>
-      <a href="#features">特性</a>
-      <a href="#platforms">支持平台</a>
+      <a data-scroll-top>返回顶部</a>
+      <a href="https://github.com/yancongya/NexusSnap-landing/releases" target="_blank" rel="noopener noreferrer">更新日志</a>
     </div>
   </div>
 </footer>
 
-<!-- CDN Libraries -->
+<div class="toast-root" id="toastRoot" aria-live="polite"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.2.0/dist/lenis.min.js"></script>
 <script>
-(function() {
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var libsReady = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined' && typeof window.Lenis !== 'undefined';
-  if (reduced || !libsReady) {
-    document.documentElement.classList.add('motion-fallback');
-    document.querySelectorAll('[data-reveal], .hero-badge, .hero p, .hero-actions .btn, .stat-item, .section-label, .section h2, .section-desc, .step-node, .hero-visual').forEach(function(el) {
-      el.style.opacity = '1'; el.style.transform = 'none';
-    });
-    return;
-  }
-  document.documentElement.classList.add('motion-ready');
+/* ============================================================
+   NexusSnap 沉浸式落地页 — 应用逻辑
+   原则：无 console 错误；交互全部有反馈；reduced-motion 降级
+   ============================================================ */
+(function () {
+  "use strict";
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var HAS_GSAP = typeof window.gsap !== "undefined";
+  var HAS_ST = typeof window.ScrollTrigger !== "undefined";
+  var LENIS_CTOR = (typeof window.Lenis !== "undefined") ? window.Lenis : null;
 
-  gsap.registerPlugin(ScrollTrigger);
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
-  // ---- Lenis smooth scroll ----
-  var lenis = new Lenis({ duration: 1.2, easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }, smoothWheel: true });
-  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
+  /* ---------- toast ---------- */
+  var toastRoot = $("#toastRoot");
+  var TOAST_ICONS = {
+    ok: '<svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    warn: '<svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    err: '<svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+  };
+  var MAX_TOASTS = 3;                        // 同时最多保留 3 条
+  var TOAST_LIVE = 2400;
+  function toast(msg, type) {
+    if (!toastRoot) return;
+    type = type || "ok";
 
-  // Nav hides while scrolling down and returns while scrolling up
-  var nav = document.querySelector('.nav');
-  var lastScroll = 0;
-  lenis.on('scroll', function(e) {
-    var current = e.scroll;
-    if (current > 120 && current > lastScroll) { nav.classList.add('hidden'); }
-    else { nav.classList.remove('hidden'); }
-    lastScroll = current;
-  });
-
-  // ---- Hero entrance ----
-  var heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-  heroTl.to('#heroBadge', { opacity: 1, y: 0, duration: .6, delay: .2 });
-
-  // Two-line title reveal; markup is static so CDN failure cannot corrupt content
-  heroTl.to('#heroTitle .word > span', { y: 0, duration: .8, stagger: .12, ease: 'power4.out' }, '-=.2');
-  heroTl.to('#heroDesc', { opacity: 1, y: 0, duration: .7 }, '-=.4');
-  heroTl.to('#heroActions .btn', { opacity: 1, y: 0, duration: .6, stagger: .1 }, '-=.4');
-  heroTl.to('#heroVisual', { opacity: 1, y: 0, scale: 1, duration: .9, ease: 'power2.out' }, '-=.3');
-  heroTl.to('#statsRow .stat-item', { opacity: 1, y: 0, duration: .5, stagger: .08 }, '-=.5');
-
-  // ---- Animated counters ----
-  document.querySelectorAll('.stat-num').forEach(function(el) {
-    var target = parseInt(el.getAttribute('data-target'), 10);
-    gsap.fromTo(el, { innerText: 0 }, {
-      innerText: target,
-      duration: 1.5,
-      delay: 1.2,
-      ease: 'power2.out',
-      snap: { innerText: 1 },
-      onUpdate: function() { el.textContent = Math.round(this.targets()[0].innerText); }
-    });
-  });
-
-  // ---- Scroll reveal ----
-  function setupReveal(selector, fromProps, toProps, triggerStart) {
-    gsap.utils.toArray(selector).forEach(function(el) {
-      gsap.fromTo(el, fromProps, Object.assign({
-        scrollTrigger: { trigger: el, start: triggerStart || 'top 85%' },
-        duration: .8,
-        ease: 'power3.out'
-      }, toProps));
-    });
-  }
-
-  // Slide left labels
-  setupReveal('[data-reveal="slide-left"]', { opacity: 0, x: -30 }, { opacity: 1, x: 0 });
-
-  // Fade up blocks
-  setupReveal('[data-reveal="fade-up"]', { opacity: 0, y: 30 }, { opacity: 1, y: 0 });
-
-  // Scale up platform cards
-  setupReveal('[data-reveal="scale"]', { opacity: 0, scale: .85 }, { opacity: 1, scale: 1 });
-
-  // Feature rows
-  setupReveal('.feat-row', { opacity: 0, y: 40 }, { opacity: 1, y: 0 });
-
-  // Step nodes
-  setupReveal('.step-node', { opacity: 0, x: 30 }, { opacity: 1, x: 0 });
-
-  // Timeline progress line
-  var stepsLine = document.getElementById('stepsLine');
-  var stepProgress = document.getElementById('stepProgress');
-  if (stepsLine && stepProgress) {
-    ScrollTrigger.create({
-      trigger: stepsLine,
-      start: 'top 80%',
-      end: 'bottom 60%',
-      scrub: .5,
-      onUpdate: function(self) {
-        stepProgress.style.height = (self.progress * 100) + '%';
+    // 去重：同一条提示已在显示/消退中 → 直接重置存活时间，不重复叠出
+    var existing = Array.prototype.slice.call(toastRoot.children);
+    for (var i = 0; i < existing.length; i++) {
+      if (existing[i].getAttribute("data-toast") === msg && !existing[i].classList.contains("out")) {
+        clearTimeout(existing[i]._outTimer);
+        existing[i].classList.remove("out");
+        scheduleRemoval(existing[i]);
+        return;
       }
+    }
+
+    // 超上限：移除最旧一条
+    while (toastRoot.children.length >= MAX_TOASTS) {
+      var oldest = toastRoot.children[0];
+      if (oldest.parentNode) oldest.parentNode.removeChild(oldest);
+    }
+
+    var el = document.createElement("div");
+    el.className = "toast " + type;
+    el.setAttribute("data-toast", msg);
+    el.innerHTML = TOAST_ICONS[type] || TOAST_ICONS.ok;
+    el.appendChild(document.createTextNode(" " + msg));
+    toastRoot.appendChild(el);
+    scheduleRemoval(el);
+  }
+
+  function scheduleRemoval(el) {
+    if (el._outTimer) clearTimeout(el._outTimer);
+    el._outTimer = setTimeout(function () {
+      el.classList.add("out");
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+    }, TOAST_LIVE);
+  }
+
+  /* ---------- 下载 CTA：GitHub Release 主源 + 可选镜像 ---------- */
+  function bindDownload() {
+    var configPromise = fetch("downloads.json", { cache: "no-store" }).then(function (response) {
+      if (!response.ok) throw new Error("download manifest unavailable");
+      return response.json();
+    });
+    $$("[data-download]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        var channelId = el.getAttribute("data-download");
+        configPromise.then(function (config) {
+          var channel = config && config.channels && config.channels[channelId];
+          if (!channel || !channel.primary) throw new Error("download channel unavailable");
+          window.location.assign(channel.primary);
+        }).catch(function () {
+          toast("下载配置暂不可用 · 请前往 GitHub Releases", "err");
+        });
+      });
+    });
+    configPromise.then(function (config) {
+      $$(".qs-dl [data-download]").forEach(function (button) {
+        var channel = config.channels && config.channels[button.getAttribute("data-download")];
+        if (!channel || !channel.mirrors || !channel.mirrors.length) return;
+        var mirror = document.createElement("a");
+        mirror.className = "mirror-download";
+        mirror.href = channel.mirrors[0];
+        mirror.textContent = "备用下载";
+        mirror.setAttribute("rel", "noopener noreferrer");
+        button.parentNode.appendChild(mirror);
+      });
+    }).catch(function () {});
+  }
+
+  /* ---------- Lenis + ScrollTrigger ---------- */
+  var lenis = null;
+  function setupSmoothScroll() {
+    if (REDUCED || !LENIS_CTOR) return;
+    try {
+      lenis = new LENIS_CTOR({ duration: 1.15, smoothWheel: true });
+      if (HAS_ST) {
+        lenis.on("scroll", window.ScrollTrigger.update);
+        window.gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+        window.gsap.ticker.lagSmoothing(0);
+      }
+    } catch (err) { lenis = null; }
+  }
+  function scrollToEl(target, offset) {
+    var el = typeof target === "string" ? document.getElementById(target) : target;
+    if (!el) return;
+    offset = offset || -60;
+    if (lenis) lenis.scrollTo(el, { offset: offset, duration: 1.2 });
+    else el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+  }
+
+  /* ---------- nav ---------- */
+  function bindNav() {
+    $$("[data-nav]").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        scrollToEl(a.getAttribute("data-nav"));
+      });
+    });
+    $$("[data-scroll-top]").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (lenis) lenis.scrollTo(0, { duration: 1.1 });
+        else window.scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
+      });
+    });
+    $$("[data-goto]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        scrollToEl(b.getAttribute("data-goto"));
+      });
+    });
+    var lastY = 0;
+    window.addEventListener("scroll", function () {
+      var nav = $("#topNav");
+      if (!nav) return;
+      var y = window.scrollY;
+      if (y > lastY && y > 240) nav.classList.add("hidden");
+      else nav.classList.remove("hidden");
+      lastY = y;
+    }, { passive: true });
+    // active nav highlight
+    if (HAS_ST) {
+      var scenes = $$(".scene");
+      scenes.forEach(function (sec) {
+        window.ScrollTrigger.create({
+          trigger: sec, start: "top center", end: "bottom center",
+          onToggle: function (self) {
+            var id = sec.getAttribute("id");
+            $$("[data-nav]").forEach(function (a) {
+              a.classList.toggle("active", a.getAttribute("data-nav") === id && self.isActive);
+            });
+          }
+        });
+      });
+    }
+  }
+
+  /* ---------- cursor glow ---------- */
+  function bindCursor() {
+    var g = $("#cursorGlow");
+    if (!g) return;
+    if (window.matchMedia && window.matchMedia("(pointer: fine)").matches && !REDUCED) {
+      document.documentElement.classList.add("has-cursor");
+      var tx = 0, ty = 0, cx = 0, cy = 0;
+      window.addEventListener("pointermove", function (e) {
+        tx = e.clientX; ty = e.clientY;
+      }, { passive: true });
+      (function tick() {
+        cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
+        g.style.transform = "translate(" + (cx - 220) + "px," + (cy - 220) + "px)";
+        requestAnimationFrame(tick);
+      })();
+    }
+  }
+
+  /* ---------- 全程沉浸式操作引导 ---------- */
+  var TOUR_STEPS = {
+    s0: { step: "01 / 06 · 开始", mode: "scroll", text: "向下滚动，跟随素材完成一次归位。" },
+    s1: { step: "02 / 06 · 采集", mode: "click", text: "点击任意素材卡片，把它加入采集队列。" },
+    s2: { step: "03 / 06 · 设置", mode: "click", text: "选择宿主、素材类型与目标，然后点击发送。" },
+    s3: { step: "04 / 06 · 路由", mode: "hold", text: "按住圆心 0.38 秒，拖向节点，松开执行。" },
+    s4: { step: "05 / 06 · 确认", mode: "confirm", text: "核对名称和落位目标，点击继续完成传输。" },
+    s5: { step: "06 / 06 · 完成", mode: "scroll", text: "体验完成。继续查看支持平台与安装方式。" }
+  };
+  function bindTourGuide() {
+    var guide = $("#tourGuide"), step = $("#tourStep"), text = $("#tourText");
+    if (!guide || !step || !text) return;
+    var current = "";
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var scenes = $$('[data-scene]');
+      var probe = window.innerHeight * 0.5;
+      var best = scenes[0], bestDistance = Infinity;
+      scenes.forEach(function (scene) {
+        var r = scene.getBoundingClientRect();
+        var distance = probe < r.top ? r.top - probe : probe > r.bottom ? probe - r.bottom : 0;
+        if (distance < bestDistance) { bestDistance = distance; best = scene; }
+      });
+      var id = best && best.id;
+      var config = TOUR_STEPS[id] || TOUR_STEPS.s0;
+      if (id !== current) {
+        current = id;
+        guide.classList.remove("show");
+        setTimeout(function () {
+          step.textContent = config.step;
+          text.textContent = config.text;
+          guide.setAttribute("data-mode", config.mode);
+          guide.classList.add("show");
+        }, REDUCED ? 0 : 140);
+      } else guide.classList.add("show");
+    }
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    update();
+  }
+
+  /* ============================================================
+     SCENE 1 — PAIN：点击媒体卡片 → 嗅探 → 飞入采集托盘
+     ============================================================ */
+  var caughtCount = 0;
+  var caughtNames = [];
+
+  function flyToDock(card, name) {
+    var dock = $(".dock");
+    if (!dock) return;
+    var r1 = card.getBoundingClientRect();
+    var r2 = dock.getBoundingClientRect();
+    var ghost = document.createElement("div");
+    ghost.textContent = "▸";
+    ghost.style.cssText = [
+      "position:fixed", "z-index:400", "pointer-events:none",
+      "left:" + (r1.left + r1.width / 2 - 26) + "px",
+      "top:" + (r1.top + r1.height / 2 - 18) + "px",
+      "width:52px", "height:36px", "border-radius:9px",
+      "background:" + getComputedStyle(document.documentElement).getPropertyValue("--accent"),
+      "box-shadow:0 8px 24px rgba(0,0,0,.4)",
+      "display:grid", "place-items:center", "font-size:15px", "color:#fff", "font-weight:800",
+      "transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .5s",
+      "transform:scale(1)"
+    ].join(";");
+    document.body.appendChild(ghost);
+    requestAnimationFrame(function () {
+      ghost.style.transform = "scale(.5) translate(" +
+        (r2.left + r2.width / 2 - (r1.left + r1.width / 2)) + "px," +
+        (r2.top + r2.height / 2 - (r1.top + r1.height / 2)) + "px)";
+      ghost.style.opacity = "0.25";
+    });
+    setTimeout(function () { if (ghost.parentNode) ghost.parentNode.removeChild(ghost); }, 620);
+
+    card.classList.add("caught");
+    caughtCount++;
+    caughtNames.push(name);
+    var dc = $("#dockCount"); if (dc) dc.textContent = caughtCount;
+    var live = $("#cpLive"); if (live) live.textContent = caughtCount + " 个资源已嗅探";
+    toast("已嗅探 · " + name + " 加入采集队列", "ok");
+  }
+
+  function bindPain() {
+    $$(".media-card").forEach(function (card) {
+      card.addEventListener("click", function () {
+        if (card.classList.contains("caught")) return;
+        var meta = (card.getAttribute("data-media") || "media").split("|");
+        flyToDock(card, meta[0]);
+      });
     });
   }
 
-  // ---- Platform card 3D tilt ----
-  document.querySelectorAll('.plat-card').forEach(function(card) {
-    card.addEventListener('mouseenter', function() {
-      gsap.to(card, { scale: 1.03, duration: .3, ease: 'power2.out' });
-    });
-    card.addEventListener('mouseleave', function() {
-      gsap.to(card, { scale: 1, rotationX: 0, rotationY: 0, duration: .4, ease: 'power2.out' });
-    });
-    card.addEventListener('mousemove', function(e) {
-      var rect = card.getBoundingClientRect();
-      var x = e.clientX - rect.left, y = e.clientY - rect.top;
-      var rx = ((y - rect.height / 2) / (rect.height / 2)) * -6;
-      var ry = ((x - rect.width / 2) / (rect.width / 2)) * 6;
-      gsap.to(card, { rotationX: rx, rotationY: ry, scale: 1.03, duration: .3, ease: 'power2.out' });
-    });
-  });
+  /* ============================================================
+     SCENE 2 — CAPTURE：宿主切换 / 媒体页签 / 目标菜单 / 发送
+     ============================================================ */
+  var HOST = "ae"; // ae | ps
+  var TARGET = { ae: "folder", ps: "smart" };
+  var TARGET_TREE = {
+    ae: {
+      folder: { label: "文件夹", children: [
+        { id: "root", label: "项目根目录" },
+        { id: "selected", label: "当前选中文件夹" },
+        { id: "custom", label: "自定义文件夹" }
+      ] },
+      comp: { label: "合成", children: [
+        { id: "top", label: "最上层" },
+        { id: "above", label: "选中层之上" },
+        { id: "bottom", label: "最下层" }
+      ] },
+      local: { label: "下载本地", children: null }
+    },
+    ps: {
+      smart: { label: "智能对象", children: null },
+      layer: { label: "普通图层", children: null },
+      local: { label: "本地图片", children: null }
+    }
+  };
+  var COMP_TIMES = [
+    { id: "start", label: "合成起点" },
+    { id: "playhead", label: "当前播放头" },
+    { id: "inpoint", label: "选中层入点" },
+    { id: "match", label: "匹配选中层范围" }
+  ];
+  var COMP_WRAPS = [
+    { id: "plain", label: "普通素材" },
+    { id: "precomp", label: "预合成" }
+  ];
+  var MEDIA_PREVIEW = {
+    video: { name: "video_1080p.mp4", meta: "1920×1080 · 45.2 MB", icon: '<polygon points="5 3 19 12 5 21 5 3"/>' },
+    image: { name: "cover_art.jpg", meta: "1280×720 · 2.1 MB", icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>' },
+    audio: { name: "bgm_loop.mp3", meta: "320kbps · 6.8 MB", icon: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>' }
+  };
 
-  // ---- Hero illustration parallax ----
-  gsap.to('#heroVisual', {
-    y: -40,
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .8 }
-  });
+  function setAccent(host) {
+    var root = document.documentElement;
+    var cs = getComputedStyle(root);
+    root.style.setProperty("--accent", cs.getPropertyValue(host === "ps" ? "--ps" : "--ae"));
+    root.style.setProperty("--accent-wash", cs.getPropertyValue(host === "ps" ? "--ps-wash" : "--ae-wash"));
+    var lbl = "发送到 " + (host === "ae" ? "AE" : "PS");
+    var s1 = $("#cpSendLabel"); if (s1) s1.textContent = lbl;
+    var s2 = $("#hubMain"); if (s2) s2.textContent = lbl;
+  }
 
-  // ---- Copy buttons ----
-  document.querySelectorAll('.copy-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var text = btn.getAttribute('data-text');
-      if (!text) { text = btn.parentElement.innerText.replace(/^复制\s*/, ''); }
-      var done = function() {
-        btn.classList.add('done'); btn.textContent = '已复制';
-        setTimeout(function() { btn.classList.remove('done'); btn.textContent = '复制'; }, 1500);
-      };
-      var fallback = function() {
-        var ta = document.createElement('textarea');
-        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select();
-        try { document.execCommand('copy'); done(); } catch(e) {}
-        document.body.removeChild(ta);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done).catch(fallback);
-      } else { fallback(); }
+  function renderTargetMenu() {
+    var menu = $("#cpTargetMenu");
+    if (!menu) return;
+    var tree = TARGET_TREE[HOST];
+    menu.innerHTML = "";
+    Object.keys(tree).forEach(function (id) {
+      var item = tree[id];
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = item.label;
+      b.setAttribute("role", "option");
+      b.addEventListener("click", function (e) {
+        e.stopPropagation();
+        TARGET[HOST] = id;
+        updateTargetLabel();
+        menu.classList.remove("open");
+        $("#cpTargetBtn").setAttribute("aria-expanded", "false");
+        toast("目标已设为 · " + item.label, "ok");
+      });
+      menu.appendChild(b);
     });
-  });
+  }
+  function updateTargetLabel() {
+    var t = TARGET[HOST];
+    var lbl = TARGET_TREE[HOST][t] ? TARGET_TREE[HOST][t].label : "文件夹";
+    if (HOST === "ae" && t === "folder") lbl = "文件夹 · 项目根目录";
+    if (HOST === "ae" && t === "comp") lbl = "合成 · 待选位置";
+    var el = $("#cpTargetLabel"); if (el) el.textContent = lbl;
+  }
 
-  // ---- Interactive Quick Capture demo ----
-  var captureDemo = document.querySelector('[data-capture-demo]');
-  if (captureDemo) {
-    var mediaData = {
-      video: {
-        name: 'video_1080p.mp4', meta: '1920×1080 · 45.2 MB',
-        icon: '<polygon points="5 3 19 12 5 21 5 3"/>'
-      },
-      image: {
-        name: 'cover_art.jpg', meta: '1280×720 · 2.1 MB',
-        icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>'
-      },
-      audio: {
-        name: 'bgm_loop.mp3', meta: '320 kbps · 3.8 MB',
-        icon: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>'
-      }
-    };
-    var captureStage = captureDemo.querySelector('[data-capture-stage]');
-    var mediaIcon = captureDemo.querySelector('[data-media-icon]');
-    var mediaName = captureDemo.querySelector('[data-media-name]');
-    var mediaMeta = captureDemo.querySelector('[data-media-meta]');
-    var targetToggle = captureDemo.querySelector('[data-target-toggle]');
-    var sendButton = captureDemo.querySelector('[data-send]');
-    var targetHost = 'AE';
-
-    captureDemo.querySelectorAll('[data-media]').forEach(function(button) {
-      button.addEventListener('click', function() {
-        var type = button.getAttribute('data-media');
-        var data = mediaData[type];
-        captureDemo.querySelectorAll('[data-media]').forEach(function(item) { item.classList.remove('active'); });
-        button.classList.add('active');
-        captureStage.classList.add('switching');
-        setTimeout(function() {
-          mediaIcon.innerHTML = data.icon;
-          mediaIcon.setAttribute('data-media-icon', type);
-          mediaName.textContent = data.name;
-          mediaMeta.textContent = data.meta;
-          captureStage.classList.remove('switching');
-        }, 150);
+  function bindCapture() {
+    $$(".host-pill").forEach(function (pill) {
+      pill.addEventListener("click", function () {
+        var h = pill.getAttribute("data-host");
+        if (h === HOST) return;
+        HOST = h;
+        $$(".host-pill").forEach(function (p) {
+          var ph = p.getAttribute("data-host");
+          p.classList.toggle("on-ae", ph === "ae");
+          p.classList.toggle("on-ps", ph === "ps");
+          p.setAttribute("aria-selected", ph === h ? "true" : "false");
+        });
+        setAccent(h);
+        renderTargetMenu();
+        updateTargetLabel();
+        toast("已切换宿主 · " + (h === "ae" ? "After Effects" : "Photoshop"), "ok");
       });
     });
 
-    targetToggle.addEventListener('click', function() {
-      targetHost = targetHost === 'AE' ? 'PS' : 'AE';
-      targetToggle.textContent = '发送至：' + (targetHost === 'AE' ? 'After Effects' : 'Photoshop');
-      sendButton.textContent = '发送到 ' + targetHost;
+    $$(".cp-tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        var k = tab.getAttribute("data-tab");
+        $$(".cp-tab").forEach(function (t) {
+          t.classList.toggle("active", t === tab);
+          t.setAttribute("aria-selected", t === tab ? "true" : "false");
+        });
+        var m = MEDIA_PREVIEW[k];
+        if (!m) return;
+        var n = $("#cpName"); if (n) n.textContent = m.name;
+        var me = $("#cpMeta"); if (me) me.textContent = m.meta;
+        var ic = $("#cpIcon"); if (ic) ic.innerHTML = m.icon;
+      });
     });
 
-    sendButton.addEventListener('click', function() {
-      if (sendButton.classList.contains('done')) return;
-      var original = sendButton.textContent;
-      sendButton.classList.add('done');
-      sendButton.textContent = '已发送';
-      gsap.fromTo(captureStage, { scale: 1 }, { scale: .98, yoyo: true, repeat: 1, duration: .16, ease: 'power2.inOut' });
-      setTimeout(function() {
-        sendButton.classList.remove('done');
-        sendButton.textContent = original;
-      }, 1300);
+    var menu = $("#cpTargetMenu");
+    var btn = $("#cpTargetBtn");
+    if (btn) btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      menu.classList.toggle("open");
+      btn.setAttribute("aria-expanded", menu.classList.contains("open") ? "true" : "false");
+    });
+    document.addEventListener("click", function (e) {
+      if (menu && !menu.contains(e.target) && e.target !== btn) {
+        menu.classList.remove("open");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    var sendBtn = $("#cpSend");
+    if (sendBtn) {
+      sendBtn.addEventListener("click", function () {
+        if (!caughtCount) { toast("采集托盘还是空的 · 先回上一屏点几张素材", "warn"); return; }
+        startTransfer(caughtNames[caughtNames.length - 1] || "video_1080p.mp4", "default");
+      });
+      var holdTimer = null, held = false;
+      sendBtn.addEventListener("pointerdown", function (e) {
+        clearTimeout(holdTimer);
+        holdTimer = setTimeout(function () {
+          held = true;
+          var stg = $("#orbitStage");
+          if (stg && stg.setPointerCapture) { try { stg.setPointerCapture(e.pointerId); } catch (err) {} }
+          openOrbit();
+        }, 380);
+      });
+      sendBtn.addEventListener("pointerup", function () {
+        clearTimeout(holdTimer);
+        held = false;
+      });
+      sendBtn.addEventListener("pointerleave", function () { clearTimeout(holdTimer); });
+      sendBtn.addEventListener("pointercancel", function () { clearTimeout(holdTimer); });
+    }
+  }
+/* ============================================================
+     SCENE 3 — ACTION ORBIT
+     长按 380ms 呼出 · 拖动穿过节点 · 松手于叶节点执行
+     回中心 / Esc 退一级 · 松手空白处取消
+     ============================================================ */
+  var orbit = {
+    open: false, level: 1, path: [], nodeMap: {},
+    cx: 0, cy: 0, rBase: 0, armedId: null, dwellTimer: null
+  };
+
+  function nodeChildren(id, host) {
+    host = host || HOST;
+    if (host === "ps") return null; // PS: 全部 L1 叶节点
+    if (id === "folder") return TARGET_TREE.ae.folder.children;
+    if (id === "comp") return TARGET_TREE.ae.comp.children;
+    if (id === "top" || id === "above" || id === "bottom") return COMP_TIMES;
+    if (id === "start" || id === "playhead" || id === "inpoint" || id === "match") return COMP_WRAPS;
+    return null;
+  }
+  function isLeaf(id, host) {
+    return nodeChildren(id, host || HOST) === null;
+  }
+  function lookupLabel(id, host) {
+    host = host || HOST;
+    var tree = host === "ps" ? TARGET_TREE.ps : TARGET_TREE.ae;
+    if (tree[id]) return tree[id].label;
+    for (var i = 0; i < COMP_TIMES.length; i++) if (COMP_TIMES[i].id === id) return COMP_TIMES[i].label;
+    for (var j = 0; j < COMP_WRAPS.length; j++) if (COMP_WRAPS[j].id === id) return COMP_WRAPS[j].label;
+    return id;
+  }
+  function rootNodes() {
+    return Object.keys(TARGET_TREE[HOST]).map(function (k) {
+      return { id: k, label: TARGET_TREE[HOST][k].label };
     });
   }
 
-  // ---- Smooth anchor scroll via Lenis ----
-  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      var target = document.querySelector(a.getAttribute('href'));
-      if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: -80 }); }
+  function layoutOrbitNodes() {
+    var nodes = $("#orbitNodes");
+    if (!nodes) return;
+    nodes.innerHTML = "";
+    orbit.nodeMap = {};
+    var list = orbit.path.length === 0 ? rootNodes() : nodeChildren(orbit.path[orbit.path.length - 1]);
+    if (!list || !list.length) return;
+    var stage = $("#orbitStage");
+    var sr = stage.getBoundingClientRect();
+    orbit.cx = sr.width / 2;
+    orbit.cy = sr.height / 2;
+    orbit.rBase = Math.min(sr.width, sr.height) * 0.24;
+    var R = orbit.rBase + (orbit.level - 1) * 60;
+    var n = list.length;
+    list.forEach(function (item, i) {
+      var ang = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+      var x = orbit.cx + Math.cos(ang) * R;
+      var y = orbit.cy + Math.sin(ang) * R;
+      var el = document.createElement("div");
+      el.className = "orbit-node" + (isLeaf(item.id, HOST) ? " leaf" : "");
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+      var sub = isLeaf(item.id, HOST) ? "松手执行" : "继续 ▸";
+      el.innerHTML = "<span>" + item.label + '</span><span class="sub">' + sub + "</span>";
+      nodes.appendChild(el);
+      orbit.nodeMap[item.id] = { el: el, x: x, y: y };
     });
-  });
+  }
+
+  function updateCrumbs() {
+    var c = $("#orbitCrumbs");
+    if (!c) return;
+    var labels = orbit.path.map(function (p) { return lookupLabel(p, HOST); });
+    c.innerHTML = "路由 ▸ " + labels.map(function (l) { return "<b>" + l + "</b>"; }).join(" <span style='opacity:.4'>›</span> ");
+    c.classList.add("show");
+  }
+
+  function openOrbit() {
+    if (orbit.open) return;
+    orbit.open = true;
+    orbit.level = 1;
+    orbit.path = [];
+    orbit.armedId = null;
+    $("#orbitStage").classList.add("guide-dismissed");
+    clearTimeout(orbit.dwellTimer);
+    layoutOrbitNodes();
+    updateCrumbs();
+    var stage = $("#orbitStage");
+    stage.addEventListener("pointermove", orbitMove);
+    stage.addEventListener("pointerup", orbitUp);
+    stage.addEventListener("pointercancel", orbitCancel);
+    window.addEventListener("keydown", orbitKey);
+    if (HAS_GSAP) {
+      window.gsap.to($("#orbitRings"), { opacity: 1, duration: 0.3 });
+      $$(".orbit-node", $("#orbitNodes")).forEach(function (el, i) {
+        window.gsap.from(el, { opacity: 0, scale: 0.6, delay: i * 0.04, duration: 0.28, ease: "back.out(2)" });
+      });
+    }
+  }
+
+  function bindOrbitHub() {
+    var hub = $("#orbitHub");
+    var stage = $("#orbitStage");
+    var fill = $("#holdFill");
+    if (!hub || !stage) return;
+    var timer = null;
+    function resetHold() {
+      clearTimeout(timer);
+      timer = null;
+      hub.classList.remove("armed");
+      if (fill) {
+        fill.style.transition = "none";
+        fill.style.strokeDashoffset = "1";
+      }
+    }
+    hub.addEventListener("pointerdown", function (e) {
+      stage.classList.add("guide-dismissed");
+      hub.classList.add("armed");
+      try { hub.setPointerCapture(e.pointerId); } catch (err) {}
+      if (fill) {
+        fill.style.transition = "stroke-dashoffset 380ms linear";
+        fill.style.strokeDashoffset = "0";
+      }
+      timer = setTimeout(function () {
+        timer = null;
+        openOrbit();
+      }, 380);
+    });
+    hub.addEventListener("pointerup", function () { if (!orbit.open) resetHold(); });
+    hub.addEventListener("pointercancel", resetHold);
+    hub.addEventListener("lostpointercapture", function () { if (!orbit.open) resetHold(); });
+  }
+  function closeOrbit(cancelled) {
+    if (!orbit.open) return;
+    orbit.open = false;
+    clearTimeout(orbit.dwellTimer);
+    var stage = $("#orbitStage");
+    stage.removeEventListener("pointermove", orbitMove);
+    stage.removeEventListener("pointerup", orbitUp);
+    stage.removeEventListener("pointercancel", orbitCancel);
+    window.removeEventListener("keydown", orbitKey);
+    $("#orbitCrumbs").classList.remove("show");
+    var rings = $("#orbitRings");
+    if (HAS_GSAP) window.gsap.to(rings, { opacity: 0.5, duration: 0.2 });
+    else rings.style.opacity = "0.5";
+    setTimeout(function () {
+      var nodes = $("#orbitNodes");
+      if (nodes) nodes.innerHTML = "";
+    }, 60);
+    if (cancelled) toast("已取消 · 未执行任何操作", "warn");
+  }
+
+  function nearestNodeByCoord(px, py) {
+    var best = null, bestD = 1e9;
+    Object.keys(orbit.nodeMap).forEach(function (id) {
+      var nd = orbit.nodeMap[id];
+      var dx = px - nd.x, dy = py - nd.y;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      if (d < bestD) { bestD = d; best = nd; }
+    });
+    if (best && bestD < 180) {
+      best.id = Object.keys(orbit.nodeMap).filter(function (k) { return orbit.nodeMap[k] === best; })[0];
+      return best;
+    }
+    return null;
+  }
+
+  function setArmed(id) {
+    orbit.armedId = id;
+    Object.keys(orbit.nodeMap).forEach(function (k) {
+      orbit.nodeMap[k].el.classList.toggle("armed", k === id);
+    });
+  }
+  function clearArmed() {
+    if (orbit.armedId && orbit.nodeMap[orbit.armedId]) orbit.nodeMap[orbit.armedId].el.classList.remove("armed");
+    orbit.armedId = null;
+  }
+
+  function goBackLevel() {
+    clearTimeout(orbit.dwellTimer);
+    if (!orbit.path.length) { closeOrbit(true); return; }
+    orbit.path.pop();
+    orbit.level = Math.max(1, orbit.path.length + 1);
+    orbit.armedId = null;
+    layoutOrbitNodes();
+    updateCrumbs();
+  }
+
+  function orbitMove(e) {
+    if (!orbit.open) return;
+    var stage = $("#orbitStage");
+    var sr = stage.getBoundingClientRect();
+    var px = e.clientX - sr.left, py = e.clientY - sr.top;
+    var dx = px - orbit.cx, dy = py - orbit.cy, dist = Math.sqrt(dx * dx + dy * dy);
+    clearTimeout(orbit.dwellTimer);
+    if (dist < 62) {
+      clearArmed();
+      // 中心悬停：不退级（退级只在松手/Esc），避免误触
+      return;
+    }
+    var nd = nearestNodeByCoord(px, py);
+    if (!nd) { clearArmed(); return; }
+    if (orbit.armedId === nd.id) return;
+    setArmed(nd.id);
+    if (!isLeaf(nd.id, HOST)) {
+      var theId = nd.id;
+      orbit.dwellTimer = setTimeout(function () {
+        if (!orbit.open || orbit.armedId !== theId) return;
+        orbit.path.push(theId);
+        orbit.level++;
+        orbit.armedId = null;
+        layoutOrbitNodes();
+        updateCrumbs();
+      }, 240);
+    }
+  }
+
+  function orbitUp(e) {
+    if (!orbit.open) return;
+    var stage = $("#orbitStage");
+    var sr = stage.getBoundingClientRect();
+    var px = e.clientX - sr.left, py = e.clientY - sr.top;
+    var dx = px - orbit.cx, dy = py - orbit.cy, dist = Math.sqrt(dx * dx + dy * dy);
+    clearTimeout(orbit.dwellTimer);
+    if (dist < 62) { goBackLevel(); return; }
+    var nd = nearestNodeByCoord(px, py);
+    if (!nd) { closeOrbit(true); return; }
+    var id = nd.id;
+    if (isLeaf(id, HOST)) {
+      orbit.path.push(id);
+      executeOrbitPath();
+    } else {
+      // 松手在非叶节点 → 进入下一级
+      if (orbit.path[orbit.path.length - 1] !== id) {
+        orbit.path.push(id);
+        orbit.level++;
+        orbit.armedId = null;
+        layoutOrbitNodes();
+        updateCrumbs();
+      }
+    }
+  }
+  function orbitCancel() { closeOrbit(true); }
+  function orbitKey(e) {
+    if (!orbit.open) return;
+    if (e.key === "Escape") goBackLevel();
+  }
+
+  function executeOrbitPath() {
+    var path = orbit.path.slice();
+    closeOrbit(false);
+    var f = $("#orbitFlash");
+    f.style.opacity = "0.85";
+    if (HAS_GSAP) window.gsap.to(f, { opacity: 0, duration: 0.7, delay: 0.1 });
+    else setTimeout(function () { f.style.opacity = "0"; }, 700);
+
+    var pathLabel = path.map(function (p) { return lookupLabel(p, HOST); }).join(" ▸ ");
+    var fileName = caughtNames[caughtNames.length - 1] || (HOST === "ps" ? "cover_art.jpg" : "video_1080p.mp4");
+    toast("已选定 · " + pathLabel + (HOST === "ps" ? "（PS 导入）" : ""), "ok");
+    startTransfer(fileName, pathLabel);
+  }
+
+  /* ============================================================
+     SCENE 4 — TRANSFER / CEP
+     ============================================================ */
+  var transferRunning = false;
+
+  function targetDescriptor(host) {
+    if (host === "ps") {
+      var t = TARGET_TREE.ps[TARGET.ps];
+      return t ? t.label : "智能对象";
+    }
+    if (TARGET.ae === "folder") return "文件夹 · 项目根目录";
+    if (TARGET.ae === "local") return "仅保存到本地";
+    if (TARGET.ae === "comp") return "合成 · 待选位置";
+    return "文件夹 · 项目根目录";
+  }
+  function layerDescriptor(host) {
+    if (host === "ps") return "直接导入";
+    if (TARGET.ae === "comp") return "最上层 / 合成起点 / 普通素材";
+    return "最上层 / 合成起点 / 普通素材";
+  }
+
+  function startTransfer(fileName, detail) {
+    if (transferRunning) return;
+    var confirm = $("#confirmCard");
+    var prog = $("#progCard");
+    var panel = $("#aePanel");
+    if (!confirm || !prog || !panel) return;
+    var displayName = (fileName || "video_1080p.mp4").split("|")[0];
+    var cfName = $("#cfName"); if (cfName) cfName.textContent = displayName;
+    var cfInput = $("#cfInput"); if (cfInput) cfInput.value = displayName;
+    var pgName = $("#pgName"); if (pgName) pgName.textContent = displayName;
+    var cfTarget = $("#cfTarget"); if (cfTarget) cfTarget.textContent = targetDescriptor(HOST);
+    var cfLayer = $("#cfLayer"); if (cfLayer) cfLayer.textContent = layerDescriptor(HOST);
+
+    confirm.style.display = "";
+    prog.style.display = "none";
+    panel.classList.remove("show");
+    scrollToEl("s4");
+
+    $("#cfOk").onclick = function () {
+      confirm.style.display = "none";
+      prog.style.display = "";
+      transferRunning = true;
+      runProgress(displayName);
+    };
+    $("#cfCancel").onclick = function () {
+      confirm.style.display = "none";
+      toast("已取消导入", "warn");
+    };
+  }
+
+  function runProgress(displayName) {
+    var fill = $("#progFill");
+    var phases = $$(".prog-phase");
+    var done = $("#progDone");
+    fill.style.transition = "width .45s cubic-bezier(.4,0,.2,1)";
+    fill.style.width = "0%";
+    done.classList.remove("show");
+    phases.forEach(function (p) { p.className = "prog-phase"; });
+    var seq = [
+      { w: 45, ph: 0 },
+      { w: 88, ph: 1 },
+      { w: 100, ph: 2 }
+    ];
+    var i = 0;
+    function step() {
+      if (i >= seq.length) { finishTransfer(); return; }
+      var s = seq[i];
+      fill.style.width = s.w + "%";
+      phases[s.ph].classList.add("on");
+      if (i > 0) phases[i - 1].classList.replace("on", "done");
+      i++;
+      setTimeout(step, s.ph === 2 ? 420 : 900);
+    }
+    setTimeout(step, 350);
+  }
+
+  function finishTransfer() {
+    var done = $("#progDone");
+    done.classList.add("show");
+    var label = currentDisplayLabel();
+    updateAePanel(label.file, label.where);
+    setTimeout(function () {
+      var prog = $("#progCard"), panel = $("#aePanel");
+      prog.style.display = "none";
+      panel.classList.add("show");
+      transferRunning = false;
+      toast("归位成功 · 已导入 AE 项目", "ok");
+      if (HAS_GSAP && window.ScrollTrigger) {
+        window.gsap.fromTo(panel, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" });
+      }
+    }, 500);
+  }
+
+  function currentDisplayLabel() {
+    var file = caughtNames[caughtNames.length - 1] || (HOST === "ps" ? "cover_art.jpg" : "video_1080p.mp4");
+    var where = "合成起点 ▸ 最上层";
+    if (HOST === "ps") where = "画布中心";
+    else if (TARGET.ae === "folder") where = "项目根目录";
+    else if (TARGET.ae === "local") where = "仅保存";
+    return { file: file, where: where };
+  }
+
+  function updateAePanel(fileName, where) {
+    var apItemName = $("#apItemName"); if (apItemName) apItemName.textContent = fileName;
+    var apLayerName = $("#apLayerName"); if (apLayerName) apLayerName.textContent = fileName;
+    var apLayerWhere = $("#apLayerWhere"); if (apLayerWhere) apLayerWhere.textContent = where;
+  }
+
+  function clearDock() {
+    caughtCount = 0;
+    caughtNames = [];
+    var dc = $("#dockCount"); if (dc) dc.textContent = "0";
+    var live = $("#cpLive"); if (live) live.textContent = "0 个资源已嗅探";
+    $$(".media-card.caught").forEach(function (c) { c.classList.remove("caught"); });
+  }
+
+  /* ---------- transfer UI: reset ---------- */
+  function bindTransferUI() {
+    var reset = $("#transferReset");
+    if (reset) reset.addEventListener("click", function () {
+      if (transferRunning) return;
+      var confirm = $("#confirmCard"), prog = $("#progCard"), panel = $("#aePanel");
+      confirm.style.display = "none";
+      prog.style.display = "none";
+      panel.classList.remove("show");
+      clearDock();
+      toast("已重置 · 重新开始演示", "ok");
+    });
+  }
+
+  /* ============================================================
+     入场动画 + 场景 pin（ScrollTrigger）
+     ============================================================ */
+  function revealSceneItems(scene) {
+    var items = $$("[data-r]", scene).filter(function (el) {
+      return el.classList.contains("scene-init-hide");
+    });
+    if (!items.length) return;
+    if (!HAS_GSAP) {
+      items.forEach(function (el) { el.style.opacity = "1"; });
+      return;
+    }
+    window.gsap.to(items, {
+      opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out",
+      scrollTrigger: { trigger: scene, start: "top 82%" }
+    });
+  }
+
+  function buildPinAnimations() {
+    var scenes = $$(".scene");
+    scenes.forEach(function (scene) {
+      revealSceneItems(scene);
+      if (REDUCED || !HAS_ST) return;
+      var id = scene.getAttribute("id");
+      if (id !== "s0" && id !== "s1" && id !== "s2" && id !== "s3" && id !== "s4") return;
+      window.ScrollTrigger.create({
+        trigger: scene, start: "top top", end: "+=70%",
+        pin: true, pinSpacing: true,
+        onToggle: function (self) {
+          if (self.isActive) setBar(id);
+        }
+      });
+    });
+  }
+
+  function setBar(id) {
+    var segs = { s1: 0, s2: 0, s3: 1, s4: 2 };
+    var idx = segs[id];
+    if (idx === undefined) return;
+    $$(".stage-bar .seg").forEach(function (s, i) {
+      s.classList.toggle("on", i <= idx);
+    });
+  }
+
+  function revealInfo() {
+    var blocks = $$("[data-r='info']");
+    if (!blocks.length) return;
+    if (!HAS_GSAP) { blocks.forEach(function (el) { el.style.opacity = "1"; }); return; }
+    window.gsap.to(blocks, {
+      opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: "power2.out",
+      scrollTrigger: { trigger: "#s5", start: "top 88%" }
+    });
+  }
+
+  /* ---------- copy button ---------- */
+  function bindCopy() {
+    $$("[data-copy]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var block = btn.closest(".code-block");
+        var text = block ? block.innerText.replace(/^复制\s*/m, "") : "";
+        var done = function () {
+          btn.textContent = "已复制";
+          btn.classList.add("done");
+          toast("已复制到剪贴板", "ok");
+          setTimeout(function () { btn.textContent = "复制"; btn.classList.remove("done"); }, 2000);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text.trim()).then(done, function () { fallbackCopy(text, done); });
+        } else { fallbackCopy(text, done); }
+      });
+    });
+  }
+  function fallbackCopy(text, done) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (err) { toast("复制失败，请手动复制", "err"); }
+    document.body.removeChild(ta);
+  }
+
+  /* ---------- init ---------- */
+  function init() {
+    bindDownload();
+    bindNav();
+    bindCursor();
+    bindTourGuide();
+    setupSmoothScroll();
+    bindPain();
+    bindCopy();
+    renderTargetMenu();
+    updateTargetLabel();
+    bindCapture();
+    bindOrbitHub();
+    bindTransferUI();
+
+    if (!HAS_GSAP) {
+      $$(".scene-init-hide").forEach(function (el) { el.style.opacity = "1"; });
+    } else {
+      buildPinAnimations();
+      revealInfo();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
 })();
 </script>
 </body>
