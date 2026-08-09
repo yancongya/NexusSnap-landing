@@ -251,7 +251,8 @@ html.has-cursor .cursor-glow { opacity: 1; }
   font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
   color: var(--subtle); text-transform: uppercase; margin-bottom: 11px;
 }
-.zone-label svg { width: 14px; height: 14px; color: var(--accent); }
+.product-icon { display: block; object-fit: contain; }
+.zone-label .product-icon { width: 14px; height: 14px; }
 .zone-count { margin-left: auto; font-size: 9.5px; color: var(--subtle); letter-spacing: 0; }
 .media-cards { display: flex; gap: 8px; flex-wrap: wrap; }
 .media-card {
@@ -262,7 +263,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
 .media-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px var(--accent-wash); }
 .media-card:active { transform: scale(.96); }
 .mc-thumb { height: 46px; border-radius: 7px; margin-bottom: 7px; display: grid; place-items: center; }
-.mc-thumb svg { width: 18px; height: 18px; }
+.mc-thumb .product-icon { width: 18px; height: 18px; }
 .mc-thumb.video { background: var(--ae-wash); color: var(--ae); }
 .mc-thumb.image { background: var(--ps-wash); color: var(--ps); }
 .mc-thumb.audio { background: rgba(251,191,36,.16); color: var(--orange); }
@@ -319,7 +320,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
   background: var(--card); color: var(--muted); font-size: 12.5px; font-weight: 600;
   cursor: pointer; transition: all .2s;
 }
-.cp-tab svg { width: 15px; height: 15px; }
+.cp-tab .product-icon { width: 15px; height: 15px; }
 .cp-tab .n { font-family: var(--mono); font-size: 10px; color: var(--subtle); }
 .cp-tab.active { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
 .cp-tab.active .n { color: var(--accent); }
@@ -327,7 +328,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
   height: 128px; border-radius: 12px; border: 1px dashed var(--border-strong);
   background: var(--card); display: grid; place-items: center; position: relative; overflow: hidden; margin-bottom: 16px;
 }
-.cp-preview svg { width: 40px; height: 40px; color: var(--accent); }
+.cp-preview > .product-icon { width: 40px; height: 40px; }
 .cp-preview .meta { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; gap: 9px; font-family: var(--mono); font-size: 9px; color: var(--subtle); }
 .cp-preview .meta b { color: var(--muted); font-weight: 600; }
 .cp-rows { display: grid; gap: 10px; }
@@ -592,7 +593,8 @@ html.has-cursor .cursor-glow { opacity: 1; }
 .plat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
 .plat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 14px; text-align: center; transition: border-color .3s, background .3s, transform .3s; }
 .plat-card:hover { border-color: var(--accent); background: var(--accent-wash); transform: translateY(-2px); }
-.plat-card svg { width: 24px; height: 24px; color: var(--accent); margin-bottom: 9px; }
+.plat-card .product-icon { width: 24px; height: 24px; margin: 0 auto 9px; }
+.plat-card .platform-logo { display: block; width: 26px; height: 26px; margin: 0 auto 8px; object-fit: contain; }
 .plat-name { font-weight: 700; font-size: 13px; color: var(--ink); margin-bottom: 3px; }
 .plat-detail { font-size: 10px; color: var(--subtle); font-family: var(--mono); }
 
@@ -819,21 +821,21 @@ html.has-cursor .cursor-glow { opacity: 1; }
         <div class="pain-zones">
           <div class="zone scene-init-hide" data-r="zone" data-zone="web">
             <div class="zone-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <img class="product-icon" src="icons/ui/monitor.svg" alt="">
               网页媒体
               <span class="zone-count">3 个已发现</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="video_1080p.mp4|1920×1080 · 45.2 MB" data-kind="video">
-                <div class="mc-thumb video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <div class="mc-thumb video"><img class="product-icon" src="icons/ui/video.svg" alt=""></div>
                 <div class="mc-name">video_1080p.mp4</div><div class="mc-meta">1920×1080</div>
               </div>
               <div class="media-card" data-media="cover_art.jpg|1280×720 · 2.1 MB" data-kind="image">
-                <div class="mc-thumb image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+                <div class="mc-thumb image"><img class="product-icon" src="icons/ui/image.svg" alt=""></div>
                 <div class="mc-name">cover_art.jpg</div><div class="mc-meta">1280×720</div>
               </div>
               <div class="media-card" data-media="bgm_loop.mp3|320kbps · 6.8 MB" data-kind="audio">
-                <div class="mc-thumb audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+                <div class="mc-thumb audio"><img class="product-icon" src="icons/ui/audio.svg" alt=""></div>
                 <div class="mc-name">bgm_loop.mp3</div><div class="mc-meta">320kbps</div>
               </div>
             </div>
@@ -842,17 +844,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
 
           <div class="zone scene-init-hide" data-r="zone" data-zone="local">
             <div class="zone-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              <img class="product-icon" src="icons/ui/folder.svg" alt="">
               本地文件
               <span class="zone-count">2 个待归位</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="title_overlay.png|2048×2048 · 3.4 MB" data-kind="image">
-                <div class="mc-thumb image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
+                <div class="mc-thumb image"><img class="product-icon" src="icons/ui/image.svg" alt=""></div>
                 <div class="mc-name">title_overlay.png</div><div class="mc-meta">2048²</div>
               </div>
               <div class="media-card" data-media="sfx_hit.wav|24bit · 0.4 MB" data-kind="audio">
-                <div class="mc-thumb audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+                <div class="mc-thumb audio"><img class="product-icon" src="icons/ui/audio.svg" alt=""></div>
                 <div class="mc-name">sfx_hit.wav</div><div class="mc-meta">0.4 MB</div>
               </div>
             </div>
@@ -861,13 +863,13 @@ html.has-cursor .cursor-glow { opacity: 1; }
 
           <div class="zone scene-init-hide" data-r="zone" data-zone="clip">
             <div class="zone-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+              <img class="product-icon" src="icons/ui/clipboard.svg" alt="">
               剪贴板
               <span class="zone-count">1 项待处理</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="screenshot_0342.png|1200×675 · 1.8 MB" data-kind="image">
-                <div class="mc-thumb image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+                <div class="mc-thumb image"><img class="product-icon" src="icons/ui/image.svg" alt=""></div>
                 <div class="mc-name">screenshot_0342</div><div class="mc-meta">1200×675</div>
               </div>
             </div>
@@ -876,13 +878,13 @@ html.has-cursor .cursor-glow { opacity: 1; }
 
           <div class="zone scene-init-hide" data-r="zone" data-zone="proj">
             <div class="zone-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              <img class="product-icon" src="icons/ui/project.svg" alt="">
               项目文件夹
               <span class="zone-count">目标：…/NexusSnap</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="comp_prev.mp4|720p · 12.0 MB" data-kind="video">
-                <div class="mc-thumb video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <div class="mc-thumb video"><img class="product-icon" src="icons/ui/video.svg" alt=""></div>
                 <div class="mc-name">comp_prev.mp4</div><div class="mc-meta">720p</div>
               </div>
             </div>
@@ -923,18 +925,18 @@ html.has-cursor .cursor-glow { opacity: 1; }
           <div class="cp-body">
             <div class="cp-tabs" role="tablist" aria-label="媒体类型">
               <button class="cp-tab active" type="button" data-tab="video" role="tab" aria-selected="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>视频<span class="n">1</span>
+                <img class="product-icon" src="icons/ui/video.svg" alt="">视频<span class="n">1</span>
               </button>
               <button class="cp-tab" type="button" data-tab="image" role="tab" aria-selected="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>图片<span class="n">3</span>
+                <img class="product-icon" src="icons/ui/image.svg" alt="">图片<span class="n">3</span>
               </button>
               <button class="cp-tab" type="button" data-tab="audio" role="tab" aria-selected="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>音频<span class="n">2</span>
+                <img class="product-icon" src="icons/ui/audio.svg" alt="">音频<span class="n">2</span>
               </button>
             </div>
 
             <div class="cp-preview">
-              <svg id="cpIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <img class="product-icon" id="cpIcon" src="icons/ui/video.svg" alt="">
               <div class="meta"><b id="cpName">video_1080p.mp4</b><span id="cpMeta">1920×1080 · 45.2 MB</span></div>
             </div>
 
@@ -1135,17 +1137,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
         <h2 class="scene-init-hide" data-r="info">11 个主流平台专属解析 + 通用嗅探</h2>
         <p class="desc scene-init-hide" data-r="info">绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
         <div class="plat-grid scene-init-hide" data-r="info">
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.94 29.94 0 0 0 1 12a29.94 29.94 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29.94 29.94 0 0 0 23 12a29.94 29.94 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg><div class="plat-name">YouTube</div><div class="plat-detail">InnerTube API · 全清晰度</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="plat-name">Bilibili</div><div class="plat-detail">__playinfo__ · 音视频分离</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><div class="plat-name">小红书</div><div class="plat-detail">笔记图片/视频提取</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><div class="plat-name">Instagram</div><div class="plat-detail">帖子媒体源解析</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg><div class="plat-name">Twitter / X</div><div class="plat-detail">媒体源地址还原</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg><div class="plat-name">Pinterest</div><div class="plat-detail">Pin 原图提取</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg><div class="plat-name">Reddit</div><div class="plat-detail">视频/图片源提取</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="plat-name">微博</div><div class="plat-detail">高清原图 URL 解析</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><div class="plat-name">淘宝</div><div class="plat-detail">商品图/视频提取</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
-          <div class="plat-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><div class="plat-name">通用网页</div><div class="plat-detail">DOM 扫描 + 网络嗅探</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/youtube.svg" alt="YouTube"><div class="plat-name">YouTube</div><div class="plat-detail">InnerTube API · 全清晰度</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/bilibili.svg" alt="Bilibili"><div class="plat-name">Bilibili</div><div class="plat-detail">__playinfo__ · 音视频分离</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/xiaohongshu.svg" alt="小红书"><div class="plat-name">小红书</div><div class="plat-detail">笔记图片/视频提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/instagram.svg" alt="Instagram"><div class="plat-name">Instagram</div><div class="plat-detail">帖子媒体源解析</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/x.svg" alt="X"><div class="plat-name">Twitter / X</div><div class="plat-detail">媒体源地址还原</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/pinterest.svg" alt="Pinterest"><div class="plat-name">Pinterest</div><div class="plat-detail">Pin 原图提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/reddit.svg" alt="Reddit"><div class="plat-name">Reddit</div><div class="plat-detail">视频/图片源提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/sinaweibo.svg" alt="微博"><div class="plat-name">微博</div><div class="plat-detail">高清原图 URL 解析</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/taobao.svg" alt="淘宝"><div class="plat-name">淘宝</div><div class="plat-detail">商品图/视频提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/jimeng.ico" alt="即梦"><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
+          <div class="plat-card"><img class="product-icon" src="icons/ui/link.svg" alt=""><div class="plat-name">通用网页</div><div class="plat-detail">DOM 扫描 + 网络嗅探</div></div>
         </div>
       </div>
       <div class="info-block" id="quickstart">
@@ -1542,9 +1544,9 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     { id: "precomp", label: "预合成" }
   ];
   var MEDIA_PREVIEW = {
-    video: { name: "video_1080p.mp4", meta: "1920×1080 · 45.2 MB", icon: '<polygon points="5 3 19 12 5 21 5 3"/>' },
-    image: { name: "cover_art.jpg", meta: "1280×720 · 2.1 MB", icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>' },
-    audio: { name: "bgm_loop.mp3", meta: "320kbps · 6.8 MB", icon: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>' }
+    video: { name: "video_1080p.mp4", meta: "1920×1080 · 45.2 MB", icon: "video" },
+    image: { name: "cover_art.jpg", meta: "1280×720 · 2.1 MB", icon: "image" },
+    audio: { name: "bgm_loop.mp3", meta: "320kbps · 6.8 MB", icon: "audio" }
   };
 
   function setAccent(host) {
@@ -1617,7 +1619,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
         if (!m) return;
         var n = $("#cpName"); if (n) n.textContent = m.name;
         var me = $("#cpMeta"); if (me) me.textContent = m.meta;
-        var ic = $("#cpIcon"); if (ic) ic.innerHTML = m.icon;
+        var ic = $("#cpIcon"); if (ic) ic.src = "icons/ui/" + m.icon + ".svg";
       });
     });
 
