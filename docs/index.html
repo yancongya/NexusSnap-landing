@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#0a0a0f">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="apple-touch-icon" href="logo.svg">
+<link rel="stylesheet" href="action-orbit/action-orbit.css">
 <title data-i18n="meta.title">NexusSnap · 散落各处的素材，一键归位到 AE / PS</title>
 <style>
 /* ============================================================
@@ -24,6 +25,23 @@
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --accent: var(--ae); --accent-wash: var(--ae-wash);
+  --nexus-surface-canvas: var(--bg); --nexus-surface-panel: var(--surface);
+  --nexus-surface-raised: var(--elev); --nexus-surface-inset: var(--card);
+  --nexus-text-primary: var(--ink); --nexus-text-secondary: var(--muted);
+  --nexus-text-muted: var(--muted); --nexus-text-faint: var(--subtle);
+  --nexus-border-subtle: var(--border); --nexus-border-default: var(--border-strong);
+  --nexus-border-strong: var(--ink); --nexus-border-overlay: var(--border-strong);
+  --nexus-accent: var(--accent); --nexus-accent-soft: var(--accent-wash);
+  --nexus-accent-text: var(--accent); --nexus-accent-border: var(--accent);
+  --nexus-accent-border-strong: var(--accent); --nexus-import-comp-border: var(--ps);
+  --nexus-success: var(--green); --nexus-success-border: var(--green);
+  --nexus-overlay-scrim: color-mix(in srgb, var(--bg) 78%, transparent);
+  --nexus-shadow-panel: 0 8px 28px color-mix(in srgb, var(--bg) 70%, transparent);
+  --nexus-shadow-floating: 0 14px 40px color-mix(in srgb, var(--bg) 76%, transparent);
+  --nexus-radius-control: 8px; --nexus-radius-dialog: 14px;
+  --nexus-space-1: 4px; --nexus-space-2: 8px; --nexus-space-3: 12px;
+  --nexus-motion-fast: 140ms ease; --nexus-motion-enter: 220ms cubic-bezier(.16,1,.3,1);
+  --nexus-motion-progress: 180ms ease; --nexus-layer-orbit: 900; --nexus-layer-orbit-confirm: 910;
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
@@ -1006,19 +1024,10 @@ html.has-cursor .cursor-glow { opacity: 1; }
           <div class="orbit-head">
             <div class="scene-tag scene-init-hide" data-r="orbit" data-i18n="orbit.tag">路由 · Action Orbit</div>
             <h2 class="scene-init-hide" data-r="orbit" data-i18n="orbit.title">一次手势，完成全部决策</h2>
-            <p class="scene-init-hide" data-r="orbit" data-i18n="orbit.desc">按住发送按钮，拖动指针穿过层级节点，松手即执行——<b>松手于有效叶节点执行，松手于空白处自动取消</b>，回中心或按 Esc 退一级。</p>
+            <p class="scene-init-hide" data-r="orbit" data-i18n="orbit.desc">长按发送按钮可连续拖选；快捷键长按会锁定轨道，松开右键后再从中心用左键拖选。<b>有效叶节点进入最终确认，空白处松手取消</b>，回中心或按 Esc 返回。</p>
           </div>
 
         <div class="orbit-stage scene-init-hide" id="orbitStage" data-r="orbit-stage">
-          <div class="orbit-rings" id="orbitRings" aria-hidden="true">
-            <div class="ring" data-ring="1"></div>
-            <div class="ring mid" data-ring="2"></div>
-            <div class="ring low" data-ring="3"></div>
-            <div class="ring q4" data-ring="4"></div>
-          </div>
-          <div class="orbit-nodes" id="orbitNodes" aria-hidden="true"></div>
-          <div class="orbit-flash" id="orbitFlash" aria-hidden="true"></div>
-          <div class="orbit-crumbs" id="orbitCrumbs" aria-hidden="true"></div>
           <button class="orbit-center" id="orbitHub" type="button" aria-label="长按打开 Action Orbit">
             <span id="hubMain" data-i18n="orbit.sendAe">发送到 AE</span>
             <small data-i18n="orbit.hold">长按 380ms</small>
@@ -1031,12 +1040,14 @@ html.has-cursor .cursor-glow { opacity: 1; }
             <div class="orbit-guide-label" data-i18n="orbit.guide">按住左键 · 拖向目标 · 松开</div>
           </div>
           <div class="orbit-hint" id="orbitHint" data-i18n="orbit.hint">
-            <kbd>按住</kbd> 0.38s 呼出轨道 · 拖动穿过节点 · <kbd>Esc</kbd> 取消 · 回中心退一级
+            <kbd>左键长按</kbd> 0.38s 连续拖动 · 或 <kbd>Ctrl/⌘ + Shift + 右键长按</kbd> 锁定轨道，再从中心左键拖动
           </div>
         </div>
       </div>
     </div>
   </section>
+  <div id="landingActionOrbitRoot" hidden></div>
+  <div id="landingActionOrbitConfirmRoot" hidden></div>
   <!-- ===================================================
        SCENE 4 — TRANSFER / CEP
        =================================================== -->
@@ -1142,19 +1153,19 @@ html.has-cursor .cursor-glow { opacity: 1; }
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="12" y="6" width="10" height="8" rx="1"/></svg></div>
             <h3 data-i18n="info.psSmart">智能对象</h3>
             <p data-i18n="info.psSmartDesc">以智能对象导入，保留原始数据，PS 内无损缩放、反复编辑不损画质。</p>
-            <span class="tag">SMART OBJECT</span>
+            <span class="tag" data-i18n="info.tagSmart">智能对象</span>
           </div>
           <div class="ps-card">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
             <h3 data-i18n="info.psRaster">普通图层</h3>
             <p data-i18n="info.psRasterDesc">直接栅格化为普通图层，落在当前画布对应位置，一步到位。</p>
-            <span class="tag">RASTER LAYER</span>
+            <span class="tag" data-i18n="info.tagRaster">栅格图层</span>
           </div>
           <div class="ps-card">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
             <h3 data-i18n="info.psSave">本地图片</h3>
             <p data-i18n="info.psSaveDesc">仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。</p>
-            <span class="tag">SAVE ONLY</span>
+            <span class="tag" data-i18n="info.tagSave">本地图片</span>
           </div>
         </div>
       </div>
@@ -1258,6 +1269,10 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.2.0/dist/lenis.min.js"></script>
+<script src="action-orbit/action-orbit-model.js"></script>
+<script src="action-orbit/action-orbit-icons.js"></script>
+<script src="action-orbit/action-orbit-view.js"></script>
+<script src="action-orbit/action-orbit-confirm.js"></script>
 <script>
 /* ============================================================
    NexusSnap 沉浸式落地页 — 应用逻辑
@@ -1299,11 +1314,11 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "cap.hint": "点击发送 = 按默认目标直达 · <kbd>长按</kbd> 发送 = 打开 <span class=\"key\">Action Orbit</span> 精确路由",
       "orbit.tag": "路由 · Action Orbit",
       "orbit.title": "一次手势，完成全部决策",
-      "orbit.desc": "按住发送按钮，拖动指针穿过层级节点，松手即执行——<b>松手于有效叶节点执行，松手于空白处自动取消</b>，回中心或按 Esc 退一级。",
+      "orbit.desc": "长按发送按钮可连续拖选；快捷键长按会锁定轨道，松开右键后再从中心用左键拖选。<b>有效叶节点进入最终确认，空白处松手取消</b>，回中心或按 Esc 返回。",
       "orbit.sendAe": "发送到 AE", "orbit.hold": "长按 380ms",
       "orbit.guide": "按住左键 · 拖向目标 · 松开",
-      "orbit.hint": "<kbd>按住</kbd> 0.38s 呼出轨道 · 拖动穿过节点 · <kbd>Esc</kbd> 取消 · 回中心退一级",
-      "orbit.exec": "松手执行", "orbit.drill": "继续 ▸", "orbit.crumbs": "路由 ▸ ",
+      "orbit.hint": "<kbd>左键长按</kbd> 0.38s 连续拖动 · 或 <kbd>Ctrl/⌘ + Shift + 右键长按</kbd> 锁定轨道，再从中心左键拖动",
+      "orbit.exec": "松手确认", "orbit.drill": "继续 ▸", "orbit.crumbs": "路由 ▸ ", "orbit.loading": "Action Orbit 正在加载", "orbit.routed": "已确认路由 · {{label}}", "orbit.configFail": "配置加载失败",
       "tr.tag": "归位 · 直达 AE 项目",
       "tr.title": "确认 → 传输 → 精确落位",
       "tr.reset": "↻ 重新演示", "tr.confirmPrefix": "确认导入", "tr.selected": "已选 1 项",
@@ -1320,7 +1335,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.psDesc": "图片素材可按三种形态进入 Photoshop，导入行为与 AE 侧完全对称。",
       "info.psSmart": "智能对象", "info.psSmartDesc": "以智能对象导入，保留原始数据，PS 内无损缩放、反复编辑不损画质。",
       "info.psRaster": "普通图层", "info.psRasterDesc": "直接栅格化为普通图层，落在当前画布对应位置，一步到位。",
-      "info.psSave": "本地图片", "info.psSaveDesc": "仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。",
+      "info.psSave": "本地图片", "info.psSaveDesc": "仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。", "info.tagSmart": "智能对象", "info.tagRaster": "栅格图层", "info.tagSave": "本地图片",
       "info.platLabel": "深度适配",
       "info.platTitle": "11 个主流平台专属解析 + 通用嗅探",
       "info.platDesc": "绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。",
@@ -1390,11 +1405,11 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "cap.hint": "Click send = straight to default target · <kbd>hold</kbd> send = open <span class=\"key\">Action Orbit</span> for precise routing",
       "orbit.tag": "Route · Action Orbit",
       "orbit.title": "One gesture, every decision made",
-      "orbit.desc": "Hold the send button, drag the pointer through the hierarchy nodes, release to execute — <b>release on a valid leaf to run, release on empty space to cancel</b>, return to center or press Esc to step back.",
+      "orbit.desc": "Hold Send for a continuous drag, or hold the shortcut to lock the orbit, release the right button, then drag from the center with the left button. <b>A valid leaf opens final confirmation; releasing on empty space cancels.</b> Return to center or press Esc to go back.",
       "orbit.sendAe": "Send to AE", "orbit.hold": "Hold 380ms",
       "orbit.guide": "Hold left · drag to target · release",
-      "orbit.hint": "<kbd>Hold</kbd> 0.38s to open orbit · drag through nodes · <kbd>Esc</kbd> to cancel · return to center to step back",
-      "orbit.exec": "Release to run", "orbit.drill": "Next ▸", "orbit.crumbs": "Route ▸ ",
+      "orbit.hint": "<kbd>Left-hold</kbd> 0.38s for a continuous drag · or <kbd>Ctrl/⌘ + Shift + right-hold</kbd> to lock, then left-drag from center",
+      "orbit.exec": "Release to confirm", "orbit.drill": "Next ▸", "orbit.crumbs": "Route ▸ ", "orbit.loading": "Action Orbit loading", "orbit.routed": "Route confirmed · {{label}}", "orbit.configFail": "Config load failed",
       "tr.tag": "Transfer · straight to the AE project",
       "tr.title": "Confirm → transfer → precise placement",
       "tr.reset": "↻ Replay", "tr.confirmPrefix": "Confirm import", "tr.selected": "1 selected",
@@ -1411,7 +1426,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.psDesc": "Image assets can enter Photoshop in three forms, with import behavior fully symmetric to the AE side.",
       "info.psSmart": "Smart Object", "info.psSmartDesc": "Import as a Smart Object, preserving source data for lossless scaling and non-destructive editing in PS.",
       "info.psRaster": "Raster layer", "info.psRasterDesc": "Rasterize straight to a normal layer at the right spot on the current canvas, in one step.",
-      "info.psSave": "Local image", "info.psSaveDesc": "Just save to a chosen path and decide how to use it in PS yourself — lightweight, non-intrusive.",
+      "info.psSave": "Local image", "info.psSaveDesc": "Just save to a chosen path and decide how to use it in PS yourself — lightweight, non-intrusive.", "info.tagSmart": "SMART OBJECT", "info.tagRaster": "RASTER LAYER", "info.tagSave": "SAVE ONLY",
       "info.platLabel": "Deep integration",
       "info.platTitle": "11 major platforms with dedicated parsing + universal sniffing",
       "info.platDesc": "Bypass front-end anti-scraping to reach raw HD sources, while also supporting DOM scanning and network interception on any page.",
@@ -1931,7 +1946,9 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
     var sendBtn = $("#cpSend");
     if (sendBtn) {
+      var suppressSendClick = false;
       sendBtn.addEventListener("click", function () {
+        if (suppressSendClick) { suppressSendClick = false; return; }
         if (!caughtCount) { toast(t("toast.trayEmpty"), "warn"); return; }
         startTransfer(caughtNames[caughtNames.length - 1] || "video_1080p.mp4", "default");
       });
@@ -1940,9 +1957,8 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
         clearTimeout(holdTimer);
         holdTimer = setTimeout(function () {
           held = true;
-          var stg = $("#orbitStage");
-          if (stg && stg.setPointerCapture) { try { stg.setPointerCapture(e.pointerId); } catch (err) {} }
-          openOrbit();
+          suppressSendClick = true;
+          beginLandingOrbitGesture(e.pointerId, e.clientX, e.clientY);
         }, 380);
       });
       sendBtn.addEventListener("pointerup", function () {
@@ -1958,6 +1974,143 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
      长按 380ms 呼出 · 拖动穿过节点 · 松手于叶节点执行
      回中心 / Esc 退一级 · 松手空白处取消
      ============================================================ */
+  var landingOrbitController = null;
+  var landingOrbitConfirmController = null;
+
+  function createLandingOrbitDraft() {
+    var Model = window.NexusActionOrbitModel;
+    var fileName = caughtNames[caughtNames.length - 1] || (HOST === "ps" ? "cover_art.jpg" : "video_1080p.mp4");
+    return Model.createDraft({
+      resources: [{ id: "landing-demo", name: fileName }],
+      defaults: {
+        hostId: HOST === "ps" ? "photoshop" : "aftereffects",
+        storageDirectory: "{projectPath}/NexusSnap",
+        aeTarget: TARGET.ae === "comp" ? "comp" : "folder",
+        folderPath: "{selectedFolder}",
+        layerPlacement: "top",
+        layerStartAnchor: "compStart",
+        conflictPolicy: "ask",
+        svgImportMode: "original"
+      },
+      context: {
+        hostId: HOST === "ps" ? "photoshop" : "aftereffects",
+        projectName: "NexusSnap Demo.aep",
+        compId: 42,
+        compName: "Main Comp"
+      }
+    });
+  }
+
+  function orbitIntentLabel(intent) {
+    if (intent.host && intent.host.id === "photoshop") {
+      if (intent.host.representation === "pixel-layer") return L(TARGET_TREE.ps.layer);
+      if (intent.host.representation === "smart-object") return L(TARGET_TREE.ps.smart);
+      return L(TARGET_TREE.ps.local);
+    }
+    if (intent.storage && intent.storage.action === "save-only") return L(TARGET_TREE.ae.local);
+    var parts = [intent.ae && intent.ae.target === "comp" ? L(TARGET_TREE.ae.comp) : L(TARGET_TREE.ae.folder)];
+    if (intent.layer && intent.layer.placement) parts.push(intent.layer.placement);
+    if (intent.layer && intent.layer.timeline) parts.push(intent.layer.timeline);
+    if (intent.ae && intent.ae.precompose) parts.push(L(COMP_WRAPS[1]));
+    else if (intent.ae && intent.ae.target !== "none") parts.push(L(COMP_WRAPS[0]));
+    return parts.join(" ▸ ");
+  }
+
+  function beginLandingOrbitGesture(pointerId, clientX, clientY) {
+    if (!landingOrbitController) { toast(t("orbit.loading"), "warn"); return; }
+    landingOrbitController.beginGesture(createLandingOrbitDraft(), pointerId, { clientX: clientX, clientY: clientY });
+  }
+
+  function openLandingOrbitPersistent(clientX, clientY) {
+    if (!landingOrbitController) { toast(t("orbit.loading"), "warn"); return; }
+    landingOrbitController.open(createLandingOrbitDraft(), { clientX: clientX, clientY: clientY }, { suppressEntryContextMenu: true });
+  }
+
+  function initOriginalActionOrbit() {
+    var Model = window.NexusActionOrbitModel;
+    var Icons = window.NexusActionOrbitIcons;
+    var View = window.NexusActionOrbitView;
+    var Confirm = window.NexusActionOrbitConfirm;
+    var hub = $("#orbitHub");
+    var stage = $("#orbitStage");
+    if (!Model || !Icons || !View || !Confirm || !hub || !stage) return;
+
+    landingOrbitConfirmController = Confirm.create({
+      root: $("#landingActionOrbitConfirmRoot"),
+      icons: Icons,
+      onConfirm: function(intent) {
+        var label = orbitIntentLabel(intent);
+        var name = intent.resources && intent.resources[0] ? intent.resources[0].finalName : "video_1080p.mp4";
+        toast(tf("orbit.routed", { label: label }), "ok");
+        startTransfer(name, label);
+      },
+      onCancel: function() { toast(t("toast.cancelled"), "warn"); }
+    });
+
+    fetch("action-orbit/action-orbit.config.json")
+      .then(function(response) { if (!response.ok) throw new Error(t("orbit.configFail")); return response.json(); })
+      .then(function(config) {
+        landingOrbitController = View.create({
+          root: $("#landingActionOrbitRoot"),
+          model: Model,
+          icons: Icons,
+          actions: config.actions,
+          config: config,
+          getCapability: function() { return { enabled: true }; },
+          onReady: function(intent) { landingOrbitConfirmController.open(intent); },
+          onCancel: function() { toast(t("toast.cancelled"), "warn"); }
+        });
+        if (new URLSearchParams(window.location.search).get("orbitPreview") === "1") {
+          window.requestAnimationFrame(function() {
+            openLandingOrbitPersistent(window.innerWidth / 2, window.innerHeight / 2);
+          });
+        }
+      })
+      .catch(function(error) { console.error("[NexusSnap Landing] Action Orbit:", error); });
+
+    var hubTimer = null;
+    var hubOpened = false;
+    hub.addEventListener("pointerdown", function(event) {
+      if (event.button !== 0 && event.pointerType !== "touch") return;
+      hubOpened = false;
+      clearTimeout(hubTimer);
+      hub.classList.add("armed");
+      var fill = $("#holdFill");
+      if (fill) { fill.style.transition = "stroke-dashoffset 380ms linear"; fill.style.strokeDashoffset = "0"; }
+      hubTimer = setTimeout(function() {
+        hubOpened = true;
+        beginLandingOrbitGesture(event.pointerId, event.clientX, event.clientY);
+      }, 380);
+    });
+    function resetHubHold() {
+      clearTimeout(hubTimer);
+      hubTimer = null;
+      hub.classList.remove("armed");
+      var fill = $("#holdFill");
+      if (fill && !hubOpened) { fill.style.transition = "none"; fill.style.strokeDashoffset = "1"; }
+    }
+    hub.addEventListener("pointerup", resetHubHold);
+    hub.addEventListener("pointercancel", resetHubHold);
+
+    var shortcutHold = null;
+    stage.addEventListener("pointerdown", function(event) {
+      if (event.button !== 2 || !(event.ctrlKey || event.metaKey) || !event.shiftKey) return;
+      event.preventDefault();
+      clearTimeout(shortcutHold);
+      shortcutHold = setTimeout(function() {
+        shortcutHold = null;
+        openLandingOrbitPersistent(event.clientX, event.clientY);
+      }, 380);
+    });
+    stage.addEventListener("pointerup", function(event) {
+      if (event.button === 2 && shortcutHold) { clearTimeout(shortcutHold); shortcutHold = null; }
+    });
+    stage.addEventListener("pointercancel", function() { if (shortcutHold) clearTimeout(shortcutHold); shortcutHold = null; });
+    stage.addEventListener("contextmenu", function(event) {
+      if ((event.ctrlKey || event.metaKey) && event.shiftKey) event.preventDefault();
+    });
+  }
+
   var orbit = {
     open: false, level: 1, path: [], nodeMap: {},
     cx: 0, cy: 0, rBase: 0, armedId: null, dwellTimer: null
@@ -2218,7 +2371,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
   function targetDescriptor(host) {
     if (host === "ps") {
       var t = TARGET_TREE.ps[TARGET.ps];
-      return t ? L(t) : "智能对象";
+      return t ? L(t) : L(TARGET_TREE.ps.smart);
     }
     if (TARGET.ae === "folder") return L(TARGET_TREE.ae.folder) + " · " + (LANG === "en" ? "project root" : "项目根目录");
     if (TARGET.ae === "local") return LANG === "en" ? "Save to local only" : "仅保存到本地";
@@ -2437,7 +2590,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     renderTargetMenu();
     updateTargetLabel();
     bindCapture();
-    bindOrbitHub();
+    initOriginalActionOrbit();
     bindTransferUI();
 
     if (!HAS_GSAP) {
