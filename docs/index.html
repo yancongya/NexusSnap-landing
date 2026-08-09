@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<meta name="description" content="NexusSnap — 浏览器媒体嗅探与 Adobe 创作工具导入桥梁：散落各处的素材，一键归位到 AE / PS。支持 YouTube、Bilibili、小红书等 11 个主流平台深度解析。">
+<meta name="description" content="NexusSnap — 浏览器媒体嗅探与 Adobe 创作工具导入桥梁：散落各处的素材，一键归位到 AE / PS。支持 YouTube、Bilibili、小红书等 11 个主流平台深度解析。" data-i18n-attr="content:meta.description">
 <meta name="theme-color" content="#0a0a0f">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="apple-touch-icon" href="logo.svg">
-<title>NexusSnap · 散落各处的素材，一键归位到 AE / PS</title>
+<title data-i18n="meta.title">NexusSnap · 散落各处的素材，一键归位到 AE / PS</title>
 <style>
 /* ============================================================
    NexusSnap — 沉浸式交互落地页 · 单文件零构建
    双蓝主题：AE #9999ff 系 / PS #31a8ff 系 · 深色默认
    ============================================================ */
-:root {
+:root, [data-theme="dark"] {
   --bg: #0a0a0f; --surface: #0f0f16; --card: #14141c; --elev: #1a1a24;
   --ink: #ececf4; --muted: #90909f; --subtle: #5d5d6d;
   --border: #1f1f2a; --border-strong: #34343f;
@@ -26,13 +26,21 @@
   --accent: var(--ae); --accent-wash: var(--ae-wash);
 }
 @media (prefers-color-scheme: light) {
-  :root {
+  :root:not([data-theme="dark"]) {
     --bg: #f6f6fa; --surface: #ffffff; --card: #fbfbfd; --elev: #ffffff;
     --ink: #15151f; --muted: #56566a; --subtle: #8b8b9c;
     --border: #e7e7ef; --border-strong: #c9c9d8;
     --ae: #5b5bd6; --ae-deep: #4848c4; --ae-wash: rgba(91,91,214,.1);
     --ps: #0e82e8; --ps-deep: #0b6cc4; --ps-wash: rgba(14,130,232,.1);
   }
+}
+[data-theme="light"] {
+  --bg: #f6f6fa; --surface: #ffffff; --card: #fbfbfd; --elev: #ffffff;
+  --ink: #15151f; --muted: #56566a; --subtle: #8b8b9c;
+  --border: #e7e7ef; --border-strong: #c9c9d8;
+  --ae: #5b5bd6; --ae-deep: #4848c4; --ae-wash: rgba(91,91,214,.1);
+  --ps: #0e82e8; --ps-deep: #0b6cc4; --ps-wash: rgba(14,130,232,.1);
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,7 +90,19 @@ code, .mono { font-family: var(--mono); }
   transition: filter .2s, transform .2s;
 }
 .nav-cta:hover { filter: brightness(1.12); transform: translateY(-1px); }
-@media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } .nav { padding: 0 14px; } }
+.nav-tools { display: flex; align-items: center; gap: 8px; }
+.nav-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 9px; cursor: pointer;
+  background: var(--card); border: 1px solid var(--border-strong); color: var(--muted);
+  transition: color .2s, border-color .2s, background .2s, transform .2s;
+}
+.nav-toggle:hover { color: var(--ink); border-color: var(--accent); transform: translateY(-1px); }
+.nav-toggle.lang { width: auto; padding: 0 11px; font-size: 12px; font-weight: 700; font-family: var(--mono); letter-spacing: .04em; }
+.nav-toggle .ic-sun, .nav-toggle .ic-moon { width: 16px; height: 16px; }
+[data-theme="light"] .nav-toggle .ic-moon { display: none; }
+[data-theme="dark"] .nav-toggle .ic-sun { display: none; }
+@media (max-width: 760px) { .nav-links { display: none; } .nav { padding: 0 14px; } }
 
 /* ============ STAGE BAR ============ */
 .stage-bar {
@@ -690,22 +710,29 @@ html.has-cursor .cursor-glow { opacity: 1; }
     Nexus<b>Snap</b>
   </a>
   <div class="nav-links">
-    <a href="#s0" data-nav="s0">体验</a>
-    <a href="#s1" data-nav="s1">痛点</a>
-    <a href="#s2" data-nav="s2">采集</a>
-    <a href="#s3" data-nav="s3">轨道</a>
-    <a href="#s4" data-nav="s4">归位</a>
-    <a href="#s5" data-nav="s5">支持</a>
-    <a class="nav-cta" href="#" data-download="browser">下载</a>
+    <a href="#s0" data-nav="s0" data-i18n="nav.experience">体验</a>
+    <a href="#s1" data-nav="s1" data-i18n="nav.pain">痛点</a>
+    <a href="#s2" data-nav="s2" data-i18n="nav.capture">采集</a>
+    <a href="#s3" data-nav="s3" data-i18n="nav.orbit">轨道</a>
+    <a href="#s4" data-nav="s4" data-i18n="nav.transfer">归位</a>
+    <a href="#s5" data-nav="s5" data-i18n="nav.support">支持</a>
+  </div>
+  <div class="nav-tools">
+    <button class="nav-toggle" id="themeToggle" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+      <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <button class="nav-toggle lang" id="langToggle" type="button" aria-label="切换语言" title="切换语言" data-i18n-attr="aria-label:nav.langToggle">EN</button>
+    <a class="nav-cta" href="#" data-download="browser" data-i18n="nav.download">下载</a>
   </div>
 </nav>
 
 <!-- ================= STAGE BAR ================= -->
-<div class="stage-bar" id="stageBar" aria-hidden="true">
-  <span class="seg" data-seg="0"><i></i><span>采集</span></span><span class="sep">→</span>
-  <span class="seg" data-seg="1"><i></i><span>路由</span></span><span class="sep">→</span>
-  <span class="seg" data-seg="2"><i></i><span>归位</span></span>
-</div>
+  <div class="stage-bar" id="stageBar" aria-hidden="true">
+    <span class="seg" data-seg="0"><i></i><span data-i18n="stage.collect">采集</span></span><span class="sep">→</span>
+    <span class="seg" data-seg="1"><i></i><span data-i18n="stage.route">路由</span></span><span class="sep">→</span>
+    <span class="seg" data-seg="2"><i></i><span data-i18n="stage.place">归位</span></span>
+  </div>
 
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 <div class="tour-guide" id="tourGuide" data-mode="scroll" aria-hidden="true">
@@ -723,19 +750,19 @@ html.has-cursor .cursor-glow { opacity: 1; }
   <section class="scene hero" id="s0" data-scene="0" aria-label="开场">
     <div class="scene-pin">
       <div class="scene-inner">
-        <div class="scene-tag scene-init-hide" data-r="hero">浏览器扩展 + AE / PS CEP 插件</div>
-        <h1 class="scene-init-hide" data-r="hero">
+        <div class="scene-tag scene-init-hide" data-r="hero" data-i18n="hero.tag">浏览器扩展 + AE / PS CEP 插件</div>
+        <h1 class="scene-init-hide" data-r="hero" data-i18n="hero.title">
           散落各处的素材，<br>一键归位到 <span class="hl-ae">AE</span> / <span class="hl-ps">PS</span>
         </h1>
-        <p class="sub scene-init-hide" data-r="hero">网页媒体、本地文件、剪贴板里的零散素材——嗅探、采集、路由，直达项目指定路径与合成时间线。无需下载、无需整理、无需拖拽。</p>
+        <p class="sub scene-init-hide" data-r="hero" data-i18n="hero.sub">网页媒体、本地文件、剪贴板里的零散素材——嗅探、采集、路由，直达项目指定路径与合成时间线。无需下载、无需整理、无需拖拽。</p>
         <div class="hero-actions scene-init-hide" data-r="hero">
           <button class="btn btn-primary" type="button" data-goto="s1">
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-            进入演示
+            <span data-i18n="hero.enter">进入演示</span>
           </button>
           <button class="btn btn-outline" type="button" data-download="browser">
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            下载插件
+            <span data-i18n="hero.download">下载插件</span>
           </button>
         </div>
 
@@ -803,7 +830,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
         </div>
       </div>
     </div>
-    <div class="scroll-hint" aria-hidden="true"><div class="wheel"></div>滚动进入演示</div>
+    <div class="scroll-hint" aria-hidden="true"><div class="wheel"></div><span data-i18n="hero.scrollHint">滚动进入演示</span></div>
   </section>
 
   <!-- ===================================================
@@ -813,17 +840,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
     <div class="scene-pin">
       <div class="scene-inner">
         <div class="pain-head">
-          <div class="scene-tag scene-init-hide" data-r="pain">痛点 · 素材散落各处</div>
-          <h2 class="scene-init-hide" data-r="pain">灵感出现时，素材却在四个角落</h2>
-          <p class="scene-init-hide" data-r="pain">网页上看到的视频、本地攒下的文件、剪贴板里的截图、项目文件夹里的旧素材——<b>采集、下载、改名字、找路径、拖进合成</b>，每一步都在打断创作。<br>点任意一张卡片，体验嗅探。</p>
+          <div class="scene-tag scene-init-hide" data-r="pain" data-i18n="pain.tag">痛点 · 素材散落各处</div>
+          <h2 class="scene-init-hide" data-r="pain" data-i18n="pain.title">灵感出现时，素材却在四个角落</h2>
+          <p class="scene-init-hide" data-r="pain" data-i18n="pain.desc">网页上看到的视频、本地攒下的文件、剪贴板里的截图、项目文件夹里的旧素材——<b>采集、下载、改名字、找路径、拖进合成</b>，每一步都在打断创作。<br>点任意一张卡片，体验嗅探。</p>
         </div>
 
         <div class="pain-zones">
           <div class="zone scene-init-hide" data-r="zone" data-zone="web">
             <div class="zone-label">
               <img class="product-icon" src="icons/ui/monitor.svg" alt="">
-              网页媒体
-              <span class="zone-count">3 个已发现</span>
+              <span data-i18n="pain.web">网页媒体</span>
+              <span class="zone-count" data-i18n="pain.webCount">3 个已发现</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="video_1080p.mp4|1920×1080 · 45.2 MB" data-kind="video">
@@ -839,14 +866,14 @@ html.has-cursor .cursor-glow { opacity: 1; }
                 <div class="mc-name">bgm_loop.mp3</div><div class="mc-meta">320kbps</div>
               </div>
             </div>
-            <div class="zone-hint"><kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片体验</div>
+            <div class="zone-hint" data-i18n="pain.webHint"><kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片体验</div>
           </div>
 
           <div class="zone scene-init-hide" data-r="zone" data-zone="local">
             <div class="zone-label">
               <img class="product-icon" src="icons/ui/folder.svg" alt="">
-              本地文件
-              <span class="zone-count">2 个待归位</span>
+              <span data-i18n="pain.local">本地文件</span>
+              <span class="zone-count" data-i18n="pain.localCount">2 个待归位</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="title_overlay.png|2048×2048 · 3.4 MB" data-kind="image">
@@ -858,14 +885,14 @@ html.has-cursor .cursor-glow { opacity: 1; }
                 <div class="mc-name">sfx_hit.wav</div><div class="mc-meta">0.4 MB</div>
               </div>
             </div>
-            <div class="zone-hint">拖入扩展图标即可收集</div>
+            <div class="zone-hint" data-i18n="pain.localHint">拖入扩展图标即可收集</div>
           </div>
 
           <div class="zone scene-init-hide" data-r="zone" data-zone="clip">
             <div class="zone-label">
               <img class="product-icon" src="icons/ui/clipboard.svg" alt="">
-              剪贴板
-              <span class="zone-count">1 项待处理</span>
+              <span data-i18n="pain.clip">剪贴板</span>
+              <span class="zone-count" data-i18n="pain.clipCount">1 项待处理</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="screenshot_0342.png|1200×675 · 1.8 MB" data-kind="image">
@@ -873,14 +900,14 @@ html.has-cursor .cursor-glow { opacity: 1; }
                 <div class="mc-name">screenshot_0342</div><div class="mc-meta">1200×675</div>
               </div>
             </div>
-            <div class="zone-hint">截图后自动出现在采集面板</div>
+            <div class="zone-hint" data-i18n="pain.clipHint">截图后自动出现在采集面板</div>
           </div>
 
           <div class="zone scene-init-hide" data-r="zone" data-zone="proj">
             <div class="zone-label">
               <img class="product-icon" src="icons/ui/project.svg" alt="">
-              项目文件夹
-              <span class="zone-count">目标：…/NexusSnap</span>
+              <span data-i18n="pain.proj">项目文件夹</span>
+              <span class="zone-count" data-i18n="pain.projCount">目标：…/NexusSnap</span>
             </div>
             <div class="media-cards">
               <div class="media-card" data-media="comp_prev.mp4|720p · 12.0 MB" data-kind="video">
@@ -888,15 +915,15 @@ html.has-cursor .cursor-glow { opacity: 1; }
                 <div class="mc-name">comp_prev.mp4</div><div class="mc-meta">720p</div>
               </div>
             </div>
-            <div class="zone-hint">旧素材复用，等待一键归位</div>
+            <div class="zone-hint" data-i18n="pain.projHint">旧素材复用，等待一键归位</div>
           </div>
         </div>
 
         <div class="dock scene-init-hide" data-r="dock" aria-hidden="true">
           <span class="dot"></span>
-          <b>采集托盘</b>
-          <span>已嗅探</span>
-          <span class="count" id="dockCount">0</span><span>项</span>
+          <b data-i18n="pain.dock">采集托盘</b>
+          <span data-i18n="pain.dockSniffed">已嗅探</span>
+          <span class="count" id="dockCount">0</span><span data-i18n="pain.dockItems">项</span>
         </div>
       </div>
     </div>
@@ -908,15 +935,15 @@ html.has-cursor .cursor-glow { opacity: 1; }
     <div class="scene-pin">
       <div class="scene-inner">
         <div class="cap-head">
-          <div class="scene-tag scene-init-hide" data-r="cap">采集 · 不离开网页</div>
-          <h2 class="scene-init-hide" data-r="cap">面板即工作台：选中、改目标、发送</h2>
+          <div class="scene-tag scene-init-hide" data-r="cap" data-i18n="cap.tag">采集 · 不离开网页</div>
+          <h2 class="scene-init-hide" data-r="cap" data-i18n="cap.title">面板即工作台：选中、改目标、发送</h2>
         </div>
 
-        <div class="capture-panel scene-init-hide" id="capturePanel" data-r="cap-panel" role="group" aria-label="采集面板演示">
+          <div class="capture-panel scene-init-hide" id="capturePanel" data-r="cap-panel" role="group" aria-label="采集面板演示">
           <div class="cp-head">
             <span class="st"></span>
-            <b>QUICK CAPTURE</b>
-            <span class="live" id="cpLive">0 个资源已嗅探</span>
+            <b data-i18n="cap.quick">QUICK CAPTURE</b>
+            <span class="live" id="cpLive" data-i18n="cap.live">0 个资源已嗅探</span>
             <div class="cp-host" role="tablist" aria-label="选择宿主">
               <button class="host-pill on-ae" type="button" data-host="ae" role="tab" aria-selected="true">AE</button>
               <button class="host-pill" type="button" data-host="ps" role="tab" aria-selected="false">PS</button>
@@ -925,13 +952,13 @@ html.has-cursor .cursor-glow { opacity: 1; }
           <div class="cp-body">
             <div class="cp-tabs" role="tablist" aria-label="媒体类型">
               <button class="cp-tab active" type="button" data-tab="video" role="tab" aria-selected="true">
-                <img class="product-icon" src="icons/ui/video.svg" alt="">视频<span class="n">1</span>
+                <img class="product-icon" src="icons/ui/video.svg" alt=""><span data-i18n="cap.video">视频</span><span class="n">1</span>
               </button>
               <button class="cp-tab" type="button" data-tab="image" role="tab" aria-selected="false">
-                <img class="product-icon" src="icons/ui/image.svg" alt="">图片<span class="n">3</span>
+                <img class="product-icon" src="icons/ui/image.svg" alt=""><span data-i18n="cap.image">图片</span><span class="n">3</span>
               </button>
               <button class="cp-tab" type="button" data-tab="audio" role="tab" aria-selected="false">
-                <img class="product-icon" src="icons/ui/audio.svg" alt="">音频<span class="n">2</span>
+                <img class="product-icon" src="icons/ui/audio.svg" alt=""><span data-i18n="cap.audio">音频</span><span class="n">2</span>
               </button>
             </div>
 
@@ -942,17 +969,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
 
             <div class="cp-rows">
               <div class="cp-row">
-                <span class="rk">目标</span>
+                <span class="rk" data-i18n="cap.target">目标</span>
                 <div class="cp-target-wrap">
                   <button class="cp-target" type="button" id="cpTargetBtn" aria-haspopup="listbox" aria-expanded="false">
-                    <span id="cpTargetLabel">文件夹 · 项目根目录</span>
+                    <span id="cpTargetLabel" data-i18n="cap.targetDefault">文件夹 · 项目根目录</span>
                     <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                   </button>
                   <div class="cp-target-menu" id="cpTargetMenu" role="listbox"></div>
                 </div>
               </div>
               <div class="cp-row">
-                <span class="rk">路径</span>
+                <span class="rk" data-i18n="cap.path">路径</span>
                 <div class="cp-path">
                   <span>{projectPath}/</span>
                   <input id="cpPath" value="NexusSnap" spellcheck="false" aria-label="项目子路径">
@@ -961,9 +988,9 @@ html.has-cursor .cursor-glow { opacity: 1; }
             </div>
 
             <button class="cp-send" id="cpSend" type="button">
-              <span id="cpSendLabel">发送到 AE</span>
+              <span id="cpSendLabel" data-i18n="cap.sendAe">发送到 AE</span>
             </button>
-            <p class="cp-hint">点击发送 = 按默认目标直达 · <kbd>长按</kbd> 发送 = 打开 <span class="key">Action Orbit</span> 精确路由</p>
+            <p class="cp-hint" data-i18n="cap.hint">点击发送 = 按默认目标直达 · <kbd>长按</kbd> 发送 = 打开 <span class="key">Action Orbit</span> 精确路由</p>
           </div>
         </div>
       </div>
@@ -976,11 +1003,11 @@ html.has-cursor .cursor-glow { opacity: 1; }
   <section class="scene orbit" id="s3" data-scene="3" aria-label="Action Orbit 精确路由">
     <div class="scene-pin">
       <div class="scene-inner">
-        <div class="orbit-head">
-          <div class="scene-tag scene-init-hide" data-r="orbit">路由 · Action Orbit</div>
-          <h2 class="scene-init-hide" data-r="orbit">一次手势，完成全部决策</h2>
-          <p class="scene-init-hide" data-r="orbit">按住发送按钮，拖动指针穿过层级节点，松手即执行——<b>松手于有效叶节点执行，松手于空白处自动取消</b>，回中心或按 Esc 退一级。</p>
-        </div>
+          <div class="orbit-head">
+            <div class="scene-tag scene-init-hide" data-r="orbit" data-i18n="orbit.tag">路由 · Action Orbit</div>
+            <h2 class="scene-init-hide" data-r="orbit" data-i18n="orbit.title">一次手势，完成全部决策</h2>
+            <p class="scene-init-hide" data-r="orbit" data-i18n="orbit.desc">按住发送按钮，拖动指针穿过层级节点，松手即执行——<b>松手于有效叶节点执行，松手于空白处自动取消</b>，回中心或按 Esc 退一级。</p>
+          </div>
 
         <div class="orbit-stage scene-init-hide" id="orbitStage" data-r="orbit-stage">
           <div class="orbit-rings" id="orbitRings" aria-hidden="true">
@@ -993,17 +1020,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
           <div class="orbit-flash" id="orbitFlash" aria-hidden="true"></div>
           <div class="orbit-crumbs" id="orbitCrumbs" aria-hidden="true"></div>
           <button class="orbit-center" id="orbitHub" type="button" aria-label="长按打开 Action Orbit">
-            <span id="hubMain">发送到 AE</span>
-            <small>长按 380ms</small>
+            <span id="hubMain" data-i18n="orbit.sendAe">发送到 AE</span>
+            <small data-i18n="orbit.hold">长按 380ms</small>
             <span class="hold-ring" id="holdRing" aria-hidden="true">
               <svg viewBox="0 0 108 108"><circle class="track" cx="54" cy="54" r="50"/><circle class="fill" id="holdFill" cx="54" cy="54" r="50"/></svg>
             </span>
           </button>
           <div class="orbit-guide" id="orbitGuide" aria-hidden="true">
             <div class="orbit-guide-cursor"></div>
-            <div class="orbit-guide-label">按住左键 · 拖向目标 · 松开</div>
+            <div class="orbit-guide-label" data-i18n="orbit.guide">按住左键 · 拖向目标 · 松开</div>
           </div>
-          <div class="orbit-hint" id="orbitHint">
+          <div class="orbit-hint" id="orbitHint" data-i18n="orbit.hint">
             <kbd>按住</kbd> 0.38s 呼出轨道 · 拖动穿过节点 · <kbd>Esc</kbd> 取消 · 回中心退一级
           </div>
         </div>
@@ -1017,61 +1044,61 @@ html.has-cursor .cursor-glow { opacity: 1; }
     <div class="scene-pin">
       <div class="scene-inner">
         <div class="tr-head">
-          <div class="scene-tag scene-init-hide" data-r="tr">归位 · 直达 AE 项目</div>
-          <h2 class="scene-init-hide" data-r="tr">确认 → 传输 → 精确落位</h2>
+          <div class="scene-tag scene-init-hide" data-r="tr" data-i18n="tr.tag">归位 · 直达 AE 项目</div>
+          <h2 class="scene-init-hide" data-r="tr" data-i18n="tr.title">确认 → 传输 → 精确落位</h2>
         </div>
 
         <div class="transfer-stage scene-init-hide" data-r="tr-stage">
-          <button class="transfer-reset" id="transferReset" type="button" aria-label="重新演示">↻ 重新演示</button>
+          <button class="transfer-reset" id="transferReset" type="button" aria-label="重新演示" data-i18n="tr.reset">↻ 重新演示</button>
 
-          <div class="t-card" id="confirmCard" style="display:none;">
-            <div class="confirm-row">
-              <div class="t">确认导入 <span id="cfName">video_1080p.mp4</span></div>
-              <div style="font-family:var(--mono);font-size:10.5px;color:var(--subtle);">已选 1 项</div>
-            </div>
-            <div class="confirm-field">
-              <label for="cfInput">文件名</label>
-              <div class="input-wrap">
-                <span>{projectPath}/NexusSnap/</span>
-                <input id="cfInput" value="video_1080p.mp4" spellcheck="false">
+            <div class="t-card" id="confirmCard" style="display:none;">
+              <div class="confirm-row">
+                <div class="t"><span data-i18n="tr.confirmPrefix">确认导入</span> <span id="cfName">video_1080p.mp4</span></div>
+                <div style="font-family:var(--mono);font-size:10.5px;color:var(--subtle);" data-i18n="tr.selected">已选 1 项</div>
+              </div>
+              <div class="confirm-field">
+                <label for="cfInput" data-i18n="tr.filename">文件名</label>
+                <div class="input-wrap">
+                  <span>{projectPath}/NexusSnap/</span>
+                  <input id="cfInput" value="video_1080p.mp4" spellcheck="false">
+                </div>
+              </div>
+              <div class="cf-detail" id="cfDetail">
+                <span data-i18n="tr.targetLabel">目标：</span><b id="cfTarget" data-i18n="tr.cfTarget">文件夹 · 项目根目录</b><br>
+                <span data-i18n="tr.layerLabel">图层：</span><b id="cfLayer" data-i18n="tr.cfLayer">最上层 / 合成起点 / 普通素材</b>
+              </div>
+              <div class="confirm-actions">
+                <button class="btn btn-outline" type="button" id="cfCancel" data-i18n="tr.cancel">取消</button>
+                <button class="btn btn-primary" type="button" id="cfOk" data-i18n="tr.ok">继续</button>
               </div>
             </div>
-            <div class="cf-detail" id="cfDetail">
-              目标：<b id="cfTarget">文件夹 · 项目根目录</b><br>
-              图层：<b id="cfLayer">最上层 / 合成起点 / 普通素材</b>
-            </div>
-            <div class="confirm-actions">
-              <button class="btn btn-outline" type="button" id="cfCancel">取消</button>
-              <button class="btn btn-primary" type="button" id="cfOk">继续</button>
-            </div>
-          </div>
 
           <div class="t-card prog-card" id="progCard" style="display:none;">
-            <div class="prog-title">正在传输 <b id="pgName">video_1080p.mp4</b></div>
-            <div class="prog-sub">本地 WebSocket · 媒体流不经服务器</div>
+            <div class="prog-title"><span data-i18n="tr.progTitle">正在传输</span> <b id="pgName">video_1080p.mp4</b></div>
+            <div class="prog-sub" data-i18n="tr.progSub">本地 WebSocket · 媒体流不经服务器</div>
             <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
             <div class="prog-phases">
-              <span class="prog-phase" data-phase="0">下载中</span>
-              <span class="prog-phase" data-phase="1">导入中</span>
-              <span class="prog-phase" data-phase="2">完成</span>
+              <span class="prog-phase" data-phase="0" data-i18n="tr.phaseDownload">下载中</span>
+              <span class="prog-phase" data-phase="1" data-i18n="tr.phaseImport">导入中</span>
+              <span class="prog-phase" data-phase="2" data-i18n="tr.phaseDone">完成</span>
             </div>
-            <div class="prog-done" id="progDone">✓ 已导入 AE 项目 · 归位成功</div>
+            <div class="prog-done" id="progDone" data-i18n="tr.progDone">✓ 已导入 AE 项目 · 归位成功</div>
           </div>
 
           <div class="ae-panel" id="aePanel" role="img" aria-label="After Effects 项目面板演示">
             <div class="ap-bar">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ae)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-              After Effects · 项目
-              <span class="ok">✓ 已连接 · 实时同步</span>
+              <span data-i18n="tr.aeTitle">After Effects · 项目</span>
+              <span class="ok" data-i18n="tr.aeConnected">✓ 已连接 · 实时同步</span>
             </div>
             <div class="ap-side">
-              <div class="t">项目面板</div>
+              <div class="t" data-i18n="tr.aePanel">项目面板</div>
               <div class="ap-folder">📁 <b>{projectPath}/NexusSnap/</b></div>
               <div class="ap-item" id="apItem">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 <span id="apItemName">video_1080p.mp4</span><span class="st">✓</span>
               </div>
-              <div class="t" style="margin-top:16px;">当前合成</div>
+              <div class="t" style="margin-top:16px;" data-i18n="tr.aeCurrent">当前合成</div>
               <div class="ap-comp-head"><b>main_comp</b> · 1280×720 · 30fps</div>
             </div>
             <div class="ap-main">
@@ -1107,75 +1134,75 @@ html.has-cursor .cursor-glow { opacity: 1; }
   <section class="info" id="s5" data-scene="5" aria-label="支持与安装">
     <div class="info-inner">
       <div class="info-block">
-        <div class="info-label scene-init-hide" data-r="info">Photoshop 支持</div>
-        <h2 class="scene-init-hide" data-r="info">同样的归位逻辑，同样支持 PS</h2>
-        <p class="desc scene-init-hide" data-r="info">图片素材可按三种形态进入 Photoshop，导入行为与 AE 侧完全对称。</p>
+        <div class="info-label scene-init-hide" data-r="info" data-i18n="info.psLabel">Photoshop 支持</div>
+        <h2 class="scene-init-hide" data-r="info" data-i18n="info.psTitle">同样的归位逻辑，同样支持 PS</h2>
+        <p class="desc scene-init-hide" data-r="info" data-i18n="info.psDesc">图片素材可按三种形态进入 Photoshop，导入行为与 AE 侧完全对称。</p>
         <div class="ps-grid scene-init-hide" data-r="info">
           <div class="ps-card">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="12" y="6" width="10" height="8" rx="1"/></svg></div>
-            <h3>智能对象</h3>
-            <p>以智能对象导入，保留原始数据，PS 内无损缩放、反复编辑不损画质。</p>
+            <h3 data-i18n="info.psSmart">智能对象</h3>
+            <p data-i18n="info.psSmartDesc">以智能对象导入，保留原始数据，PS 内无损缩放、反复编辑不损画质。</p>
             <span class="tag">SMART OBJECT</span>
           </div>
           <div class="ps-card">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
-            <h3>普通图层</h3>
-            <p>直接栅格化为普通图层，落在当前画布对应位置，一步到位。</p>
+            <h3 data-i18n="info.psRaster">普通图层</h3>
+            <p data-i18n="info.psRasterDesc">直接栅格化为普通图层，落在当前画布对应位置，一步到位。</p>
             <span class="tag">RASTER LAYER</span>
           </div>
           <div class="ps-card">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-            <h3>本地图片</h3>
-            <p>仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。</p>
+            <h3 data-i18n="info.psSave">本地图片</h3>
+            <p data-i18n="info.psSaveDesc">仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。</p>
             <span class="tag">SAVE ONLY</span>
           </div>
         </div>
       </div>
 
       <div class="info-block">
-        <div class="info-label scene-init-hide" data-r="info">深度适配</div>
-        <h2 class="scene-init-hide" data-r="info">11 个主流平台专属解析 + 通用嗅探</h2>
-        <p class="desc scene-init-hide" data-r="info">绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
+        <div class="info-label scene-init-hide" data-r="info" data-i18n="info.platLabel">深度适配</div>
+        <h2 class="scene-init-hide" data-r="info" data-i18n="info.platTitle">11 个主流平台专属解析 + 通用嗅探</h2>
+        <p class="desc scene-init-hide" data-r="info" data-i18n="info.platDesc">绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
         <div class="plat-grid scene-init-hide" data-r="info">
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/youtube.svg" alt="YouTube"><div class="plat-name">YouTube</div><div class="plat-detail">InnerTube API · 全清晰度</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/bilibili.svg" alt="Bilibili"><div class="plat-name">Bilibili</div><div class="plat-detail">__playinfo__ · 音视频分离</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/xiaohongshu.svg" alt="小红书"><div class="plat-name">小红书</div><div class="plat-detail">笔记图片/视频提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/instagram.svg" alt="Instagram"><div class="plat-name">Instagram</div><div class="plat-detail">帖子媒体源解析</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/x.svg" alt="X"><div class="plat-name">Twitter / X</div><div class="plat-detail">媒体源地址还原</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/pinterest.svg" alt="Pinterest"><div class="plat-name">Pinterest</div><div class="plat-detail">Pin 原图提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/reddit.svg" alt="Reddit"><div class="plat-name">Reddit</div><div class="plat-detail">视频/图片源提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/sinaweibo.svg" alt="微博"><div class="plat-name">微博</div><div class="plat-detail">高清原图 URL 解析</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/taobao.svg" alt="淘宝"><div class="plat-name">淘宝</div><div class="plat-detail">商品图/视频提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/youtube.svg" alt="YouTube"><div class="plat-name">YouTube</div><div class="plat-detail" data-i18n="info.pYoutube">InnerTube API · 全清晰度</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/bilibili.svg" alt="Bilibili"><div class="plat-name">Bilibili</div><div class="plat-detail" data-i18n="info.pBilibili">__playinfo__ · 音视频分离</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/xiaohongshu.svg" alt="小红书"><div class="plat-name">小红书</div><div class="plat-detail" data-i18n="info.pXhs">笔记图片/视频提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/instagram.svg" alt="Instagram"><div class="plat-name">Instagram</div><div class="plat-detail" data-i18n="info.pIg">帖子媒体源解析</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/x.svg" alt="X"><div class="plat-name">Twitter / X</div><div class="plat-detail" data-i18n="info.pX">媒体源地址还原</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/pinterest.svg" alt="Pinterest"><div class="plat-name">Pinterest</div><div class="plat-detail" data-i18n="info.pPin">Pin 原图提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/reddit.svg" alt="Reddit"><div class="plat-name">Reddit</div><div class="plat-detail" data-i18n="info.pReddit">视频/图片源提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/sinaweibo.svg" alt="微博"><div class="plat-name">微博</div><div class="plat-detail" data-i18n="info.pWeibo">高清原图 URL 解析</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/taobao.svg" alt="淘宝"><div class="plat-name">淘宝</div><div class="plat-detail" data-i18n="info.pTaobao">商品图/视频提取</div></div>
           <div class="plat-card"><img class="platform-logo" src="icons/platform/jimeng.ico" alt="即梦"><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
-          <div class="plat-card"><img class="product-icon" src="icons/ui/link.svg" alt=""><div class="plat-name">通用网页</div><div class="plat-detail">DOM 扫描 + 网络嗅探</div></div>
+          <div class="plat-card"><img class="product-icon" src="icons/ui/link.svg" alt=""><div class="plat-name">通用网页</div><div class="plat-detail" data-i18n="info.pGeneric">DOM 扫描 + 网络嗅探</div></div>
         </div>
       </div>
       <div class="info-block" id="quickstart">
-        <div class="info-label scene-init-hide" data-r="info">快速开始</div>
-        <h2 class="scene-init-hide" data-r="info">下载安装，即刻使用</h2>
+        <div class="info-label scene-init-hide" data-r="info" data-i18n="info.quickLabel">快速开始</div>
+        <h2 class="scene-init-hide" data-r="info" data-i18n="info.quickTitle">下载安装，即刻使用</h2>
         <div class="qs-block primary scene-init-hide" data-r="info">
-          <h4><span class="qs-num">1</span> 安装浏览器扩展</h4>
-          <p>下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>选择解压文件夹。支持 Chrome / Edge / Arc 等 Chromium 内核。</p>
+          <h4><span class="qs-num">1</span> <span data-i18n="info.qs1">安装浏览器扩展</span></h4>
+          <p data-i18n="info.qs1Desc">下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>选择解压文件夹。支持 Chrome / Edge / Arc 等 Chromium 内核。</p>
           <div class="qs-dl">
             <button class="btn btn-primary" type="button" data-download="browser">
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              下载浏览器扩展 (.zip)
+              <span data-i18n="info.dlBrowser">下载浏览器扩展 (.zip)</span>
             </button>
           </div>
-          <p style="margin-top:12px;font-size:12.5px;color:var(--subtle);">macOS 用户解压后执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 去除安全隔离标记。</p>
+          <p style="margin-top:12px;font-size:12.5px;color:var(--subtle);" data-i18n="info.macNote">macOS 用户解压后执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 去除安全隔离标记。</p>
         </div>
 
         <div class="qs-block scene-init-hide" data-r="info">
-          <h4><span class="qs-num">2</span> 安装 AE/PS CEP 插件</h4>
-          <p>下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录，并确保 <code>PlayerDebugMode = 1</code>。</p>
+          <h4><span class="qs-num">2</span> <span data-i18n="info.qs2">安装 AE/PS CEP 插件</span></h4>
+          <p data-i18n="info.qs2Desc">下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录，并确保 <code>PlayerDebugMode = 1</code>。</p>
           <div class="qs-dl">
             <button class="btn btn-primary" type="button" data-download="cep">
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              下载 CEP 插件
+              <span data-i18n="info.dlCep">下载 CEP 插件</span>
             </button>
           </div>
           <div class="code-block">
-            <button class="copy-btn" type="button" data-copy aria-label="复制 CEP 安装路径">复制</button>
+            <button class="copy-btn" type="button" data-copy aria-label="复制 CEP 安装路径" data-i18n="info.copyBtn">复制</button>
             <span class="cm"># macOS CEP 扩展目录</span>
 ~/Library/Application Support/Adobe/CEP/extensions/
 <span class="cm"># Windows CEP 扩展目录</span>
@@ -1185,30 +1212,30 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
         </div>
 
         <div class="qs-block scene-init-hide" data-r="info">
-          <h4><span class="qs-num">3</span> 开始采集与导入</h4>
-          <p>启动 After Effects 或 Photoshop → 浏览任意网页 → 点击扩展图标查看嗅探媒体并选中发送；或 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板，长按发送打开 Action Orbit 精确路由。</p>
+          <h4><span class="qs-num">3</span> <span data-i18n="info.qs3">开始采集与导入</span></h4>
+          <p data-i18n="info.qs3Desc">启动 After Effects 或 Photoshop → 浏览任意网页 → 点击扩展图标查看嗅探媒体并选中发送；或 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板，长按发送打开 Action Orbit 精确路由。</p>
         </div>
       </div>
 
       <div class="info-block">
-        <div class="info-label scene-init-hide" data-r="info">兼容性</div>
-        <h2 class="scene-init-hide" data-r="info">环境要求</h2>
+        <div class="info-label scene-init-hide" data-r="info" data-i18n="info.compatLabel">兼容性</div>
+        <h2 class="scene-init-hide" data-r="info" data-i18n="info.compatTitle">环境要求</h2>
         <div class="compat-grid scene-init-hide" data-r="info">
           <div class="compat-card">
-            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>浏览器</div>
-            <p>Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。</p>
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span data-i18n="info.cBrowserT">浏览器</span></div>
+            <p data-i18n="info.cBrowser">Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。</p>
           </div>
           <div class="compat-card">
-            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>After Effects</div>
-            <p>AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。</p>
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span data-i18n="info.cAet">After Effects</span></div>
+            <p data-i18n="info.cAe">AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。</p>
           </div>
           <div class="compat-card">
-            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Photoshop</div>
-            <p>PS 23.0+ (PHXS)，支持图片与 SVG 导入，智能对象或像素图层两种模式。</p>
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span data-i18n="info.cPst">Photoshop</span></div>
+            <p data-i18n="info.cPs">PS 23.0+ (PHXS)，支持图片与 SVG 导入，智能对象或像素图层两种模式。</p>
           </div>
           <div class="compat-card">
-            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>隐私</div>
-            <p>所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。</p>
+            <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span data-i18n="info.cPrivt">隐私</span></div>
+            <p data-i18n="info.cPriv">所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。</p>
           </div>
         </div>
       </div>
@@ -1218,10 +1245,10 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
 <footer class="site-footer">
   <div class="inner">
-    <div class="copy">© 2026 NexusSnap · 浏览器到 AE/PS 的素材归位桥梁</div>
+    <div class="copy" data-i18n="footer.copy">© 2026 NexusSnap · 浏览器到 AE/PS 的素材归位桥梁</div>
     <div class="fl">
-      <a data-scroll-top>返回顶部</a>
-      <a href="https://github.com/yancongya/NexusSnap-landing/releases" target="_blank" rel="noopener noreferrer">更新日志</a>
+      <a data-scroll-top data-i18n="footer.top">返回顶部</a>
+      <a href="https://github.com/yancongya/NexusSnap-landing/releases" target="_blank" rel="noopener noreferrer" data-i18n="footer.changelog">更新日志</a>
     </div>
   </div>
 </footer>
@@ -1242,6 +1269,267 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
   var HAS_GSAP = typeof window.gsap !== "undefined";
   var HAS_ST = typeof window.ScrollTrigger !== "undefined";
   var LENIS_CTOR = (typeof window.Lenis !== "undefined") ? window.Lenis : null;
+
+  /* ---------- 主题 / 语言 偏好 ---------- */
+  var I18N = {
+    zh: {
+      "meta.title": "NexusSnap · 散落各处的素材，一键归位到 AE / PS",
+      "meta.description": "NexusSnap — 浏览器媒体嗅探与 Adobe 创作工具导入桥梁：散落各处的素材，一键归位到 AE / PS。支持 YouTube、Bilibili、小红书等 11 个主流平台深度解析。",
+      "nav.experience": "体验", "nav.pain": "痛点", "nav.capture": "采集", "nav.orbit": "轨道", "nav.transfer": "归位", "nav.support": "支持",
+      "nav.langToggle": "切换语言", "nav.download": "下载",
+      "stage.collect": "采集", "stage.route": "路由", "stage.place": "归位",
+      "hero.tag": "浏览器扩展 + AE / PS CEP 插件",
+      "hero.title": "散落各处的素材，<br>一键归位到 <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span>",
+      "hero.sub": "网页媒体、本地文件、剪贴板里的零散素材——嗅探、采集、路由，直达项目指定路径与合成时间线。无需下载、无需整理、无需拖拽。",
+      "hero.enter": "进入演示", "hero.download": "下载插件", "hero.scrollHint": "滚动进入演示",
+      "pain.tag": "痛点 · 素材散落各处",
+      "pain.title": "灵感出现时，素材却在四个角落",
+      "pain.desc": "网页上看到的视频、本地攒下的文件、剪贴板里的截图、项目文件夹里的旧素材——<b>采集、下载、改名字、找路径、拖进合成</b>，每一步都在打断创作。<br>点任意一张卡片，体验嗅探。",
+      "pain.web": "网页媒体", "pain.webCount": "3 个已发现", "pain.webHint": "<kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片体验",
+      "pain.local": "本地文件", "pain.localCount": "2 个待归位", "pain.localHint": "拖入扩展图标即可收集",
+      "pain.clip": "剪贴板", "pain.clipCount": "1 项待处理", "pain.clipHint": "截图后自动出现在采集面板",
+      "pain.proj": "项目文件夹", "pain.projCount": "目标：…/NexusSnap", "pain.projHint": "旧素材复用，等待一键归位",
+      "pain.dock": "采集托盘", "pain.dockSniffed": "已嗅探", "pain.dockItems": "项",
+      "cap.tag": "采集 · 不离开网页",
+      "cap.title": "面板即工作台：选中、改目标、发送",
+      "cap.quick": "QUICK CAPTURE", "cap.live": "0 个资源已嗅探",
+      "cap.video": "视频", "cap.image": "图片", "cap.audio": "音频", "cap.liveUnit": " 个资源已嗅探",
+      "cap.target": "目标", "cap.targetDefault": "文件夹 · 项目根目录", "cap.path": "路径",
+      "cap.sendAe": "发送到 AE",
+      "cap.hint": "点击发送 = 按默认目标直达 · <kbd>长按</kbd> 发送 = 打开 <span class=\"key\">Action Orbit</span> 精确路由",
+      "orbit.tag": "路由 · Action Orbit",
+      "orbit.title": "一次手势，完成全部决策",
+      "orbit.desc": "按住发送按钮，拖动指针穿过层级节点，松手即执行——<b>松手于有效叶节点执行，松手于空白处自动取消</b>，回中心或按 Esc 退一级。",
+      "orbit.sendAe": "发送到 AE", "orbit.hold": "长按 380ms",
+      "orbit.guide": "按住左键 · 拖向目标 · 松开",
+      "orbit.hint": "<kbd>按住</kbd> 0.38s 呼出轨道 · 拖动穿过节点 · <kbd>Esc</kbd> 取消 · 回中心退一级",
+      "orbit.exec": "松手执行", "orbit.drill": "继续 ▸", "orbit.crumbs": "路由 ▸ ",
+      "tr.tag": "归位 · 直达 AE 项目",
+      "tr.title": "确认 → 传输 → 精确落位",
+      "tr.reset": "↻ 重新演示", "tr.confirmPrefix": "确认导入", "tr.selected": "已选 1 项",
+      "tr.filename": "文件名", "tr.targetLabel": "目标：", "tr.cfTarget": "文件夹 · 项目根目录",
+      "tr.layerLabel": "图层：", "tr.cfLayer": "最上层 / 合成起点 / 普通素材",
+      "tr.cancel": "取消", "tr.ok": "继续",
+      "tr.progTitle": "正在传输", "tr.progSub": "本地 WebSocket · 媒体流不经服务器",
+      "tr.phaseDownload": "下载中", "tr.phaseImport": "导入中", "tr.phaseDone": "完成",
+      "tr.progDone": "✓ 已导入 AE 项目 · 归位成功",
+      "tr.aeTitle": "After Effects · 项目", "tr.aeConnected": "✓ 已连接 · 实时同步",
+      "tr.aePanel": "项目面板", "tr.aeCurrent": "当前合成",
+      "info.psLabel": "Photoshop 支持",
+      "info.psTitle": "同样的归位逻辑，同样支持 PS",
+      "info.psDesc": "图片素材可按三种形态进入 Photoshop，导入行为与 AE 侧完全对称。",
+      "info.psSmart": "智能对象", "info.psSmartDesc": "以智能对象导入，保留原始数据，PS 内无损缩放、反复编辑不损画质。",
+      "info.psRaster": "普通图层", "info.psRasterDesc": "直接栅格化为普通图层，落在当前画布对应位置，一步到位。",
+      "info.psSave": "本地图片", "info.psSaveDesc": "仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。",
+      "info.platLabel": "深度适配",
+      "info.platTitle": "11 个主流平台专属解析 + 通用嗅探",
+      "info.platDesc": "绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。",
+      "info.pYoutube": "InnerTube API · 全清晰度", "info.pBilibili": "__playinfo__ · 音视频分离",
+      "info.pXhs": "笔记图片/视频提取", "info.pIg": "帖子媒体源解析", "info.pX": "媒体源地址还原",
+      "info.pPin": "Pin 原图提取", "info.pReddit": "视频/图片源提取", "info.pWeibo": "高清原图 URL 解析",
+      "info.pTaobao": "商品图/视频提取", "info.pGeneric": "DOM 扫描 + 网络嗅探",
+      "info.quickLabel": "快速开始", "info.quickTitle": "下载安装，即刻使用",
+      "info.qs1": "安装浏览器扩展", "info.qs1Desc": "下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>选择解压文件夹。支持 Chrome / Edge / Arc 等 Chromium 内核。",
+      "info.dlBrowser": "下载浏览器扩展 (.zip)",
+      "info.macNote": "macOS 用户解压后执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 去除安全隔离标记。",
+      "info.qs2": "安装 AE/PS CEP 插件", "info.qs2Desc": "下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录，并确保 <code>PlayerDebugMode = 1</code>。",
+      "info.dlCep": "下载 CEP 插件", "info.copyBtn": "复制",
+      "info.qs3": "开始采集与导入", "info.qs3Desc": "启动 After Effects 或 Photoshop → 浏览任意网页 → 点击扩展图标查看嗅探媒体并选中发送；或 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板，长按发送打开 Action Orbit 精确路由。",
+      "info.compatLabel": "兼容性", "info.compatTitle": "环境要求",
+      "info.cBrowserT": "浏览器", "info.cBrowser": "Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。",
+      "info.cAet": "After Effects", "info.cAe": "AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。",
+      "info.cPst": "Photoshop", "info.cPs": "PS 23.0+ (PHXS)，支持图片与 SVG 导入，智能对象或像素图层两种模式。",
+      "info.cPrivt": "隐私", "info.cPriv": "所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。",
+      "footer.copy": "© 2026 NexusSnap · 浏览器到 AE/PS 的素材归位桥梁",
+      "footer.top": "返回顶部", "footer.changelog": "更新日志",
+      "theme.toDark": "切换到深色主题", "theme.toLight": "切换到浅色主题", "send.to": "发送到 ",
+      "toast.dlUnavailable": "下载配置暂不可用 · 请前往 GitHub Releases",
+      "toast.sniffed": "已嗅探 · {{name}} 加入采集队列",
+      "toast.targetSet": "目标已设为 · {{label}}",
+      "toast.hostSwitched": "已切换宿主 · {{host}}",
+      "toast.trayEmpty": "采集托盘还是空的 · 先回上一屏点几张素材",
+      "toast.cancelled": "已取消 · 未执行任何操作",
+      "toast.pathChosen": "已选定 · {{label}}{{ps}}",
+      "toast.importCancelled": "已取消导入",
+      "toast.placed": "归位成功 · 已导入 AE 项目",
+      "toast.reset": "已重置 · 重新开始演示",
+      "toast.copied": "已复制到剪贴板",
+      "toast.copyFailed": "复制失败，请手动复制",
+      "toast.psImport": "（PS 导入）",
+      "tour.step.s0": "01 / 06 · 开始", "tour.text.s0": "向下滚动，跟随素材完成一次归位。",
+      "tour.step.s1": "02 / 06 · 采集", "tour.text.s1": "点击任意素材卡片，把它加入采集队列。",
+      "tour.step.s2": "03 / 06 · 设置", "tour.text.s2": "选择宿主、素材类型与目标，然后点击发送。",
+      "tour.step.s3": "04 / 06 · 路由", "tour.text.s3": "按住圆心 0.38 秒，拖向节点，松开执行。",
+      "tour.step.s4": "05 / 06 · 确认", "tour.text.s4": "核对名称和落位目标，点击继续完成传输。",
+      "tour.step.s5": "06 / 06 · 完成", "tour.text.s5": "体验完成。继续查看支持平台与安装方式。"
+    },
+    en: {
+      "meta.title": "NexusSnap · Scattered assets, one-click routing to AE / PS",
+      "meta.description": "NexusSnap — a browser media sniffer and import bridge for Adobe creative tools: route scattered assets to AE / PS in one click. Dedicated parsing for 11 major platforms including YouTube, Bilibili, and Xiaohongshu.",
+      "nav.experience": "Experience", "nav.pain": "Pain points", "nav.capture": "Capture", "nav.orbit": "Orbit", "nav.transfer": "Transfer", "nav.support": "Support",
+      "nav.langToggle": "Switch language", "nav.download": "Download",
+      "stage.collect": "Capture", "stage.route": "Route", "stage.place": "Place",
+      "hero.tag": "Browser extension + AE / PS CEP plugin",
+      "hero.title": "Scattered assets, <br>one-click routing to <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span>",
+      "hero.sub": "Web media, local files, and clipboard scraps — sniff, capture, and route them straight to the project's target path and composition timeline. No download, no organizing, no dragging.",
+      "hero.enter": "Enter demo", "hero.download": "Download plugin", "hero.scrollHint": "Scroll to enter the demo",
+      "pain.tag": "Pain · assets scattered everywhere",
+      "pain.title": "When inspiration strikes, assets are in four corners",
+      "pain.desc": "Videos on the web, files on disk, screenshots in the clipboard, old assets in the project folder — <b>capture, download, rename, find the path, drag into the comp</b>, every step interrupts your creative flow.<br>Tap any card to experience sniffing.",
+      "pain.web": "Web media", "pain.webCount": "3 found", "pain.webHint": "<kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>Right-click</kbd> to open the capture panel · tap a card to try",
+      "pain.local": "Local files", "pain.localCount": "2 to place", "pain.localHint": "Drag onto the extension icon to collect",
+      "pain.clip": "Clipboard", "pain.clipCount": "1 pending", "pain.clipHint": "Appears in the capture panel automatically after a screenshot",
+      "pain.proj": "Project folder", "pain.projCount": "Target: …/NexusSnap", "pain.projHint": "Reuse old assets, awaiting one-click placement",
+      "pain.dock": "Capture tray", "pain.dockSniffed": "Sniffed", "pain.dockItems": "items",
+      "cap.tag": "Capture · without leaving the page",
+      "cap.title": "The panel is your workstation: select, retarget, send",
+      "cap.quick": "QUICK CAPTURE", "cap.live": "0 resources sniffed",
+      "cap.video": "Video", "cap.image": "Image", "cap.audio": "Audio", "cap.liveUnit": " resources sniffed",
+      "cap.target": "Target", "cap.targetDefault": "Folder · project root", "cap.path": "Path",
+      "cap.sendAe": "Send to AE",
+      "cap.hint": "Click send = straight to default target · <kbd>hold</kbd> send = open <span class=\"key\">Action Orbit</span> for precise routing",
+      "orbit.tag": "Route · Action Orbit",
+      "orbit.title": "One gesture, every decision made",
+      "orbit.desc": "Hold the send button, drag the pointer through the hierarchy nodes, release to execute — <b>release on a valid leaf to run, release on empty space to cancel</b>, return to center or press Esc to step back.",
+      "orbit.sendAe": "Send to AE", "orbit.hold": "Hold 380ms",
+      "orbit.guide": "Hold left · drag to target · release",
+      "orbit.hint": "<kbd>Hold</kbd> 0.38s to open orbit · drag through nodes · <kbd>Esc</kbd> to cancel · return to center to step back",
+      "orbit.exec": "Release to run", "orbit.drill": "Next ▸", "orbit.crumbs": "Route ▸ ",
+      "tr.tag": "Transfer · straight to the AE project",
+      "tr.title": "Confirm → transfer → precise placement",
+      "tr.reset": "↻ Replay", "tr.confirmPrefix": "Confirm import", "tr.selected": "1 selected",
+      "tr.filename": "Filename", "tr.targetLabel": "Target: ", "tr.cfTarget": "Folder · project root",
+      "tr.layerLabel": "Layer: ", "tr.cfLayer": "Top layer / comp start / normal asset",
+      "tr.cancel": "Cancel", "tr.ok": "Continue",
+      "tr.progTitle": "Transferring", "tr.progSub": "Local WebSocket · media stream never touches a server",
+      "tr.phaseDownload": "Downloading", "tr.phaseImport": "Importing", "tr.phaseDone": "Done",
+      "tr.progDone": "✓ Imported to AE project · placed successfully",
+      "tr.aeTitle": "After Effects · project", "tr.aeConnected": "✓ Connected · live sync",
+      "tr.aePanel": "Project panel", "tr.aeCurrent": "Current composition",
+      "info.psLabel": "Photoshop support",
+      "info.psTitle": "Same placement logic, now for PS too",
+      "info.psDesc": "Image assets can enter Photoshop in three forms, with import behavior fully symmetric to the AE side.",
+      "info.psSmart": "Smart Object", "info.psSmartDesc": "Import as a Smart Object, preserving source data for lossless scaling and non-destructive editing in PS.",
+      "info.psRaster": "Raster layer", "info.psRasterDesc": "Rasterize straight to a normal layer at the right spot on the current canvas, in one step.",
+      "info.psSave": "Local image", "info.psSaveDesc": "Just save to a chosen path and decide how to use it in PS yourself — lightweight, non-intrusive.",
+      "info.platLabel": "Deep integration",
+      "info.platTitle": "11 major platforms with dedicated parsing + universal sniffing",
+      "info.platDesc": "Bypass front-end anti-scraping to reach raw HD sources, while also supporting DOM scanning and network interception on any page.",
+      "info.pYoutube": "InnerTube API · all resolutions", "info.pBilibili": "__playinfo__ · audio/video separated",
+      "info.pXhs": "Note image/video extraction", "info.pIg": "Post media source parsing", "info.pX": "Restore media source URLs",
+      "info.pPin": "Pin original image extraction", "info.pReddit": "Video/image source extraction", "info.pWeibo": "HD original image URL parsing",
+      "info.pTaobao": "Product image/video extraction", "info.pGeneric": "DOM scan + network sniffing",
+      "info.quickLabel": "Quick start", "info.quickTitle": "Download, install, and use instantly",
+      "info.qs1": "Install the browser extension", "info.qs1Desc": "Download the <code>.zip</code>, unzip it, then open <code>chrome://extensions</code>, enable <b>Developer mode</b>, and click <b>Load unpacked</b> to select the folder. Works on Chrome / Edge / Arc and other Chromium browsers.",
+      "info.dlBrowser": "Download browser extension (.zip)",
+      "info.macNote": "macOS users: after unzipping, run <code>xattr -dr com.apple.quarantine extracted-folder-name</code> to clear the quarantine flag.",
+      "info.qs2": "Install the AE/PS CEP plugin", "info.qs2Desc": "Download the CEP plugin package, unzip it, drop the whole folder into the Adobe CEP extensions directory, and make sure <code>PlayerDebugMode = 1</code>.",
+      "info.dlCep": "Download CEP plugin", "info.copyBtn": "Copy",
+      "info.qs3": "Start capturing and importing", "info.qs3Desc": "Launch After Effects or Photoshop → browse any page → click the extension icon to see sniffed media and send it; or <code>Ctrl+Shift+Right-click</code> to open the quick-capture panel, then hold-send to open Action Orbit for precise routing.",
+      "info.compatLabel": "Compatibility", "info.compatTitle": "Requirements",
+      "info.cBrowserT": "Browser", "info.cBrowser": "Chrome 88+, Edge 88+, Arc and other Chromium browsers. Firefox is not supported yet.",
+      "info.cAet": "After Effects", "info.cAe": "AE 22.0+ (AEFT), requires CEP debug mode (PlayerDebugMode = 1).",
+      "info.cPst": "Photoshop", "info.cPs": "PS 23.0+ (PHXS), supports image and SVG import, as Smart Object or pixel layer.",
+      "info.cPrivt": "Privacy", "info.cPriv": "All data is processed locally; media travels over a local WebSocket and never reaches any server.",
+      "footer.copy": "© 2026 NexusSnap · the bridge from browser to AE/PS for your assets",
+      "footer.top": "Back to top", "footer.changelog": "Changelog",
+      "theme.toDark": "Switch to dark theme", "theme.toLight": "Switch to light theme", "send.to": "Send to ",
+      "toast.dlUnavailable": "Download config unavailable · please visit GitHub Releases",
+      "toast.sniffed": "Sniffed · {{name}} added to capture queue",
+      "toast.targetSet": "Target set to · {{label}}",
+      "toast.hostSwitched": "Host switched to · {{host}}",
+      "toast.trayEmpty": "Capture tray is empty · go back and tap a few assets first",
+      "toast.cancelled": "Cancelled · no action taken",
+      "toast.pathChosen": "Selected · {{label}}{{ps}}",
+      "toast.importCancelled": "Import cancelled",
+      "toast.placed": "Placed · imported to AE project",
+      "toast.reset": "Reset · demo restarted",
+      "toast.copied": "Copied to clipboard",
+      "toast.copyFailed": "Copy failed, please copy manually",
+      "toast.psImport": " (PS import)",
+      "tour.step.s0": "01 / 06 · Start", "tour.text.s0": "Scroll down and follow the asset through one placement.",
+      "tour.step.s1": "02 / 06 · Capture", "tour.text.s1": "Tap any asset card to add it to the capture queue.",
+      "tour.step.s2": "03 / 06 · Setup", "tour.text.s2": "Pick host, asset type, and target, then click send.",
+      "tour.step.s3": "04 / 06 · Route", "tour.text.s3": "Hold the hub for 0.38s, drag to a node, release to run.",
+      "tour.step.s4": "05 / 06 · Confirm", "tour.text.s4": "Check the name and landing target, then continue to transfer.",
+      "tour.step.s5": "06 / 06 · Done", "tour.text.s5": "Experience complete. Keep exploring supported platforms and install options."
+    }
+  };
+  var THEME_KEY = "nexus-theme", LANG_KEY = "nexus-lang";
+  var LANG = (function () {
+    try { var s = localStorage.getItem(LANG_KEY); } catch (e) { var s = null; }
+    return s === "en" ? "en" : "zh";
+  })();
+  function t(key) {
+    if (typeof I18N !== "undefined" && I18N[LANG] && Object.prototype.hasOwnProperty.call(I18N[LANG], key)) return I18N[LANG][key];
+    if (typeof I18N !== "undefined" && I18N.zh && Object.prototype.hasOwnProperty.call(I18N.zh, key)) return I18N.zh[key];
+    return key;
+  }
+  function tf(key, vars) {
+    return t(key).replace(/\{\{(\w+)\}\}/g, function (m, k) { return (vars && vars[k] != null) ? vars[k] : m; });
+  }
+  function L(node) {
+    if (node && LANG === "en" && node.en != null) return node.en;
+    return node ? node.label : "";
+  }
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+    var theme = (saved === "light" || saved === "dark") ? saved
+      : (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+  function updateThemeBtn() {
+    var btn = $("#themeToggle"); if (!btn) return;
+    var light = document.documentElement.getAttribute("data-theme") === "light";
+    btn.setAttribute("aria-label", light ? t("theme.toDark") : t("theme.toLight"));
+    btn.setAttribute("title", light ? t("theme.toDark") : t("theme.toLight"));
+  }
+  function bindTheme() {
+    var btn = $("#themeToggle"); if (!btn) return;
+    btn.addEventListener("click", function () {
+      var light = document.documentElement.getAttribute("data-theme") === "light";
+      var next = light ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+      updateThemeBtn();
+    });
+    updateThemeBtn();
+  }
+  function applyLang() {
+    if (typeof I18N === "undefined") return;
+    document.documentElement.setAttribute("lang", LANG === "en" ? "en" : "zh-CN");
+    $$("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      if (I18N[LANG] && Object.prototype.hasOwnProperty.call(I18N[LANG], key)) el.innerHTML = I18N[LANG][key];
+      else if (I18N.zh && Object.prototype.hasOwnProperty.call(I18N.zh, key)) el.innerHTML = I18N.zh[key];
+    });
+    $$("[data-i18n-attr]").forEach(function (el) {
+      el.getAttribute("data-i18n-attr").split(";").forEach(function (pair) {
+        var kv = pair.split(":");
+        if (kv.length === 2) {
+          var attr = kv[0].trim(), key = kv[1].trim();
+          var val = (I18N[LANG] && I18N[LANG][key] != null) ? I18N[LANG][key]
+            : (I18N.zh && I18N.zh[key] != null ? I18N.zh[key] : "");
+          if (attr === "html") el.innerHTML = val; else el.setAttribute(attr, val);
+        }
+      });
+    });
+    var lt = $("#langToggle"); if (lt) lt.textContent = LANG === "en" ? "中" : "EN";
+    if (typeof renderTargetMenu === "function") renderTargetMenu();
+    if (typeof updateTargetLabel === "function") updateTargetLabel();
+    if (typeof setAccent === "function" && typeof HOST !== "undefined") setAccent(HOST);
+    if (typeof refreshTour === "function") refreshTour();
+  }
+  function bindLang() {
+    var btn = $("#langToggle"); if (!btn) return;
+    btn.addEventListener("click", function () {
+      LANG = (LANG === "en") ? "zh" : "en";
+      try { localStorage.setItem(LANG_KEY, LANG); } catch (e) {}
+      applyLang();
+    });
+    btn.textContent = LANG === "en" ? "中" : "EN";
+  }
 
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
@@ -1308,7 +1596,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
           if (!channel || !channel.primary) throw new Error("download channel unavailable");
           window.location.assign(channel.primary);
         }).catch(function () {
-          toast("下载配置暂不可用 · 请前往 GitHub Releases", "err");
+          toast(t("toast.dlUnavailable"), "err");
         });
       });
     });
@@ -1319,7 +1607,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
         var mirror = document.createElement("a");
         mirror.className = "mirror-download";
         mirror.href = channel.mirrors[0];
-        mirror.textContent = "备用下载";
+        mirror.textContent = t("mirror.download");
         mirror.setAttribute("rel", "noopener noreferrer");
         button.parentNode.appendChild(mirror);
       });
@@ -1413,13 +1701,15 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
   /* ---------- 全程沉浸式操作引导 ---------- */
   var TOUR_STEPS = {
-    s0: { step: "01 / 06 · 开始", mode: "scroll", text: "向下滚动，跟随素材完成一次归位。" },
-    s1: { step: "02 / 06 · 采集", mode: "click", text: "点击任意素材卡片，把它加入采集队列。" },
-    s2: { step: "03 / 06 · 设置", mode: "click", text: "选择宿主、素材类型与目标，然后点击发送。" },
-    s3: { step: "04 / 06 · 路由", mode: "hold", text: "按住圆心 0.38 秒，拖向节点，松开执行。" },
-    s4: { step: "05 / 06 · 确认", mode: "confirm", text: "核对名称和落位目标，点击继续完成传输。" },
-    s5: { step: "06 / 06 · 完成", mode: "scroll", text: "体验完成。继续查看支持平台与安装方式。" }
+    s0: { step: "tour.step.s0", mode: "scroll", text: "tour.text.s0" },
+    s1: { step: "tour.step.s1", mode: "click", text: "tour.text.s1" },
+    s2: { step: "tour.step.s2", mode: "click", text: "tour.text.s2" },
+    s3: { step: "tour.step.s3", mode: "hold", text: "tour.text.s3" },
+    s4: { step: "tour.step.s4", mode: "confirm", text: "tour.text.s4" },
+    s5: { step: "tour.step.s5", mode: "scroll", text: "tour.text.s5" }
   };
+  var tourUpdateRef = null;
+  function refreshTour() { if (typeof tourUpdateRef === "function") tourUpdateRef(); }
   function bindTourGuide() {
     var guide = $("#tourGuide"), step = $("#tourStep"), text = $("#tourText");
     if (!guide || !step || !text) return;
@@ -1441,13 +1731,14 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
         current = id;
         guide.classList.remove("show");
         setTimeout(function () {
-          step.textContent = config.step;
-          text.textContent = config.text;
+          step.textContent = t(config.step);
+          text.textContent = t(config.text);
           guide.setAttribute("data-mode", config.mode);
           guide.classList.add("show");
         }, REDUCED ? 0 : 140);
       } else guide.classList.add("show");
     }
+    tourUpdateRef = update;
     window.addEventListener("scroll", function () {
       if (ticking) return;
       ticking = true;
@@ -1494,8 +1785,8 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     caughtCount++;
     caughtNames.push(name);
     var dc = $("#dockCount"); if (dc) dc.textContent = caughtCount;
-    var live = $("#cpLive"); if (live) live.textContent = caughtCount + " 个资源已嗅探";
-    toast("已嗅探 · " + name + " 加入采集队列", "ok");
+    var live = $("#cpLive"); if (live) live.textContent = caughtCount + t("cap.liveUnit");
+    toast(tf("toast.sniffed", { name: name }), "ok");
   }
 
   function bindPain() {
@@ -1515,33 +1806,33 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
   var TARGET = { ae: "folder", ps: "smart" };
   var TARGET_TREE = {
     ae: {
-      folder: { label: "文件夹", children: [
-        { id: "root", label: "项目根目录" },
-        { id: "selected", label: "当前选中文件夹" },
-        { id: "custom", label: "自定义文件夹" }
+      folder: { label: "文件夹", en: "Folder", children: [
+        { id: "root", label: "项目根目录", en: "Project root" },
+        { id: "selected", label: "当前选中文件夹", en: "Current selected folder" },
+        { id: "custom", label: "自定义文件夹", en: "Custom folder" }
       ] },
-      comp: { label: "合成", children: [
-        { id: "top", label: "最上层" },
-        { id: "above", label: "选中层之上" },
-        { id: "bottom", label: "最下层" }
+      comp: { label: "合成", en: "Composition", children: [
+        { id: "top", label: "最上层", en: "Top layer" },
+        { id: "above", label: "选中层之上", en: "Above selected layer" },
+        { id: "bottom", label: "最下层", en: "Bottom layer" }
       ] },
-      local: { label: "下载本地", children: null }
+      local: { label: "下载本地", en: "Save locally", children: null }
     },
     ps: {
-      smart: { label: "智能对象", children: null },
-      layer: { label: "普通图层", children: null },
-      local: { label: "本地图片", children: null }
+      smart: { label: "智能对象", en: "Smart Object", children: null },
+      layer: { label: "普通图层", en: "Raster layer", children: null },
+      local: { label: "本地图片", en: "Local image", children: null }
     }
   };
   var COMP_TIMES = [
-    { id: "start", label: "合成起点" },
-    { id: "playhead", label: "当前播放头" },
-    { id: "inpoint", label: "选中层入点" },
-    { id: "match", label: "匹配选中层范围" }
+    { id: "start", label: "合成起点", en: "Comp start" },
+    { id: "playhead", label: "当前播放头", en: "Playhead" },
+    { id: "inpoint", label: "选中层入点", en: "Layer in-point" },
+    { id: "match", label: "匹配选中层范围", en: "Match layer range" }
   ];
   var COMP_WRAPS = [
-    { id: "plain", label: "普通素材" },
-    { id: "precomp", label: "预合成" }
+    { id: "plain", label: "普通素材", en: "Plain asset" },
+    { id: "precomp", label: "预合成", en: "Pre-comp" }
   ];
   var MEDIA_PREVIEW = {
     video: { name: "video_1080p.mp4", meta: "1920×1080 · 45.2 MB", icon: "video" },
@@ -1554,7 +1845,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     var cs = getComputedStyle(root);
     root.style.setProperty("--accent", cs.getPropertyValue(host === "ps" ? "--ps" : "--ae"));
     root.style.setProperty("--accent-wash", cs.getPropertyValue(host === "ps" ? "--ps-wash" : "--ae-wash"));
-    var lbl = "发送到 " + (host === "ae" ? "AE" : "PS");
+    var lbl = t("send.to") + (host === "ae" ? "AE" : "PS");
     var s1 = $("#cpSendLabel"); if (s1) s1.textContent = lbl;
     var s2 = $("#hubMain"); if (s2) s2.textContent = lbl;
   }
@@ -1568,7 +1859,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       var item = tree[id];
       var b = document.createElement("button");
       b.type = "button";
-      b.textContent = item.label;
+      b.textContent = L(item);
       b.setAttribute("role", "option");
       b.addEventListener("click", function (e) {
         e.stopPropagation();
@@ -1576,16 +1867,17 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
         updateTargetLabel();
         menu.classList.remove("open");
         $("#cpTargetBtn").setAttribute("aria-expanded", "false");
-        toast("目标已设为 · " + item.label, "ok");
+        toast(tf("toast.targetSet", { label: L(item) }), "ok");
       });
       menu.appendChild(b);
     });
   }
   function updateTargetLabel() {
     var t = TARGET[HOST];
-    var lbl = TARGET_TREE[HOST][t] ? TARGET_TREE[HOST][t].label : "文件夹";
-    if (HOST === "ae" && t === "folder") lbl = "文件夹 · 项目根目录";
-    if (HOST === "ae" && t === "comp") lbl = "合成 · 待选位置";
+    var node = TARGET_TREE[HOST][t];
+    var lbl = node ? L(node) : "文件夹";
+    if (HOST === "ae" && t === "folder") lbl = L(node) + " · " + (LANG === "en" ? "project root" : "项目根目录");
+    if (HOST === "ae" && t === "comp") lbl = (LANG === "en" ? "Composition" : "合成") + " · " + (LANG === "en" ? "position pending" : "待选位置");
     var el = $("#cpTargetLabel"); if (el) el.textContent = lbl;
   }
 
@@ -1604,7 +1896,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
         setAccent(h);
         renderTargetMenu();
         updateTargetLabel();
-        toast("已切换宿主 · " + (h === "ae" ? "After Effects" : "Photoshop"), "ok");
+        toast(tf("toast.hostSwitched", { host: (h === "ae" ? "After Effects" : "Photoshop") }), "ok");
       });
     });
 
@@ -1640,7 +1932,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     var sendBtn = $("#cpSend");
     if (sendBtn) {
       sendBtn.addEventListener("click", function () {
-        if (!caughtCount) { toast("采集托盘还是空的 · 先回上一屏点几张素材", "warn"); return; }
+        if (!caughtCount) { toast(t("toast.trayEmpty"), "warn"); return; }
         startTransfer(caughtNames[caughtNames.length - 1] || "video_1080p.mp4", "default");
       });
       var holdTimer = null, held = false;
@@ -1686,15 +1978,13 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
   function lookupLabel(id, host) {
     host = host || HOST;
     var tree = host === "ps" ? TARGET_TREE.ps : TARGET_TREE.ae;
-    if (tree[id]) return tree[id].label;
-    for (var i = 0; i < COMP_TIMES.length; i++) if (COMP_TIMES[i].id === id) return COMP_TIMES[i].label;
-    for (var j = 0; j < COMP_WRAPS.length; j++) if (COMP_WRAPS[j].id === id) return COMP_WRAPS[j].label;
+    if (tree[id]) return L(tree[id]);
+    for (var i = 0; i < COMP_TIMES.length; i++) if (COMP_TIMES[i].id === id) return L(COMP_TIMES[i]);
+    for (var j = 0; j < COMP_WRAPS.length; j++) if (COMP_WRAPS[j].id === id) return L(COMP_WRAPS[j]);
     return id;
   }
   function rootNodes() {
-    return Object.keys(TARGET_TREE[HOST]).map(function (k) {
-      return { id: k, label: TARGET_TREE[HOST][k].label };
-    });
+    return Object.keys(TARGET_TREE[HOST]).map(function (k) { return { id: k }; });
   }
 
   function layoutOrbitNodes() {
@@ -1719,8 +2009,9 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       el.className = "orbit-node" + (isLeaf(item.id, HOST) ? " leaf" : "");
       el.style.left = x + "px";
       el.style.top = y + "px";
-      var sub = isLeaf(item.id, HOST) ? "松手执行" : "继续 ▸";
-      el.innerHTML = "<span>" + item.label + '</span><span class="sub">' + sub + "</span>";
+      var text = lookupLabel(item.id, HOST);
+      var sub = isLeaf(item.id, HOST) ? t("orbit.exec") : t("orbit.drill");
+      el.innerHTML = "<span>" + text + '</span><span class="sub">' + sub + "</span>";
       nodes.appendChild(el);
       orbit.nodeMap[item.id] = { el: el, x: x, y: y };
     });
@@ -1730,7 +2021,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     var c = $("#orbitCrumbs");
     if (!c) return;
     var labels = orbit.path.map(function (p) { return lookupLabel(p, HOST); });
-    c.innerHTML = "路由 ▸ " + labels.map(function (l) { return "<b>" + l + "</b>"; }).join(" <span style='opacity:.4'>›</span> ");
+    c.innerHTML = t("orbit.crumbs") + labels.map(function (l) { return "<b>" + l + "</b>"; }).join(" <span style='opacity:.4'>›</span> ");
     c.classList.add("show");
   }
 
@@ -1806,7 +2097,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       var nodes = $("#orbitNodes");
       if (nodes) nodes.innerHTML = "";
     }, 60);
-    if (cancelled) toast("已取消 · 未执行任何操作", "warn");
+    if (cancelled) toast(t("toast.cancelled"), "warn");
   }
 
   function nearestNodeByCoord(px, py) {
@@ -1915,7 +2206,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
     var pathLabel = path.map(function (p) { return lookupLabel(p, HOST); }).join(" ▸ ");
     var fileName = caughtNames[caughtNames.length - 1] || (HOST === "ps" ? "cover_art.jpg" : "video_1080p.mp4");
-    toast("已选定 · " + pathLabel + (HOST === "ps" ? "（PS 导入）" : ""), "ok");
+    toast(tf("toast.pathChosen", { label: pathLabel, ps: (HOST === "ps" ? t("toast.psImport") : "") }), "ok");
     startTransfer(fileName, pathLabel);
   }
 
@@ -1927,17 +2218,16 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
   function targetDescriptor(host) {
     if (host === "ps") {
       var t = TARGET_TREE.ps[TARGET.ps];
-      return t ? t.label : "智能对象";
+      return t ? L(t) : "智能对象";
     }
-    if (TARGET.ae === "folder") return "文件夹 · 项目根目录";
-    if (TARGET.ae === "local") return "仅保存到本地";
-    if (TARGET.ae === "comp") return "合成 · 待选位置";
-    return "文件夹 · 项目根目录";
+    if (TARGET.ae === "folder") return L(TARGET_TREE.ae.folder) + " · " + (LANG === "en" ? "project root" : "项目根目录");
+    if (TARGET.ae === "local") return LANG === "en" ? "Save to local only" : "仅保存到本地";
+    if (TARGET.ae === "comp") return (LANG === "en" ? "Composition" : "合成") + " · " + (LANG === "en" ? "position pending" : "待选位置");
+    return L(TARGET_TREE.ae.folder) + " · " + (LANG === "en" ? "project root" : "项目根目录");
   }
   function layerDescriptor(host) {
-    if (host === "ps") return "直接导入";
-    if (TARGET.ae === "comp") return "最上层 / 合成起点 / 普通素材";
-    return "最上层 / 合成起点 / 普通素材";
+    if (host === "ps") return LANG === "en" ? "Import directly" : "直接导入";
+    return LANG === "en" ? "Top layer / comp start / normal asset" : "最上层 / 合成起点 / 普通素材";
   }
 
   function startTransfer(fileName, detail) {
@@ -1966,7 +2256,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     };
     $("#cfCancel").onclick = function () {
       confirm.style.display = "none";
-      toast("已取消导入", "warn");
+      toast(t("toast.importCancelled"), "warn");
     };
   }
 
@@ -2006,7 +2296,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       prog.style.display = "none";
       panel.classList.add("show");
       transferRunning = false;
-      toast("归位成功 · 已导入 AE 项目", "ok");
+      toast(t("toast.placed"), "ok");
       if (HAS_GSAP && window.ScrollTrigger) {
         window.gsap.fromTo(panel, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" });
       }
@@ -2015,10 +2305,10 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
   function currentDisplayLabel() {
     var file = caughtNames[caughtNames.length - 1] || (HOST === "ps" ? "cover_art.jpg" : "video_1080p.mp4");
-    var where = "合成起点 ▸ 最上层";
-    if (HOST === "ps") where = "画布中心";
-    else if (TARGET.ae === "folder") where = "项目根目录";
-    else if (TARGET.ae === "local") where = "仅保存";
+    var where = LANG === "en" ? "Comp start ▸ top layer" : "合成起点 ▸ 最上层";
+    if (HOST === "ps") where = LANG === "en" ? "Canvas center" : "画布中心";
+    else if (TARGET.ae === "folder") where = LANG === "en" ? "Project root" : "项目根目录";
+    else if (TARGET.ae === "local") where = LANG === "en" ? "Save only" : "仅保存";
     return { file: file, where: where };
   }
 
@@ -2032,7 +2322,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     caughtCount = 0;
     caughtNames = [];
     var dc = $("#dockCount"); if (dc) dc.textContent = "0";
-    var live = $("#cpLive"); if (live) live.textContent = "0 个资源已嗅探";
+    var live = $("#cpLive"); if (live) live.textContent = "0" + t("cap.liveUnit");
     $$(".media-card.caught").forEach(function (c) { c.classList.remove("caught"); });
   }
 
@@ -2046,7 +2336,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       prog.style.display = "none";
       panel.classList.remove("show");
       clearDock();
-      toast("已重置 · 重新开始演示", "ok");
+      toast(t("toast.reset"), "ok");
     });
   }
 
@@ -2109,12 +2399,12 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     $$("[data-copy]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var block = btn.closest(".code-block");
-        var text = block ? block.innerText.replace(/^复制\s*/m, "") : "";
+        var text = block ? block.innerText.replace(/^(复制|Copy)\s*/m, "") : "";
         var done = function () {
-          btn.textContent = "已复制";
+          btn.textContent = t("info.copied");
           btn.classList.add("done");
-          toast("已复制到剪贴板", "ok");
-          setTimeout(function () { btn.textContent = "复制"; btn.classList.remove("done"); }, 2000);
+          toast(t("toast.copied"), "ok");
+          setTimeout(function () { btn.textContent = t("info.copyBtn"); btn.classList.remove("done"); }, 2000);
         };
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text.trim()).then(done, function () { fallbackCopy(text, done); });
@@ -2127,12 +2417,16 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand("copy"); done(); } catch (err) { toast("复制失败，请手动复制", "err"); }
+    try { document.execCommand("copy"); done(); } catch (err) { toast(t("toast.copyFailed"), "err"); }
     document.body.removeChild(ta);
   }
 
   /* ---------- init ---------- */
   function init() {
+    initTheme();
+    bindTheme();
+    bindLang();
+    applyLang();
     bindDownload();
     bindNav();
     bindCursor();
