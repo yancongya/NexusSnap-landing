@@ -8,7 +8,35 @@
 <meta name="theme-color" content="#0a0a0f">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="apple-touch-icon" href="logo.svg">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" crossorigin>
+<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" crossorigin>
 <link rel="stylesheet" href="action-orbit/action-orbit.css">
+<script>
+window.__NEXUS_BOOT_STARTED__ = Date.now();
+window.__NEXUS_FRAMEWORKS__ = (function () {
+  function load(src) {
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+  return load("https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js")
+    .then(function () { return load("https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"); })
+    .then(function () { return { enhanced: true }; })
+    .catch(function () { return { enhanced: false }; });
+})();
+window.setTimeout(function () {
+  if (!document.body || document.body.classList.contains("is-ready")) return;
+  document.body.classList.add("is-ready", "boot-timeout");
+}, 4500);
+</script>
 <title data-i18n="meta.title">NexusSnap · 散落各处的素材，一键归位到 AE / PS</title>
 <style>
 /* ============================================================
@@ -72,6 +100,17 @@ body {
   font-family: var(--sans); font-size: 16px; line-height: 1.6;
   -webkit-text-size-adjust: 100%; overflow-x: hidden;
 }
+.app-loader { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; background: var(--bg); transition: opacity .32s ease, visibility .32s ease; }
+.app-loader-inner { display: grid; justify-items: center; gap: 15px; text-align: center; }
+.app-loader-mark { position: relative; width: 54px; height: 54px; display: grid; place-items: center; }
+.app-loader-mark::before { content: ""; position: absolute; inset: 0; border-radius: 17px; border: 1px solid var(--border-strong); background: var(--card); transform: rotate(8deg); }
+.app-loader-mark svg { position: relative; width: 34px; height: 34px; }
+.app-loader-line { width: 126px; height: 2px; overflow: hidden; border-radius: 999px; background: var(--border); }
+.app-loader-line::after { content: ""; display: block; width: 42%; height: 100%; border-radius: inherit; background: var(--accent); animation: loader-slide 1.05s ease-in-out infinite; }
+.app-loader-title { font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .14em; color: var(--ink); }
+.app-loader-copy { font-size: 11px; color: var(--subtle); }
+body.is-ready .app-loader { opacity: 0; visibility: hidden; pointer-events: none; }
+@keyframes loader-slide { from { transform: translateX(-120%); } to { transform: translateX(340%); } }
 ::selection { background: var(--accent); color: #fff; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: none; }
@@ -206,6 +245,8 @@ html.has-cursor .cursor-glow { opacity: 1; }
 @media (max-width: 700px) {
   .tour-guide { right: 14px; bottom: 14px; max-width: calc(100vw - 28px); }
   .tour-text { font-size: 10.5px; }
+  .nav, .stage-bar, .tour-guide { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .cursor-glow { display: none; }
 }
 
 /* ============ SCENE 0 — HERO ============ */
@@ -764,6 +805,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
 
 /* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
+  .app-loader-line::after { animation: none; width: 100%; }
   .flow-dash, .flow-bob, .scroll-hint, .scroll-hint .wheel::after, .toast { animation: none !important; }
   .cursor-glow { display: none; }
   .btn, .plat-card, .ps-card, .media-card, .cp-tab, .host-pill { transition: none; }
@@ -775,10 +817,21 @@ html.has-cursor .cursor-glow { opacity: 1; }
 
 /* ============ PRELOAD / NO-JS FALLBACK ============ */
 .js .scene-init-hide { opacity: 0; }
+.boot-timeout .scene-init-hide { opacity: 1 !important; transform: none !important; }
 </style>
 </head>
 <body class="js">
 <noscript><style>.js .scene-init-hide{opacity:1!important;}</style></noscript>
+<div class="app-loader" id="appLoader" role="status" aria-live="polite" aria-label="正在加载 NexusSnap">
+  <div class="app-loader-inner">
+    <div class="app-loader-mark" aria-hidden="true">
+      <svg viewBox="0 0 128 128"><defs><mask id="loader-mask"><rect width="128" height="128" fill="#fff"/><path d="M47 43 82 64 47 85Z" fill="#000"/></mask></defs><g mask="url(#loader-mask)"><path fill="#55b84a" d="M51 85c8 21 31 34 50 25 13-6 20-17 20-32V29c0-13-15-20-25-12L55 49c-10 8-12 23-4 36Z"/><path fill="#7c3aed" d="M17 102V34c0-16 18-25 31-15l49 38c8 6 8 18 0 25l-22 18c-7 6-18 5-24-2L38 82v20c0 14-21 14-21 0Z"/></g></svg>
+    </div>
+    <div class="app-loader-title">NEXUS SNAP</div>
+    <div class="app-loader-line" aria-hidden="true"></div>
+    <div class="app-loader-copy">正在准备沉浸式体验 · Loading</div>
+  </div>
+</div>
 
 <!-- ================= NAV ================= -->
 <nav class="nav" id="topNav" aria-label="主导航">
@@ -1237,17 +1290,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
         <h2 class="scene-init-hide" data-r="info" data-i18n="info.platTitle">11 个主流平台专属解析 + 通用嗅探</h2>
         <p class="desc scene-init-hide" data-r="info" data-i18n="info.platDesc">绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
         <div class="plat-grid scene-init-hide" data-r="info">
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/youtube.svg" alt="YouTube"><div class="plat-name">YouTube</div><div class="plat-detail" data-i18n="info.pYoutube">InnerTube API · 全清晰度</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/bilibili.svg" alt="Bilibili"><div class="plat-name">Bilibili</div><div class="plat-detail" data-i18n="info.pBilibili">__playinfo__ · 音视频分离</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/xiaohongshu.svg" alt="小红书"><div class="plat-name">小红书</div><div class="plat-detail" data-i18n="info.pXhs">笔记图片/视频提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/instagram.svg" alt="Instagram"><div class="plat-name">Instagram</div><div class="plat-detail" data-i18n="info.pIg">帖子媒体源解析</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/x.svg" alt="X"><div class="plat-name">Twitter / X</div><div class="plat-detail" data-i18n="info.pX">媒体源地址还原</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/pinterest.svg" alt="Pinterest"><div class="plat-name">Pinterest</div><div class="plat-detail" data-i18n="info.pPin">Pin 原图提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/reddit.svg" alt="Reddit"><div class="plat-name">Reddit</div><div class="plat-detail" data-i18n="info.pReddit">视频/图片源提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/sinaweibo.svg" alt="微博"><div class="plat-name">微博</div><div class="plat-detail" data-i18n="info.pWeibo">高清原图 URL 解析</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/taobao.svg" alt="淘宝"><div class="plat-name">淘宝</div><div class="plat-detail" data-i18n="info.pTaobao">商品图/视频提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/jimeng.ico" alt="即梦"><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
-          <div class="plat-card"><img class="product-icon" src="icons/ui/link.svg" alt=""><div class="plat-name">通用网页</div><div class="plat-detail" data-i18n="info.pGeneric">DOM 扫描 + 网络嗅探</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/youtube.svg" alt="YouTube" loading="lazy" decoding="async"><div class="plat-name">YouTube</div><div class="plat-detail" data-i18n="info.pYoutube">InnerTube API · 全清晰度</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/bilibili.svg" alt="Bilibili" loading="lazy" decoding="async"><div class="plat-name">Bilibili</div><div class="plat-detail" data-i18n="info.pBilibili">__playinfo__ · 音视频分离</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/xiaohongshu.svg" alt="小红书" loading="lazy" decoding="async"><div class="plat-name">小红书</div><div class="plat-detail" data-i18n="info.pXhs">笔记图片/视频提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/instagram.svg" alt="Instagram" loading="lazy" decoding="async"><div class="plat-name">Instagram</div><div class="plat-detail" data-i18n="info.pIg">帖子媒体源解析</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/x.svg" alt="X" loading="lazy" decoding="async"><div class="plat-name">Twitter / X</div><div class="plat-detail" data-i18n="info.pX">媒体源地址还原</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/pinterest.svg" alt="Pinterest" loading="lazy" decoding="async"><div class="plat-name">Pinterest</div><div class="plat-detail" data-i18n="info.pPin">Pin 原图提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/reddit.svg" alt="Reddit" loading="lazy" decoding="async"><div class="plat-name">Reddit</div><div class="plat-detail" data-i18n="info.pReddit">视频/图片源提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/sinaweibo.svg" alt="微博" loading="lazy" decoding="async"><div class="plat-name">微博</div><div class="plat-detail" data-i18n="info.pWeibo">高清原图 URL 解析</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/taobao.svg" alt="淘宝" loading="lazy" decoding="async"><div class="plat-name">淘宝</div><div class="plat-detail" data-i18n="info.pTaobao">商品图/视频提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/jimeng.ico" alt="即梦" loading="lazy" decoding="async"><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
+          <div class="plat-card"><img class="product-icon" src="icons/ui/link.svg" alt="" loading="lazy" decoding="async"><div class="plat-name">通用网页</div><div class="plat-detail" data-i18n="info.pGeneric">DOM 扫描 + 网络嗅探</div></div>
         </div>
       </div>
       <div class="info-block" id="quickstart">
@@ -1348,9 +1401,6 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
 <div class="toast-root" id="toastRoot" aria-live="polite"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.2.0/dist/lenis.min.js"></script>
 <script src="action-orbit/action-orbit.config.js"></script>
 <script src="action-orbit/action-orbit-model.js"></script>
 <script src="action-orbit/action-orbit-icons.js"></script>
@@ -1364,9 +1414,8 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 (function () {
   "use strict";
   var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var HAS_GSAP = typeof window.gsap !== "undefined";
-  var HAS_ST = typeof window.ScrollTrigger !== "undefined";
-  var LENIS_CTOR = (typeof window.Lenis !== "undefined") ? window.Lenis : null;
+  var HAS_GSAP = false;
+  var HAS_ST = false;
 
   /* ---------- 主题 / 语言 偏好 ---------- */
   var I18N = {
@@ -1750,26 +1799,13 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     }).catch(function () {});
   }
 
-  /* ---------- Lenis + ScrollTrigger ---------- */
-  var lenis = null;
-  function setupSmoothScroll() {
-    if (REDUCED || !LENIS_CTOR) return;
-    try {
-      lenis = new LENIS_CTOR({ duration: 1.15, smoothWheel: true });
-      if (HAS_ST) {
-        lenis.on("scroll", window.ScrollTrigger.update);
-        window.gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-        window.gsap.ticker.lagSmoothing(0);
-      }
-    } catch (err) { lenis = null; }
-  }
+  /* ---------- 原生滚动：避免平滑滚动框架永久占用动画帧 ---------- */
   function scrollToEl(target, offset) {
     var el = typeof target === "string" ? document.getElementById(target) : target;
     if (!el) return;
     offset = offset || -60;
     var absoluteTop = el.getBoundingClientRect().top + window.scrollY + offset;
-    if (lenis) lenis.scrollTo(absoluteTop, { duration: 1.2 });
-    else el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+    window.scrollTo({ top: absoluteTop, behavior: REDUCED ? "auto" : "smooth" });
   }
 
   /* ---------- nav ---------- */
@@ -1783,8 +1819,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     $$("[data-scroll-top]").forEach(function (a) {
       a.addEventListener("click", function (e) {
         e.preventDefault();
-        if (lenis) lenis.scrollTo(0, { duration: 1.1 });
-        else window.scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
+        window.scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
       });
     });
     $$("[data-goto]").forEach(function (b) {
@@ -1824,15 +1859,21 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     if (!g) return;
     if (window.matchMedia && window.matchMedia("(pointer: fine)").matches && !REDUCED) {
       document.documentElement.classList.add("has-cursor");
-      var tx = 0, ty = 0, cx = 0, cy = 0;
+      var tx = 0, ty = 0, cx = 0, cy = 0, cursorFrame = 0;
+      function tick() {
+        cursorFrame = 0;
+        cx += (tx - cx) * 0.18; cy += (ty - cy) * 0.18;
+        g.style.transform = "translate(" + (cx - 220) + "px," + (cy - 220) + "px)";
+        if (Math.abs(tx - cx) > 0.4 || Math.abs(ty - cy) > 0.4) cursorFrame = requestAnimationFrame(tick);
+      }
       window.addEventListener("pointermove", function (e) {
         tx = e.clientX; ty = e.clientY;
+        if (!cursorFrame) cursorFrame = requestAnimationFrame(tick);
       }, { passive: true });
-      (function tick() {
-        cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
-        g.style.transform = "translate(" + (cx - 220) + "px," + (cy - 220) + "px)";
-        requestAnimationFrame(tick);
-      })();
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden || !cursorFrame) return;
+        cancelAnimationFrame(cursorFrame); cursorFrame = 0;
+      });
     }
   }
 
@@ -2637,7 +2678,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     var scenes = $$(".scene");
     scenes.forEach(function (scene) {
       revealSceneItems(scene);
-      if (REDUCED || !HAS_ST) return;
+      if (REDUCED || !HAS_ST || window.matchMedia("(max-width: 700px)").matches) return;
       var id = scene.getAttribute("id");
       if (id !== "s0" && id !== "s1" && id !== "s2" && id !== "s3" && id !== "s4") return;
       window.ScrollTrigger.create({
@@ -2698,6 +2739,9 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
   /* ---------- init ---------- */
   function init() {
+    HAS_GSAP = typeof window.gsap !== "undefined";
+    HAS_ST = typeof window.ScrollTrigger !== "undefined";
+    if (HAS_GSAP && HAS_ST && window.gsap.registerPlugin) window.gsap.registerPlugin(window.ScrollTrigger);
     initTheme();
     bindTheme();
     bindLang();
@@ -2706,7 +2750,6 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     bindNav();
     bindCursor();
     bindTourGuide();
-    setupSmoothScroll();
     bindPain();
     bindCopy();
     renderTargetMenu();
@@ -2723,7 +2766,24 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     }
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  function finishBoot() {
+    init();
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        document.body.classList.add("is-ready");
+        var loader = document.getElementById("appLoader");
+        if (loader) loader.setAttribute("aria-hidden", "true");
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var frameworks = window.__NEXUS_FRAMEWORKS__ || Promise.resolve({ enhanced: false });
+    var timeout = new Promise(function (resolve) { window.setTimeout(function () { resolve({ enhanced: false }); }, 3200); });
+    var elapsed = Date.now() - (window.__NEXUS_BOOT_STARTED__ || Date.now());
+    var minimum = new Promise(function (resolve) { window.setTimeout(resolve, Math.max(0, 320 - elapsed)); });
+    Promise.all([Promise.race([frameworks, timeout]), minimum]).then(finishBoot, finishBoot);
+  });
 })();
 </script>
 </body>
