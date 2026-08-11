@@ -153,6 +153,10 @@ code, .mono { font-family: var(--mono); }
   padding: 5px 14px; background: var(--card); margin-bottom: 18px;
 }
 .scene-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.hero-meta { display: flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 18px; flex-wrap: wrap; }
+.hero-meta .scene-tag { margin-bottom: 0; }
+.hero-version { display: none; align-items: center; min-height: 27px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--accent); background: var(--accent-wash); color: var(--accent); font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .06em; }
+.hero-version.is-ready { display: inline-flex; }
 
 .cursor-glow {
   position: fixed; top: 0; left: 0; width: 440px; height: 440px; z-index: 1;
@@ -823,7 +827,10 @@ html.has-cursor .cursor-glow { opacity: 1; }
   <section class="scene hero" id="s0" data-scene="0" aria-label="开场">
     <div class="scene-pin">
       <div class="scene-inner">
-        <div class="scene-tag scene-init-hide" data-r="hero" data-i18n="hero.tag">浏览器扩展 + AE / PS CEP 插件</div>
+        <div class="hero-meta scene-init-hide" data-r="hero">
+          <div class="scene-tag" data-i18n="hero.tag">浏览器扩展 + AE / PS CEP 插件</div>
+          <span class="hero-version" id="heroVersion" aria-live="polite"></span>
+        </div>
         <h1 class="scene-init-hide" data-r="hero" data-i18n="hero.title">
           散落各处的素材，<br>一键归位到 <span class="hl-ae">AE</span> / <span class="hl-ps">PS</span>
         </h1>
@@ -1372,7 +1379,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "hero.tag": "浏览器扩展 + AE / PS CEP 插件",
       "hero.title": "散落各处的素材，<br>一键归位到 <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span>",
       "hero.sub": "网页媒体、本地文件、剪贴板里的零散素材——嗅探、采集、路由，直达项目指定路径与合成时间线。无需下载、无需整理、无需拖拽。",
-      "hero.enter": "进入演示", "hero.download": "下载插件", "hero.scrollHint": "滚动进入演示",
+      "hero.enter": "进入演示", "hero.download": "下载插件", "hero.latest": "最新版本", "hero.scrollHint": "滚动进入演示",
       "pain.tag": "痛点 · 素材散落各处",
       "pain.title": "灵感出现时，素材却在四个角落",
       "pain.desc": "网页上看到的视频、本地攒下的文件、剪贴板里的截图、项目文件夹里的旧素材——<b>采集、下载、改名字、找路径、拖进合成</b>，每一步都在打断创作。<br>点任意一张卡片，体验嗅探。",
@@ -1465,7 +1472,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "hero.tag": "Browser extension + AE / PS CEP plugin",
       "hero.title": "Scattered assets, <br>one-click routing to <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span>",
       "hero.sub": "Web media, local files, and clipboard scraps — sniff, capture, and route them straight to the project's target path and composition timeline. No download, no organizing, no dragging.",
-      "hero.enter": "Enter demo", "hero.download": "Download plugin", "hero.scrollHint": "Scroll to enter the demo",
+      "hero.enter": "Enter demo", "hero.download": "Download plugin", "hero.latest": "Latest", "hero.scrollHint": "Scroll to enter the demo",
       "pain.tag": "Pain · assets scattered everywhere",
       "pain.title": "When inspiration strikes, assets are in four corners",
       "pain.desc": "Videos on the web, files on disk, screenshots in the clipboard, old assets in the project folder — <b>capture, download, rename, find the path, drag into the comp</b>, every step interrupts your creative flow.<br>Tap any card to experience sniffing.",
@@ -1591,6 +1598,19 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     });
     updateThemeBtn();
   }
+  var CURRENT_RELEASE_VERSION = "";
+  function renderHeroVersion() {
+    var badge = $("#heroVersion");
+    if (!badge) return;
+    if (!CURRENT_RELEASE_VERSION) {
+      badge.textContent = "";
+      badge.classList.remove("is-ready");
+      return;
+    }
+    var normalized = String(CURRENT_RELEASE_VERSION).replace(/^v/i, "");
+    badge.textContent = t("hero.latest") + " v" + normalized;
+    badge.classList.add("is-ready");
+  }
   function applyLang() {
     if (typeof I18N === "undefined") return;
     document.documentElement.setAttribute("lang", LANG === "en" ? "en" : "zh-CN");
@@ -1611,6 +1631,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       });
     });
     var lt = $("#langToggle"); if (lt) lt.textContent = LANG === "en" ? "中" : "EN";
+    renderHeroVersion();
     if (typeof renderTargetMenu === "function") renderTargetMenu();
     if (typeof updateTargetLabel === "function") updateTargetLabel();
     if (typeof setAccent === "function" && typeof HOST !== "undefined") setAccent(HOST);
@@ -1694,6 +1715,13 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     var configPromise = fetch("downloads.json", { cache: "no-store" }).then(function (response) {
       if (!response.ok) throw new Error("download manifest unavailable");
       return response.json();
+    });
+    configPromise.then(function (config) {
+      CURRENT_RELEASE_VERSION = config && (config.version || config.tag) || "";
+      renderHeroVersion();
+    }).catch(function () {
+      CURRENT_RELEASE_VERSION = "";
+      renderHeroVersion();
     });
     $$("[data-download]").forEach(function (el) {
       el.addEventListener("click", function (e) {
