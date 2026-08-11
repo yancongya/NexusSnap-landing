@@ -662,7 +662,20 @@ html.has-cursor .cursor-glow { opacity: 1; }
 .qs-block p b { color: var(--ink); }
 .qs-block code { font-family: var(--mono); font-size: .85em; background: var(--elev); color: var(--accent); padding: .12em .45em; border-radius: 5px; border: 1px solid var(--border); }
 .qs-install-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; align-items: stretch; }
-.qs-install-grid .qs-block { margin-bottom: 0; min-width: 0; }
+.qs-install-grid .qs-block { margin-bottom: 0; min-width: 0; display: flex; flex-direction: column; }
+.qs-card-kicker { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--accent); text-transform: uppercase; margin: -2px 0 12px 39px; }
+.qs-card-intro { min-height: 43px; }
+.qs-steps { list-style: none; display: grid; gap: 8px; margin: 4px 0 18px; counter-reset: install-step; }
+.qs-steps li { counter-increment: install-step; display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; align-items: start; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.qs-steps li::before { content: counter(install-step); display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: var(--accent-wash); color: var(--accent); font-family: var(--mono); font-size: 9px; font-weight: 800; }
+.qs-steps b { color: var(--ink); }
+.qs-install-grid .qs-dl { margin-top: auto; }
+.qs-card-help { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--border); }
+.qs-card-help summary { cursor: pointer; color: var(--muted); font-size: 11.5px; font-weight: 700; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.qs-card-help summary::-webkit-details-marker { display: none; }
+.qs-card-help summary::after { content: "+"; color: var(--accent); font-family: var(--mono); font-size: 15px; }
+.qs-card-help[open] summary::after { content: "−"; }
+.qs-card-help-note { color: var(--subtle); font-size: 11px; line-height: 1.55; margin-top: 9px; overflow-wrap: anywhere; }
 .qs-dl { display: flex; gap: 12px; flex-wrap: wrap; }
 .code-block {
   background: #0c0c14; color: #c6c6d6; border: 1px solid var(--border);
@@ -692,12 +705,20 @@ html.has-cursor .cursor-glow { opacity: 1; }
   .qs-install-grid .qs-block h4 { align-items: flex-start; gap: 7px; font-size: 12px; line-height: 1.35; margin-bottom: 9px; }
   .qs-install-grid .qs-num { width: 22px; height: 22px; font-size: 10px; }
   .qs-install-grid .qs-block p { font-size: 10.5px; line-height: 1.55; margin-bottom: 9px; overflow-wrap: anywhere; }
+  .qs-card-kicker { margin: -2px 0 9px 29px; font-size: 8px; letter-spacing: .07em; }
+  .qs-card-intro { min-height: 48px; }
+  .qs-steps { gap: 7px; margin: 2px 0 13px; }
+  .qs-steps li { grid-template-columns: 17px minmax(0, 1fr); gap: 6px; font-size: 9.5px; line-height: 1.45; }
+  .qs-steps li::before { width: 17px; height: 17px; border-radius: 5px; font-size: 8px; }
   .qs-install-grid .qs-block code { font-size: .78em; overflow-wrap: anywhere; }
   .qs-install-grid .qs-dl { display: block; }
   .qs-install-grid .qs-dl .btn { width: 100%; min-height: 34px; height: auto; padding: 7px 8px; font-size: 10px; line-height: 1.25; white-space: normal; }
   .qs-install-grid .qs-dl .btn-icon { width: 13px; height: 13px; }
   .qs-install-grid .code-block { padding: 12px 10px; padding-top: 38px; font-size: 9px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
   .qs-install-grid .copy-btn { top: 7px; right: 7px; }
+  .qs-card-help { margin-top: 11px; padding-top: 10px; }
+  .qs-card-help summary { font-size: 9.5px; }
+  .qs-card-help-note { font-size: 9px; }
 }
 
 .compat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
@@ -1228,25 +1249,42 @@ html.has-cursor .cursor-glow { opacity: 1; }
         <div class="qs-install-grid">
         <div class="qs-block primary scene-init-hide" data-r="info">
           <h4><span class="qs-num">1</span> <span data-i18n="info.qs1">安装浏览器扩展</span></h4>
-          <p data-i18n="info.qs1Desc">下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>选择解压文件夹。支持 Chrome / Edge / Arc 等 Chromium 内核。</p>
+          <div class="qs-card-kicker" data-i18n="info.qs1Kicker">CHROMIUM · ZIP</div>
+          <p class="qs-card-intro" data-i18n="info.qs1Desc">适用于 Chrome、Edge、Arc 等 Chromium 浏览器。下载并解压后，手动加载扩展文件夹。</p>
+          <ol class="qs-steps">
+            <li><span data-i18n="info.qs1Step1">打开 <code>chrome://extensions</code></span></li>
+            <li><span data-i18n="info.qs1Step2">开启右上角<b>开发者模式</b></span></li>
+            <li><span data-i18n="info.qs1Step3">点击<b>加载已解压的扩展程序</b></span></li>
+          </ol>
           <div class="qs-dl">
             <button class="btn btn-primary" type="button" data-download="browser">
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span data-i18n="info.dlBrowser">下载浏览器扩展 (.zip)</span>
             </button>
           </div>
-          <p style="margin-top:12px;font-size:12.5px;color:var(--subtle);" data-i18n="info.macNote">macOS 用户解压后执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 去除安全隔离标记。</p>
+          <details class="qs-card-help">
+            <summary data-i18n="info.macHelp">macOS 首次安装</summary>
+            <p class="qs-card-help-note" data-i18n="info.macNote">如果系统阻止加载，请对解压文件夹执行 <code>xattr -dr com.apple.quarantine 文件夹名</code>。</p>
+          </details>
         </div>
 
         <div class="qs-block scene-init-hide" data-r="info">
           <h4><span class="qs-num">2</span> <span data-i18n="info.qs2">安装 AE/PS CEP 插件</span></h4>
-          <p data-i18n="info.qs2Desc">下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录，并确保 <code>PlayerDebugMode = 1</code>。</p>
+          <div class="qs-card-kicker" data-i18n="info.qs2Kicker">ADOBE CEP · ZIP</div>
+          <p class="qs-card-intro" data-i18n="info.qs2Desc">适用于 After Effects 与 Photoshop。将解压后的插件文件夹放入 Adobe CEP 扩展目录。</p>
+          <ol class="qs-steps">
+            <li><span data-i18n="info.qs2Step1">复制 <b>NexusSnap-CEP</b> 文件夹</span></li>
+            <li><span data-i18n="info.qs2Step2">启用 <code>PlayerDebugMode = 1</code></span></li>
+            <li><span data-i18n="info.qs2Step3">重启 AE 或 Photoshop</span></li>
+          </ol>
           <div class="qs-dl">
             <button class="btn btn-primary" type="button" data-download="cep">
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span data-i18n="info.dlCep">下载 CEP 插件</span>
             </button>
           </div>
+          <details class="qs-card-help">
+            <summary data-i18n="info.cepPaths">查看 CEP 安装路径</summary>
           <div class="code-block">
             <button class="copy-btn" type="button" data-copy aria-label="复制 CEP 安装路径" data-i18n="info.copyBtn">复制</button>
             <span class="cm"># macOS CEP 扩展目录</span>
@@ -1255,6 +1293,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
 C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 <span class="cm"># 放入后确保 PlayerDebugMode = 1（启用 CEP 调试）</span>
           </div>
+          </details>
         </div>
         </div>
 
@@ -1381,11 +1420,13 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.pPin": "Pin 原图提取", "info.pReddit": "视频/图片源提取", "info.pWeibo": "高清原图 URL 解析",
       "info.pTaobao": "商品图/视频提取", "info.pGeneric": "DOM 扫描 + 网络嗅探",
       "info.quickLabel": "快速开始", "info.quickTitle": "下载安装，即刻使用",
-      "info.qs1": "安装浏览器扩展", "info.qs1Desc": "下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>选择解压文件夹。支持 Chrome / Edge / Arc 等 Chromium 内核。",
+      "info.qs1": "安装浏览器扩展", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "适用于 Chrome、Edge、Arc 等 Chromium 浏览器。下载并解压后，手动加载扩展文件夹。",
+      "info.qs1Step1": "打开 <code>chrome://extensions</code>", "info.qs1Step2": "开启右上角<b>开发者模式</b>", "info.qs1Step3": "点击<b>加载已解压的扩展程序</b>",
       "info.dlBrowser": "下载浏览器扩展 (.zip)",
-      "info.macNote": "macOS 用户解压后执行 <code>xattr -dr com.apple.quarantine 解压后的文件夹名</code> 去除安全隔离标记。",
-      "info.qs2": "安装 AE/PS CEP 插件", "info.qs2Desc": "下载 CEP 插件包，解压后将整个文件夹放入 Adobe CEP 扩展目录，并确保 <code>PlayerDebugMode = 1</code>。",
-      "info.dlCep": "下载 CEP 插件", "info.copyBtn": "复制",
+      "info.macHelp": "macOS 首次安装", "info.macNote": "如果系统阻止加载，请对解压文件夹执行 <code>xattr -dr com.apple.quarantine 文件夹名</code>。",
+      "info.qs2": "安装 AE/PS CEP 插件", "info.qs2Kicker": "ADOBE CEP · ZIP", "info.qs2Desc": "适用于 After Effects 与 Photoshop。将解压后的插件文件夹放入 Adobe CEP 扩展目录。",
+      "info.qs2Step1": "复制 <b>NexusSnap-CEP</b> 文件夹", "info.qs2Step2": "启用 <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "重启 AE 或 Photoshop",
+      "info.dlCep": "下载 CEP 插件", "info.cepPaths": "查看 CEP 安装路径", "info.copyBtn": "复制",
       "info.qs3": "开始采集与导入", "info.qs3Desc": "启动 After Effects 或 Photoshop → 浏览任意网页 → 点击扩展图标查看嗅探媒体并选中发送；或 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板，长按发送打开 Action Orbit 精确路由。",
       "info.compatLabel": "兼容性", "info.compatTitle": "环境要求",
       "info.cBrowserT": "浏览器", "info.cBrowser": "Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。",
@@ -1472,11 +1513,13 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.pPin": "Pin original image extraction", "info.pReddit": "Video/image source extraction", "info.pWeibo": "HD original image URL parsing",
       "info.pTaobao": "Product image/video extraction", "info.pGeneric": "DOM scan + network sniffing",
       "info.quickLabel": "Quick start", "info.quickTitle": "Download, install, and use instantly",
-      "info.qs1": "Install the browser extension", "info.qs1Desc": "Download the <code>.zip</code>, unzip it, then open <code>chrome://extensions</code>, enable <b>Developer mode</b>, and click <b>Load unpacked</b> to select the folder. Works on Chrome / Edge / Arc and other Chromium browsers.",
+      "info.qs1": "Install the browser extension", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "For Chrome, Edge, Arc, and other Chromium browsers. Download, unzip, then load the extension folder manually.",
+      "info.qs1Step1": "Open <code>chrome://extensions</code>", "info.qs1Step2": "Enable <b>Developer mode</b>", "info.qs1Step3": "Click <b>Load unpacked</b>",
       "info.dlBrowser": "Download browser extension (.zip)",
-      "info.macNote": "macOS users: after unzipping, run <code>xattr -dr com.apple.quarantine extracted-folder-name</code> to clear the quarantine flag.",
-      "info.qs2": "Install the AE/PS CEP plugin", "info.qs2Desc": "Download the CEP plugin package, unzip it, drop the whole folder into the Adobe CEP extensions directory, and make sure <code>PlayerDebugMode = 1</code>.",
-      "info.dlCep": "Download CEP plugin", "info.copyBtn": "Copy",
+      "info.macHelp": "First install on macOS", "info.macNote": "If macOS blocks loading, run <code>xattr -dr com.apple.quarantine folder-name</code> on the extracted folder.",
+      "info.qs2": "Install the AE/PS CEP plugin", "info.qs2Kicker": "ADOBE CEP · ZIP", "info.qs2Desc": "For After Effects and Photoshop. Put the extracted plugin folder in the Adobe CEP extensions directory.",
+      "info.qs2Step1": "Copy the <b>NexusSnap-CEP</b> folder", "info.qs2Step2": "Enable <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "Restart AE or Photoshop",
+      "info.dlCep": "Download CEP plugin", "info.cepPaths": "View CEP install paths", "info.copyBtn": "Copy",
       "info.qs3": "Start capturing and importing", "info.qs3Desc": "Launch After Effects or Photoshop → browse any page → click the extension icon to see sniffed media and send it; or <code>Ctrl+Shift+Right-click</code> to open the quick-capture panel, then hold-send to open Action Orbit for precise routing.",
       "info.compatLabel": "Compatibility", "info.compatTitle": "Requirements",
       "info.cBrowserT": "Browser", "info.cBrowser": "Chrome 88+, Edge 88+, Arc and other Chromium browsers. Firefox is not supported yet.",
