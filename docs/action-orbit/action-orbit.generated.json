@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "source": "shared/action-orbit",
+  "generated": true,
+  "files": {
+    "action-orbit-confirm.js": "96626322f13a04465c8255951c2da41ca43d8226b9ca86aef217695bc44c7373",
+    "action-orbit-icons.js": "e2cd4db48563b2510181e000c2f395dd71a015161313c64b473cfa3eea318c63",
+    "action-orbit-model.js": "e02e31d5ab19aa4a9883859077abc1d56c16add407ecb9fab91e657673899e03",
+    "action-orbit-view.js": "eb3092e06f4fd02e16c2484238dbfaf1f10a545257b4aae1523cfa5939360090",
+    "action-orbit.config.json": "e2132937e0d88a11d68abd82ac838e7db90386541210894facb3d348b13a98d8",
+    "action-orbit.css": "db5100227a48a5398600c47f1a761b1326abc2e5153fe734b91585b4379b2d2a"
+  }
+}

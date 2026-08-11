@@ -1,0 +1,736 @@
+.nexus-orbit-overlay {
+  position: fixed;
+  z-index: var(--nexus-layer-orbit);
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  background: var(--nexus-overlay-scrim);
+  color: var(--nexus-text-primary);
+  touch-action: none;
+  user-select: none;
+}
+
+.nexus-orbit-overlay[hidden] {
+  display: none;
+}
+
+.nexus-orbit-overlay .nexus-local-icon,
+.nexus-orbit-confirm .nexus-local-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  background-color: transparent;
+  background-image: var(--nexus-icon-url);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.nexus-orbit-shell {
+  position: absolute;
+  top: var(--orbit-shell-y, 50%);
+  left: var(--orbit-shell-x, 50%);
+  width: min(var(--orbit-shell-size, 560px), 92vw, 92vh);
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+  background: transparent;
+}
+
+.nexus-orbit-breadcrumb {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.nexus-orbit-path {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  max-width: 92%;
+  padding: 3px 10px;
+  border: 1px solid var(--nexus-border-subtle);
+  border-radius: 999px;
+  background: var(--nexus-surface-panel);
+  box-shadow: var(--nexus-shadow-floating);
+  color: var(--nexus-text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.nexus-orbit-stage {
+  position: absolute;
+  inset: 38px;
+}
+
+.nexus-orbit-level-rings {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+}
+
+.nexus-orbit-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: var(--orbit-ring-layer, 0);
+  width: var(--orbit-ring-size, 64%);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--nexus-border-default);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: var(--nexus-shadow-panel);
+  opacity: 0.74;
+  pointer-events: none;
+  transition:
+    border-color var(--nexus-motion-fast),
+    background-color var(--nexus-motion-fast);
+}
+
+.nexus-orbit-ring.is-empty {
+  border-color: var(--nexus-border-subtle);
+  box-shadow: none;
+  opacity: 0.34;
+}
+
+.nexus-orbit-ring[data-stage="folder"] {
+  border-color: var(--nexus-accent-border);
+}
+
+.nexus-orbit-ring[data-stage="comp-placement"],
+.nexus-orbit-ring[data-stage="comp-timeline"] {
+  border-color: var(--nexus-import-comp-border);
+}
+
+.nexus-orbit-ring[data-stage="photoshop-mode"] {
+  border-color: var(--nexus-import-comp-border);
+}
+
+.nexus-orbit-ring[data-stage="package"] {
+  border-color: var(--nexus-success-border);
+}
+
+.nexus-orbit-nodes {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.nexus-orbit-hover-label {
+  position: absolute;
+  z-index: 40;
+  top: var(--orbit-label-y, 50%);
+  left: var(--orbit-label-x, 50%);
+  width: max-content;
+  max-width: min(164px, 38vw);
+  padding: 4px 8px;
+  transform: translate(12px, -50%) scale(0.96);
+  border: 1px solid var(--nexus-border-subtle);
+  border-radius: var(--nexus-radius-control);
+  background: var(--nexus-surface-panel);
+  box-shadow: var(--nexus-shadow-floating);
+  color: var(--nexus-text-secondary);
+  font-size: 11px;
+  line-height: 14px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: normal;
+  transition:
+    opacity var(--nexus-motion-fast),
+    transform var(--nexus-motion-enter);
+}
+
+.nexus-orbit-hover-label[data-label-side="left"] {
+  transform: translate(calc(-100% - 12px), -50%) scale(0.96);
+}
+
+.nexus-orbit-hover-label[data-label-side="top"] {
+  transform: translate(-50%, calc(-100% - 12px)) scale(0.96);
+}
+
+.nexus-orbit-hover-label[data-label-side="bottom"] {
+  transform: translate(-50%, 12px) scale(0.96);
+}
+
+.nexus-orbit-hover-label.is-visible {
+  opacity: 1;
+}
+
+.nexus-orbit-hover-label.is-visible[data-label-side="left"] {
+  transform: translate(calc(-100% - 16px), -50%) scale(1);
+}
+
+.nexus-orbit-hover-label.is-visible[data-label-side="right"] {
+  transform: translate(16px, -50%) scale(1);
+}
+
+.nexus-orbit-hover-label.is-visible[data-label-side="top"] {
+  transform: translate(-50%, calc(-100% - 16px)) scale(1);
+}
+
+.nexus-orbit-hover-label.is-visible[data-label-side="bottom"] {
+  transform: translate(-50%, 16px) scale(1);
+}
+
+.nexus-orbit-vector {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  width: var(--orbit-vector-length, 0);
+  height: 2px;
+  transform: rotate(var(--orbit-vector-angle, 0));
+  transform-origin: 0 50%;
+  border-radius: 999px;
+  background: var(--nexus-border-strong);
+  opacity: 0;
+  pointer-events: none;
+  transition: width var(--nexus-motion-progress), background-color var(--nexus-motion-fast), opacity var(--nexus-motion-fast);
+}
+
+.nexus-orbit-vector span {
+  position: absolute;
+  top: 50%;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  transform: translateY(-50%) rotate(45deg);
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  color: var(--nexus-text-muted);
+}
+
+.nexus-orbit-overlay.is-gesture-active .nexus-orbit-vector {
+  opacity: 0.82;
+}
+
+.nexus-orbit-vector.is-snapped {
+  background: var(--nexus-accent);
+}
+
+.nexus-orbit-vector.is-snapped span {
+  color: var(--nexus-accent);
+}
+
+.nexus-orbit-vector.is-selection-path {
+  background: var(--nexus-accent);
+  opacity: 0.9;
+}
+
+.nexus-orbit-vector.is-selection-path span {
+  color: var(--nexus-accent);
+}
+
+.nexus-orbit-node,
+.nexus-orbit-center,
+.nexus-orbit-commit {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--nexus-border-default);
+  background: var(--nexus-surface-raised);
+  color: var(--nexus-text-secondary);
+  cursor: pointer;
+}
+
+.nexus-orbit-node {
+  position: absolute;
+  z-index: var(--orbit-node-layer, 10);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  -webkit-clip-path: var(--orbit-sector-clip);
+  clip-path: var(--orbit-sector-clip);
+  transform: none;
+  border: 0;
+  border-radius: 50%;
+  background: var(--nexus-surface-panel);
+  box-shadow: none;
+  transition:
+    background-color var(--nexus-motion-fast),
+    color var(--nexus-motion-fast),
+    opacity var(--nexus-motion-fast);
+}
+
+.nexus-orbit-node[data-level="0"] {
+  background: var(--nexus-surface-raised);
+  color: var(--nexus-text-primary);
+}
+
+.nexus-orbit-node[data-level="0"]:hover,
+.nexus-orbit-node[data-level="0"]:focus-visible,
+.nexus-orbit-node[data-level="0"].is-near,
+.nexus-orbit-node[data-level="0"].is-magnetic,
+.nexus-orbit-node[data-level="0"].is-branch-selected {
+  background: var(--nexus-accent);
+  color: var(--nexus-surface-canvas);
+}
+
+.nexus-orbit-node:not([data-level="0"]) {
+  background: var(--nexus-surface-panel);
+  color: var(--nexus-text-primary);
+}
+
+.nexus-orbit-node::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: transparent;
+}
+
+.nexus-orbit-node span:not(.nexus-local-icon) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.nexus-orbit-center .nexus-local-icon,
+.nexus-orbit-commit .nexus-local-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.nexus-orbit-node .nexus-local-icon {
+  position: absolute;
+  z-index: 1;
+  top: calc(50% + var(--orbit-icon-y));
+  left: calc(50% + var(--orbit-icon-x));
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%) scale(var(--orbit-scale, 1));
+  transition:
+    transform var(--nexus-motion-enter),
+    filter var(--nexus-motion-fast);
+}
+
+.nexus-orbit-node:hover,
+.nexus-orbit-node:focus-visible {
+  background: var(--nexus-accent);
+  color: var(--nexus-surface-canvas);
+  outline: none;
+  --orbit-scale: 1.08;
+}
+
+.nexus-orbit-node.is-near {
+  background: var(--nexus-accent);
+  color: var(--nexus-surface-canvas);
+}
+
+.nexus-orbit-node.is-branch-ancestor {
+  opacity: 0.68;
+  --orbit-scale: 0.94;
+}
+
+.nexus-orbit-node.is-branch-ancestor:hover,
+.nexus-orbit-node.is-branch-ancestor:focus-visible,
+.nexus-orbit-node.is-branch-selected {
+  opacity: 1;
+}
+
+.nexus-orbit-node.is-branch-selected {
+  background: var(--nexus-accent);
+  color: var(--nexus-surface-canvas);
+  --orbit-scale: 1;
+}
+
+.nexus-orbit-node.is-branch-ancestor:not(.is-branch-selected) span:not(.nexus-local-icon) {
+  opacity: 0;
+}
+
+.nexus-orbit-node.is-magnetic {
+  background: var(--nexus-accent);
+  color: var(--nexus-surface-canvas);
+}
+
+.nexus-orbit-node:disabled {
+  background: var(--nexus-surface-inset);
+  color: var(--nexus-text-faint);
+  cursor: not-allowed;
+}
+
+.nexus-orbit-node.is-path-locked {
+  opacity: 0.34;
+}
+
+.nexus-orbit-node.is-path-locked.is-branch-selected {
+  background: var(--nexus-accent);
+  color: var(--nexus-surface-canvas);
+  opacity: 0.72;
+}
+
+.nexus-orbit-node.is-path-locked .nexus-local-icon {
+  filter: grayscale(1);
+}
+
+.nexus-orbit-node.is-path-locked.is-branch-selected .nexus-local-icon {
+  filter: none;
+}
+
+.nexus-orbit-overlay.is-gesture-active .nexus-orbit-node {
+  cursor: crosshair;
+}
+
+.nexus-orbit-center {
+  position: absolute;
+  z-index: 30;
+  top: 50%;
+  left: 50%;
+  width: 92px;
+  height: 92px;
+  padding: 12px;
+  transform: translate(-50%, -50%);
+  border-width: 1px;
+  border-radius: 50%;
+  background: var(--nexus-surface-inset);
+  box-shadow:
+    inset 0 1px 0 var(--nexus-border-subtle),
+    var(--nexus-shadow-floating);
+  gap: 2px;
+  transition:
+    width var(--nexus-motion-enter),
+    height var(--nexus-motion-enter),
+    border-color var(--nexus-motion-fast),
+    color var(--nexus-motion-fast),
+    transform var(--nexus-motion-fast);
+}
+
+.nexus-orbit-overlay[data-orbit-level-count="3"] .nexus-orbit-center {
+  width: 72px;
+  height: 72px;
+}
+
+.nexus-orbit-overlay[data-orbit-level-count="4"] .nexus-orbit-center,
+.nexus-orbit-overlay[data-orbit-level-count="5"] .nexus-orbit-center {
+  width: 62px;
+  height: 62px;
+}
+
+.nexus-orbit-center-icon {
+  display: grid;
+  place-items: center;
+  height: 18px;
+}
+
+.nexus-orbit-center-icon[hidden] {
+  display: none;
+}
+
+.nexus-orbit-center-label {
+  max-width: 72px;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nexus-orbit-center:hover,
+.nexus-orbit-center:focus-visible {
+  border-color: var(--nexus-accent-border);
+  color: var(--nexus-accent-text);
+  outline: none;
+}
+
+.nexus-orbit-overlay.is-gesture-active .nexus-orbit-center {
+  border-color: var(--nexus-accent-border-strong);
+  color: var(--nexus-accent-text);
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+.nexus-orbit-commit {
+  position: absolute;
+  z-index: 3;
+  right: var(--nexus-space-3);
+  bottom: var(--nexus-space-3);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-color: var(--nexus-success-border);
+  border-radius: 50%;
+  color: var(--nexus-success);
+}
+
+.nexus-orbit-commit[hidden] {
+  display: none;
+}
+
+.nexus-orbit-description {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: max-content;
+  max-width: min(88%, 380px);
+  min-height: 30px;
+  padding: 6px 10px;
+  overflow: hidden;
+  transform: translateX(-50%);
+  border: 1px solid var(--nexus-border-subtle);
+  border-radius: var(--nexus-radius-control);
+  background: var(--nexus-surface-panel);
+  box-shadow: var(--nexus-shadow-floating);
+  color: var(--nexus-text-secondary);
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 519px), (max-height: 519px) {
+  .nexus-orbit-shell {
+    width: min(var(--orbit-shell-size, 480px), 96vw, 96vh);
+    height: auto;
+  }
+
+  .nexus-orbit-stage {
+    inset: 34px;
+  }
+
+  .nexus-orbit-node {
+    width: 100%;
+    height: 100%;
+  }
+
+  .nexus-orbit-center {
+    width: 76px;
+    height: 76px;
+  }
+
+  .nexus-orbit-overlay[data-orbit-level-count="3"] .nexus-orbit-center {
+    width: 64px;
+    height: 64px;
+  }
+
+  .nexus-orbit-overlay[data-orbit-level-count="4"] .nexus-orbit-center,
+  .nexus-orbit-overlay[data-orbit-level-count="5"] .nexus-orbit-center {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 359px) {
+  .nexus-orbit-node .nexus-local-icon {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nexus-orbit-node {
+    transition: none;
+  }
+}
+
+
+.nexus-orbit-confirm {
+  position: fixed;
+  z-index: var(--nexus-layer-orbit-confirm);
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--nexus-space-3);
+  background: var(--nexus-overlay-scrim);
+  color: var(--nexus-text-primary);
+}
+
+.nexus-orbit-confirm[hidden] {
+  display: none;
+}
+
+.nexus-orbit-confirm-card {
+  width: min(100%, 480px);
+  max-height: min(92vh, 620px);
+  overflow: auto;
+  border: 1px solid var(--nexus-border-overlay);
+  border-radius: var(--nexus-radius-dialog);
+  background: var(--nexus-surface-panel);
+  box-shadow: var(--nexus-shadow-panel);
+}
+
+.nexus-orbit-confirm-card header,
+.nexus-orbit-confirm-card footer {
+  display: flex;
+  align-items: center;
+  gap: var(--nexus-space-2);
+  padding: var(--nexus-space-3);
+}
+
+.nexus-orbit-confirm-card header {
+  justify-content: space-between;
+  border-bottom: 1px solid var(--nexus-border-subtle);
+}
+
+.nexus-orbit-confirm-card footer {
+  justify-content: flex-end;
+  border-top: 1px solid var(--nexus-border-subtle);
+}
+
+.nexus-orbit-confirm-list,
+.nexus-orbit-confirm-fields {
+  display: grid;
+  gap: var(--nexus-space-2);
+  padding: var(--nexus-space-3);
+}
+
+.nexus-orbit-confirm-fields:empty {
+  display: none;
+}
+
+.nexus-orbit-confirm-svg,
+.nexus-orbit-confirm-package {
+  display: grid;
+  gap: var(--nexus-space-2);
+  margin: 0 var(--nexus-space-3) var(--nexus-space-3);
+  padding: var(--nexus-space-2);
+  border: 1px solid var(--nexus-border-subtle);
+  border-radius: var(--nexus-radius-control);
+}
+
+.nexus-orbit-confirm-svg[hidden],
+.nexus-orbit-confirm-package[hidden] {
+  display: none;
+}
+
+.nexus-orbit-confirm-svg legend,
+.nexus-orbit-confirm-package legend {
+  padding: 0 var(--nexus-space-1);
+  color: var(--nexus-text-secondary);
+  font-size: 12px;
+}
+
+.nexus-orbit-confirm-svg > div,
+.nexus-orbit-confirm-package > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--nexus-space-1);
+}
+
+.nexus-orbit-confirm-package > div {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.nexus-orbit-confirm-svg button,
+.nexus-orbit-confirm-package button {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
+  justify-content: center;
+  gap: var(--nexus-space-1);
+  min-width: 0;
+  padding: 0 var(--nexus-space-2);
+  white-space: nowrap;
+}
+
+.nexus-orbit-confirm-svg button span,
+.nexus-orbit-confirm-package button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexus-orbit-confirm-svg button.is-active,
+.nexus-orbit-confirm-package button.is-active {
+  border-color: var(--nexus-accent-border);
+  background: var(--nexus-accent-soft);
+  color: var(--nexus-accent-text);
+}
+
+.nexus-orbit-confirm-svg button:disabled {
+  border-color: var(--nexus-border-subtle);
+  background: var(--nexus-surface-inset);
+  color: var(--nexus-text-faint);
+  cursor: not-allowed;
+}
+
+.nexus-orbit-confirm-svg small {
+  overflow: hidden;
+  color: var(--nexus-text-muted);
+  font-size: 11px;
+  line-height: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nexus-orbit-confirm-row,
+.nexus-orbit-confirm-field {
+  display: grid;
+  gap: var(--nexus-space-2);
+}
+
+.nexus-orbit-confirm-row {
+  grid-template-columns: minmax(80px, 0.7fr) minmax(0, 1.3fr);
+  align-items: center;
+}
+
+.nexus-orbit-confirm-row > span,
+.nexus-orbit-confirm-field > span {
+  overflow: hidden;
+  color: var(--nexus-text-secondary);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nexus-orbit-confirm input,
+.nexus-orbit-confirm button {
+  min-height: 30px;
+  border: 1px solid var(--nexus-border-default);
+  border-radius: var(--nexus-radius-control);
+  background: var(--nexus-surface-inset);
+  color: var(--nexus-text-primary);
+}
+
+.nexus-orbit-confirm input {
+  min-width: 0;
+  padding: 0 var(--nexus-space-2);
+}
+
+.nexus-orbit-confirm button {
+  padding: 0 var(--nexus-space-3);
+  cursor: pointer;
+}
+
+.nexus-orbit-confirm button.is-primary {
+  border-color: var(--nexus-accent-border);
+  background: var(--nexus-accent-soft);
+  color: var(--nexus-accent-text);
+}
+
+@media (max-width: 359px) {
+  .nexus-orbit-confirm-row {
+    grid-template-columns: 1fr;
+  }
+
+  .nexus-orbit-confirm-svg button {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+
+  .nexus-orbit-confirm-svg button span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+}
