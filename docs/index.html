@@ -661,6 +661,8 @@ html.has-cursor .cursor-glow { opacity: 1; }
 .qs-block p { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; }
 .qs-block p b { color: var(--ink); }
 .qs-block code { font-family: var(--mono); font-size: .85em; background: var(--elev); color: var(--accent); padding: .12em .45em; border-radius: 5px; border: 1px solid var(--border); }
+.qs-install-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; align-items: stretch; }
+.qs-install-grid .qs-block { margin-bottom: 0; min-width: 0; }
 .qs-dl { display: flex; gap: 12px; flex-wrap: wrap; }
 .code-block {
   background: #0c0c14; color: #c6c6d6; border: 1px solid var(--border);
@@ -683,6 +685,19 @@ html.has-cursor .cursor-glow { opacity: 1; }
 @media (prefers-color-scheme: light) {
   .copy-btn { border-color: var(--border); background: #fff; color: var(--muted); }
   .copy-btn:hover { background: #ececf6; }
+}
+@media (max-width: 560px) {
+  .qs-install-grid { gap: 9px; }
+  .qs-install-grid .qs-block { padding: 14px 12px; border-radius: 13px; }
+  .qs-install-grid .qs-block h4 { align-items: flex-start; gap: 7px; font-size: 12px; line-height: 1.35; margin-bottom: 9px; }
+  .qs-install-grid .qs-num { width: 22px; height: 22px; font-size: 10px; }
+  .qs-install-grid .qs-block p { font-size: 10.5px; line-height: 1.55; margin-bottom: 9px; overflow-wrap: anywhere; }
+  .qs-install-grid .qs-block code { font-size: .78em; overflow-wrap: anywhere; }
+  .qs-install-grid .qs-dl { display: block; }
+  .qs-install-grid .qs-dl .btn { width: 100%; min-height: 34px; height: auto; padding: 7px 8px; font-size: 10px; line-height: 1.25; white-space: normal; }
+  .qs-install-grid .qs-dl .btn-icon { width: 13px; height: 13px; }
+  .qs-install-grid .code-block { padding: 12px 10px; padding-top: 38px; font-size: 9px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .qs-install-grid .copy-btn { top: 7px; right: 7px; }
 }
 
 .compat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
@@ -797,7 +812,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
             <span data-i18n="hero.enter">进入演示</span>
           </button>
-          <button class="btn btn-outline" type="button" data-download="browser">
+          <button class="btn btn-outline" type="button" data-goto="quickstart">
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             <span data-i18n="hero.download">下载插件</span>
           </button>
@@ -1210,6 +1225,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
       <div class="info-block" id="quickstart">
         <div class="info-label scene-init-hide" data-r="info" data-i18n="info.quickLabel">快速开始</div>
         <h2 class="scene-init-hide" data-r="info" data-i18n="info.quickTitle">下载安装，即刻使用</h2>
+        <div class="qs-install-grid">
         <div class="qs-block primary scene-init-hide" data-r="info">
           <h4><span class="qs-num">1</span> <span data-i18n="info.qs1">安装浏览器扩展</span></h4>
           <p data-i18n="info.qs1Desc">下载 <code>.zip</code> 压缩包，解压后在 <code>chrome://extensions</code> 页面开启<b>「开发者模式」</b>，点击<b>「加载已解压的扩展程序」</b>选择解压文件夹。支持 Chrome / Edge / Arc 等 Chromium 内核。</p>
@@ -1239,6 +1255,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
 C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 <span class="cm"># 放入后确保 PlayerDebugMode = 1（启用 CEP 调试）</span>
           </div>
+        </div>
         </div>
 
         <div class="qs-block scene-init-hide" data-r="info">
@@ -1679,7 +1696,8 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     var el = typeof target === "string" ? document.getElementById(target) : target;
     if (!el) return;
     offset = offset || -60;
-    if (lenis) lenis.scrollTo(el, { offset: offset, duration: 1.2 });
+    var absoluteTop = el.getBoundingClientRect().top + window.scrollY + offset;
+    if (lenis) lenis.scrollTo(absoluteTop, { duration: 1.2 });
     else el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
   }
 
