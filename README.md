@@ -23,7 +23,7 @@ docs/
   logo.svg
   downloads.json      # 下载版本、主链接、镜像与 SHA-256
 release-assets/
-  v1.0.0/             # 本地生成，上传 GitHub Release，不提交 ZIP
+  v0.0.8/             # 本地生成，上传 GitHub Release，不提交 ZIP
 README.md
 ```
 
@@ -87,9 +87,9 @@ npm run package:protected
 
 ```bash
 node scripts/package-release.mjs \
-  --version 1.0.0 \
+  --version 0.0.8 \
   --github-repo yancongya/NexusSnap-landing \
-  --mirror-base https://download.example.com/nexussnap/v1.0.0
+  --mirror-base https://download.example.com/nexussnap/v0.0.8
 ```
 
 `--version` 必须与两个扩展清单一致。网盘基础地址末尾不需要 `/`。
@@ -98,8 +98,8 @@ node scripts/package-release.mjs \
 
 1. 在两个扩展清单中更新同一个版本号。
 2. 运行项目测试与 `node scripts/package-release.mjs`。
-3. 在本仓库创建同名标签，例如 `v1.0.0`。
-4. 创建 GitHub Release，上传 `release-assets/v1.0.0/` 中的两个 ZIP、`SHA256SUMS.txt` 和 `release-manifest.json`。
+3. 在本仓库创建同名标签，例如 `v0.0.8`。
+4. 创建 GitHub Release，上传 `release-assets/v0.0.8/` 中的两个 ZIP、`SHA256SUMS.txt` 和 `release-manifest.json`。
 5. 提交更新后的 `docs/downloads.json` 与站点源码。
 6. 检查 GitHub Pages 下载按钮与 Release 资产名称完全一致。
 
@@ -116,11 +116,11 @@ npm run release:publish
 使用 GitHub CLI 的示例：
 
 ```bash
-gh release create v1.0.0 \
-  release-assets/v1.0.0/*.zip \
-  release-assets/v1.0.0/SHA256SUMS.txt \
-  release-assets/v1.0.0/release-manifest.json \
-  --title "NexusSnap 1.0.0" \
+gh release create v0.0.8 \
+  release-assets/v0.0.8/*.zip \
+  release-assets/v0.0.8/SHA256SUMS.txt \
+  release-assets/v0.0.8/release-manifest.json \
+  --title "NexusSnap 0.0.8" \
   --generate-notes
 ```
 
