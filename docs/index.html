@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<meta name="description" content="NexusSnap — 浏览器媒体嗅探与 Adobe 创作工具导入桥梁：散落各处的素材，一键归位到 AE / PS。支持 YouTube、Bilibili、小红书等 11 个主流平台深度解析。" data-i18n-attr="content:meta.description">
+<meta name="description" content="NexusSnap — 把网页、本地、剪贴板素材一键导入 After Effects / Photoshop。无需下载整理拖拽，支持 11 个主流平台。" data-i18n-attr="content:meta.description">
 <meta name="theme-color" content="#0a0a0f">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="apple-touch-icon" href="logo.svg">
@@ -37,7 +37,7 @@ window.setTimeout(function () {
   document.body.classList.add("is-ready", "boot-timeout");
 }, 4500);
 </script>
-<title data-i18n="meta.title">NexusSnap · 散落各处的素材，一键归位到 AE / PS</title>
+<title data-i18n="meta.title">NexusSnap · 网页素材一键导入 AE / PS</title>
 <style>
 /* ============================================================
    NexusSnap — 沉浸式交互落地页 · 单文件零构建
@@ -898,9 +898,9 @@ html.has-cursor .cursor-glow { opacity: 1; }
           <span class="hero-version" id="heroVersion" aria-live="polite"></span>
         </div>
         <h1 class="scene-init-hide" data-r="hero" data-i18n="hero.title">
-          散落各处的素材，<br>一键归位到 <span class="hl-ae">AE</span> / <span class="hl-ps">PS</span>
+          把网页、本地、剪贴板素材<br>一键归位到 <span class="hl-ae">AE</span> / <span class="hl-ps">PS</span>
         </h1>
-        <p class="sub scene-init-hide" data-r="hero" data-i18n="hero.sub">网页媒体、本地文件、剪贴板里的零散素材——嗅探、采集、路由，直达项目指定路径与合成时间线。无需下载、无需整理、无需拖拽。</p>
+        <p class="sub scene-init-hide" data-r="hero" data-i18n="hero.sub">看到网页上的视频、图片、音频，或本地文件、剪贴板截图——直接选中并发送到你的 AE 合成 / PS 文档，不用下载、不用改名、不用拖拽。</p>
         <div class="hero-actions scene-init-hide" data-r="hero">
           <button class="btn btn-primary" type="button" data-goto="s1">
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
@@ -988,7 +988,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
         <div class="pain-head">
           <div class="scene-tag scene-init-hide" data-r="pain" data-i18n="pain.tag">痛点 · 素材散落各处</div>
           <h2 class="scene-init-hide" data-r="pain" data-i18n="pain.title">灵感出现时，素材却在四个角落</h2>
-          <p class="scene-init-hide" data-r="pain" data-i18n="pain.desc">网页上看到的视频、本地攒下的文件、剪贴板里的截图、项目文件夹里的旧素材——<b>采集、下载、改名字、找路径、拖进合成</b>，每一步都在打断创作。<br>点任意一张卡片，体验嗅探。</p>
+          <p class="scene-init-hide" data-r="pain" data-i18n="pain.desc">网页视频、本地素材、剪贴板截图、项目里的旧文件——<b>下载、改名、找路径、拖进软件</b>，每一步都在打断创作。<br><span style="color:var(--accent)">点下方任意卡片</span>，体验一次采集。</p>
         </div>
 
         <div class="pain-zones">
@@ -1012,7 +1012,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
                 <div class="mc-name">bgm_loop.mp3</div><div class="mc-meta">320kbps</div>
               </div>
             </div>
-            <div class="zone-hint" data-i18n="pain.webHint"><kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片体验</div>
+            <div class="zone-hint" data-i18n="pain.webHint"><kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片加入采集队列</div>
           </div>
 
           <div class="zone scene-init-hide" data-r="zone" data-zone="local">
@@ -1082,7 +1082,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
       <div class="scene-inner">
         <div class="cap-head">
           <div class="scene-tag scene-init-hide" data-r="cap" data-i18n="cap.tag">采集 · 不离开网页</div>
-          <h2 class="scene-init-hide" data-r="cap" data-i18n="cap.title">面板即工作台：选中、改目标、发送</h2>
+          <h2 class="scene-init-hide" data-r="cap" data-i18n="cap.title">一个面板，选好素材和目标，一键发送</h2>
         </div>
 
           <div class="capture-panel scene-init-hide" id="capturePanel" data-r="cap-panel" role="group" aria-label="采集面板演示">
@@ -1151,8 +1151,8 @@ html.has-cursor .cursor-glow { opacity: 1; }
       <div class="scene-inner">
           <div class="orbit-head">
             <div class="scene-tag scene-init-hide" data-r="orbit" data-i18n="orbit.tag">路由 · Action Orbit</div>
-            <h2 class="scene-init-hide" data-r="orbit" data-i18n="orbit.title">一次手势，完成全部决策</h2>
-            <p class="scene-init-hide" data-r="orbit" data-i18n="orbit.desc">长按发送按钮可连续拖选；快捷键长按会锁定轨道，松开右键后再从中心用左键拖选。<b>有效叶节点进入最终确认，空白处松手取消</b>，回中心或按 Esc 返回。</p>
+            <h2 class="scene-init-hide" data-r="orbit" data-i18n="orbit.title">长按并拖动，快速指定落位方式</h2>
+            <p class="scene-init-hide" data-r="orbit" data-i18n="orbit.desc">长按「发送到 AE」并拖向目标：放进项目文件夹、当前合成，还是下载到本地？松手即确认，拖回中心或按 Esc 取消。</p>
           </div>
 
         <div class="orbit-stage scene-init-hide" id="orbitStage" data-r="orbit-stage">
@@ -1184,7 +1184,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
       <div class="scene-inner">
         <div class="tr-head">
           <div class="scene-tag scene-init-hide" data-r="tr" data-i18n="tr.tag">归位 · 直达 AE 项目</div>
-          <h2 class="scene-init-hide" data-r="tr" data-i18n="tr.title">确认 → 传输 → 精确落位</h2>
+          <h2 class="scene-init-hide" data-r="tr" data-i18n="tr.title">确认目标 → 本地传输 → 直接落位</h2>
         </div>
 
         <div class="transfer-stage scene-init-hide" data-r="tr-stage">
@@ -1300,34 +1300,34 @@ html.has-cursor .cursor-glow { opacity: 1; }
 
       <div class="info-block">
         <div class="info-label scene-init-hide" data-r="info" data-i18n="info.platLabel">深度适配</div>
-        <h2 class="scene-init-hide" data-r="info" data-i18n="info.platTitle">11 个主流平台专属解析 + 通用嗅探</h2>
-        <p class="desc scene-init-hide" data-r="info" data-i18n="info.platDesc">绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。</p>
+        <h2 class="scene-init-hide" data-r="info" data-i18n="info.platTitle">支持 11 个主流平台，也能抓取任意网页</h2>
+        <p class="desc scene-init-hide" data-r="info" data-i18n="info.platDesc">YouTube、Bilibili、小红书等平台直接获取原画原声；普通网页也能通过 DOM 扫描与网络嗅探抓取媒体。</p>
         <div class="plat-grid scene-init-hide" data-r="info">
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/youtube.svg" alt="YouTube" loading="lazy" decoding="async"><div class="plat-name">YouTube</div><div class="plat-detail" data-i18n="info.pYoutube">InnerTube API · 全清晰度</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/bilibili.svg" alt="Bilibili" loading="lazy" decoding="async"><div class="plat-name">Bilibili</div><div class="plat-detail" data-i18n="info.pBilibili">__playinfo__ · 音视频分离</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/xiaohongshu.svg" alt="小红书" loading="lazy" decoding="async"><div class="plat-name">小红书</div><div class="plat-detail" data-i18n="info.pXhs">笔记图片/视频提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/instagram.svg" alt="Instagram" loading="lazy" decoding="async"><div class="plat-name">Instagram</div><div class="plat-detail" data-i18n="info.pIg">帖子媒体源解析</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/x.svg" alt="X" loading="lazy" decoding="async"><div class="plat-name">Twitter / X</div><div class="plat-detail" data-i18n="info.pX">媒体源地址还原</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/pinterest.svg" alt="Pinterest" loading="lazy" decoding="async"><div class="plat-name">Pinterest</div><div class="plat-detail" data-i18n="info.pPin">Pin 原图提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/reddit.svg" alt="Reddit" loading="lazy" decoding="async"><div class="plat-name">Reddit</div><div class="plat-detail" data-i18n="info.pReddit">视频/图片源提取</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/sinaweibo.svg" alt="微博" loading="lazy" decoding="async"><div class="plat-name">微博</div><div class="plat-detail" data-i18n="info.pWeibo">高清原图 URL 解析</div></div>
-          <div class="plat-card"><img class="platform-logo" src="icons/platform/taobao.svg" alt="淘宝" loading="lazy" decoding="async"><div class="plat-name">淘宝</div><div class="plat-detail" data-i18n="info.pTaobao">商品图/视频提取</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/youtube.svg" alt="YouTube" loading="lazy" decoding="async"><div class="plat-name">YouTube</div><div class="plat-detail" data-i18n="info.pYoutube">原画视频 + 音轨</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/bilibili.svg" alt="Bilibili" loading="lazy" decoding="async"><div class="plat-name">Bilibili</div><div class="plat-detail" data-i18n="info.pBilibili">4K + 音频分离</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/xiaohongshu.svg" alt="小红书" loading="lazy" decoding="async"><div class="plat-name">小红书</div><div class="plat-detail" data-i18n="info.pXhs">笔记原图/视频</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/instagram.svg" alt="Instagram" loading="lazy" decoding="async"><div class="plat-name">Instagram</div><div class="plat-detail" data-i18n="info.pIg">帖子原图/视频</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/x.svg" alt="X" loading="lazy" decoding="async"><div class="plat-name">Twitter / X</div><div class="plat-detail" data-i18n="info.pX">推文媒体原址</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/pinterest.svg" alt="Pinterest" loading="lazy" decoding="async"><div class="plat-name">Pinterest</div><div class="plat-detail" data-i18n="info.pPin">Pin 原图</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/reddit.svg" alt="Reddit" loading="lazy" decoding="async"><div class="plat-name">Reddit</div><div class="plat-detail" data-i18n="info.pReddit">帖子视频/图片</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/sinaweibo.svg" alt="微博" loading="lazy" decoding="async"><div class="plat-name">微博</div><div class="plat-detail" data-i18n="info.pWeibo">微博高清原图</div></div>
+          <div class="plat-card"><img class="platform-logo" src="icons/platform/taobao.svg" alt="淘宝" loading="lazy" decoding="async"><div class="plat-name">淘宝</div><div class="plat-detail" data-i18n="info.pTaobao">商品图/视频</div></div>
           <div class="plat-card"><img class="platform-logo" src="icons/platform/jimeng.ico" alt="即梦" loading="lazy" decoding="async"><div class="plat-name">即梦</div><div class="plat-detail">jimeng.jianying.com</div></div>
-          <div class="plat-card"><img class="product-icon" src="icons/ui/link.svg" alt="" loading="lazy" decoding="async"><div class="plat-name">通用网页</div><div class="plat-detail" data-i18n="info.pGeneric">DOM 扫描 + 网络嗅探</div></div>
+          <div class="plat-card"><img class="product-icon" src="icons/ui/link.svg" alt="" loading="lazy" decoding="async"><div class="plat-name">通用网页</div><div class="plat-detail" data-i18n="info.pGeneric">任意网页 DOM / 网络嗅探</div></div>
         </div>
       </div>
       <div class="info-block" id="quickstart">
         <div class="info-label scene-init-hide" data-r="info" data-i18n="info.quickLabel">快速开始</div>
-        <h2 class="scene-init-hide" data-r="info" data-i18n="info.quickTitle">下载安装，即刻使用</h2>
+        <h2 class="scene-init-hide" data-r="info" data-i18n="info.quickTitle">三步安装，开始使用</h2>
         <div class="qs-install-grid">
         <div class="qs-block primary scene-init-hide" data-r="info">
           <h4><span class="qs-num">1</span> <span data-i18n="info.qs1">安装浏览器扩展</span></h4>
           <div class="qs-card-kicker" data-i18n="info.qs1Kicker">CHROMIUM · ZIP</div>
-          <p class="qs-card-intro" data-i18n="info.qs1Desc">适用于 Chrome、Edge、Arc 等 Chromium 浏览器。下载并解压后，手动加载扩展文件夹。</p>
+          <p class="qs-card-intro" data-i18n="info.qs1Desc">下载 ZIP 并解压，然后在浏览器的扩展管理中以「开发者模式」加载该文件夹。</p>
           <ol class="qs-steps">
             <li><span data-i18n="info.qs1Step1">打开 <code>chrome://extensions</code></span></li>
             <li><span data-i18n="info.qs1Step2">开启右上角<b>开发者模式</b></span></li>
-            <li><span data-i18n="info.qs1Step3">点击<b>加载已解压的扩展程序</b></span></li>
+            <li><span data-i18n="info.qs1Step3">点击<b>加载已解压的扩展程序</b>并选择解压后的文件夹</span></li>
           </ol>
           <div class="qs-dl">
             <button class="btn btn-primary" type="button" data-download="browser">
@@ -1336,18 +1336,18 @@ html.has-cursor .cursor-glow { opacity: 1; }
             </button>
           </div>
           <details class="qs-card-help">
-            <summary data-i18n="info.macHelp">macOS 首次安装</summary>
-            <p class="qs-card-help-note" data-i18n="info.macNote">如果系统阻止加载，请对解压文件夹执行 <code>xattr -dr com.apple.quarantine 文件夹名</code>。</p>
+            <summary data-i18n="info.macHelp">macOS 首次安装被拦截？</summary>
+            <p class="qs-card-help-note" data-i18n="info.macNote">如果系统提示无法加载，在终端对解压后的文件夹执行 <code>xattr -dr com.apple.quarantine 文件夹名</code>，然后重新加载。</p>
           </details>
         </div>
 
         <div class="qs-block scene-init-hide" data-r="info">
           <h4><span class="qs-num">2</span> <span data-i18n="info.qs2">安装 AE/PS CEP 插件</span></h4>
           <div class="qs-card-kicker" data-i18n="info.qs2Kicker">ADOBE CEP · ZIP</div>
-          <p class="qs-card-intro" data-i18n="info.qs2Desc">适用于 After Effects 与 Photoshop。将解压后的插件文件夹放入 Adobe CEP 扩展目录。</p>
+          <p class="qs-card-intro" data-i18n="info.qs2Desc">下载 ZIP 并解压，把 NexusSnap-CEP 文件夹放入 Adobe CEP 扩展目录，然后启用调试模式。</p>
           <ol class="qs-steps">
             <li><span data-i18n="info.qs2Step1">复制 <b>NexusSnap-CEP</b> 文件夹</span></li>
-            <li><span data-i18n="info.qs2Step2">启用 <code>PlayerDebugMode = 1</code></span></li>
+            <li><span data-i18n="info.qs2Step2">启用 CEP 调试模式 <code>PlayerDebugMode = 1</code></span></li>
             <li><span data-i18n="info.qs2Step3">重启 AE 或 Photoshop</span></li>
           </ol>
           <div class="qs-dl">
@@ -1372,7 +1372,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 
         <div class="qs-block scene-init-hide" data-r="info">
           <h4><span class="qs-num">3</span> <span data-i18n="info.qs3">开始采集与导入</span></h4>
-          <p data-i18n="info.qs3Desc">启动 After Effects 或 Photoshop → 浏览任意网页 → 点击扩展图标查看嗅探媒体并选中发送；或 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板，长按发送打开 Action Orbit 精确路由。</p>
+          <p data-i18n="info.qs3Desc">打开 AE/PS 和浏览器，浏览网页时点击扩展图标查看可采集的媒体；选中后发送，或长按「发送」用 Action Orbit 精确指定落位。</p>
         </div>
         <div class="release-card scene-init-hide" id="releaseCard" data-r="info" aria-live="polite">
           <div class="release-card-head">
@@ -1441,39 +1441,40 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
   /* ---------- 主题 / 语言 偏好 ---------- */
   var I18N = {
     zh: {
-      "meta.title": "NexusSnap · 散落各处的素材，一键归位到 AE / PS",
-      "meta.description": "NexusSnap — 浏览器媒体嗅探与 Adobe 创作工具导入桥梁：散落各处的素材，一键归位到 AE / PS。支持 YouTube、Bilibili、小红书等 11 个主流平台深度解析。",
+      "meta.title": "NexusSnap · 网页素材一键导入 AE / PS",
+      "meta.description": "NexusSnap — 把网页、本地、剪贴板素材一键导入 After Effects / Photoshop。无需下载整理拖拽，支持 11 个主流平台。",
       "nav.experience": "体验", "nav.pain": "痛点", "nav.capture": "采集", "nav.orbit": "轨道", "nav.transfer": "归位", "nav.support": "支持",
       "nav.langToggle": "切换语言", "nav.download": "下载",
       "stage.collect": "采集", "stage.route": "路由", "stage.place": "归位",
       "hero.tag": "浏览器扩展 + AE / PS CEP 插件",
-      "hero.title": "散落各处的素材，<br>一键归位到 <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span>",
-      "hero.sub": "网页媒体、本地文件、剪贴板里的零散素材——嗅探、采集、路由，直达项目指定路径与合成时间线。无需下载、无需整理、无需拖拽。",
-      "hero.enter": "进入演示", "hero.download": "下载插件", "hero.latest": "最新版本", "hero.scrollHint": "滚动进入演示",
+      "hero.title": "把网页、本地、剪贴板素材<br>一键归位到 <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span>",
+      "hero.sub": "看到网页上的视频、图片、音频，或本地文件、剪贴板截图——直接选中并发送到你的 AE 合成 / PS 文档，不用下载、不用改名、不用拖拽。",
+      "hero.latest": "最新版本",
+      "hero.enter": "进入演示", "hero.download": "下载插件", "hero.scrollHint": "滚动进入演示",
       "pain.tag": "痛点 · 素材散落各处",
       "pain.title": "灵感出现时，素材却在四个角落",
-      "pain.desc": "网页上看到的视频、本地攒下的文件、剪贴板里的截图、项目文件夹里的旧素材——<b>采集、下载、改名字、找路径、拖进合成</b>，每一步都在打断创作。<br>点任意一张卡片，体验嗅探。",
-      "pain.web": "网页媒体", "pain.webCount": "3 个已发现", "pain.webHint": "<kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片体验",
+      "pain.desc": "网页视频、本地素材、剪贴板截图、项目里的旧文件——<b>下载、改名、找路径、拖进软件</b>，每一步都在打断创作。<br><span style=\"color:var(--accent)\">点下方任意卡片</span>，体验一次采集。",
+      "pain.web": "网页媒体", "pain.webCount": "3 个已发现", "pain.webHint": "<kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>右键</kbd> 呼出采集面板 · 点击卡片加入采集队列",
       "pain.local": "本地文件", "pain.localCount": "2 个待归位", "pain.localHint": "拖入扩展图标即可收集",
       "pain.clip": "剪贴板", "pain.clipCount": "1 项待处理", "pain.clipHint": "截图后自动出现在采集面板",
       "pain.proj": "项目文件夹", "pain.projCount": "目标：…/NexusSnap", "pain.projHint": "旧素材复用，等待一键归位",
       "pain.dock": "采集托盘", "pain.dockSniffed": "已嗅探", "pain.dockItems": "项",
       "cap.tag": "采集 · 不离开网页",
-      "cap.title": "面板即工作台：选中、改目标、发送",
+      "cap.title": "一个面板，选好素材和目标，一键发送",
       "cap.quick": "QUICK CAPTURE", "cap.live": "0 个资源已嗅探",
       "cap.video": "视频", "cap.image": "图片", "cap.audio": "音频", "cap.liveUnit": " 个资源已嗅探",
       "cap.target": "目标", "cap.targetDefault": "文件夹 · 项目根目录", "cap.path": "路径",
       "cap.sendAe": "发送到 AE",
       "cap.hint": "点击发送 = 按默认目标直达 · <kbd>长按</kbd> 发送 = 打开 <span class=\"key\">Action Orbit</span> 精确路由",
       "orbit.tag": "路由 · Action Orbit",
-      "orbit.title": "一次手势，完成全部决策",
-      "orbit.desc": "长按发送按钮可连续拖选；快捷键长按会锁定轨道，松开右键后再从中心用左键拖选。<b>有效叶节点进入最终确认，空白处松手取消</b>，回中心或按 Esc 返回。",
+      "orbit.title": "长按并拖动，快速指定落位方式",
+      "orbit.desc": "长按「发送到 AE」并拖向目标：放进项目文件夹、当前合成，还是下载到本地？松手即确认，拖回中心或按 Esc 取消。",
       "orbit.sendAe": "发送到 AE", "orbit.hold": "长按 380ms",
       "orbit.guide": "按住左键 · 拖向目标 · 松开",
       "orbit.hint": "<kbd>左键长按</kbd> 0.38s 连续拖动 · 或 <kbd>Ctrl/⌘ + Shift + 右键长按</kbd> 锁定轨道，再从中心左键拖动",
       "orbit.exec": "松手确认", "orbit.drill": "继续 ▸", "orbit.crumbs": "路由 ▸ ", "orbit.loading": "Action Orbit 正在加载", "orbit.routed": "已确认路由 · {{label}}", "orbit.configFail": "配置加载失败",
       "tr.tag": "归位 · 直达 AE 项目",
-      "tr.title": "确认 → 传输 → 精确落位",
+      "tr.title": "确认目标 → 本地传输 → 直接落位",
       "tr.reset": "↻ 重新演示", "tr.confirmPrefix": "确认导入", "tr.selected": "已选 1 项",
       "tr.filename": "文件名", "tr.targetLabel": "目标：", "tr.cfTarget": "文件夹 · 项目根目录",
       "tr.layerLabel": "图层：", "tr.cfLayer": "最上层 / 合成起点 / 普通素材",
@@ -1490,22 +1491,22 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.psRaster": "普通图层", "info.psRasterDesc": "直接栅格化为普通图层，落在当前画布对应位置，一步到位。",
       "info.psSave": "本地图片", "info.psSaveDesc": "仅保存到指定路径，由你自己在 PS 中决定如何使用，轻量无侵入。", "info.tagSmart": "智能对象", "info.tagRaster": "栅格图层", "info.tagSave": "本地图片",
       "info.platLabel": "深度适配",
-      "info.platTitle": "11 个主流平台专属解析 + 通用嗅探",
-      "info.platDesc": "绕过前端反爬直达原始高清资源，同时支持任意网页的 DOM 扫描与网络请求拦截。",
-      "info.pYoutube": "InnerTube API · 全清晰度", "info.pBilibili": "__playinfo__ · 音视频分离",
-      "info.pXhs": "笔记图片/视频提取", "info.pIg": "帖子媒体源解析", "info.pX": "媒体源地址还原",
-      "info.pPin": "Pin 原图提取", "info.pReddit": "视频/图片源提取", "info.pWeibo": "高清原图 URL 解析",
-      "info.pTaobao": "商品图/视频提取", "info.pGeneric": "DOM 扫描 + 网络嗅探",
-      "info.quickLabel": "快速开始", "info.quickTitle": "下载安装，即刻使用",
+      "info.platTitle": "支持 11 个主流平台，也能抓取任意网页",
+      "info.platDesc": "YouTube、Bilibili、小红书等平台直接获取原画原声；普通网页也能通过 DOM 扫描与网络嗅探抓取媒体。",
+      "info.pYoutube": "原画视频 + 音轨", "info.pBilibili": "4K + 音频分离",
+      "info.pXhs": "笔记原图/视频", "info.pIg": "帖子原图/视频", "info.pX": "推文媒体原址",
+      "info.pPin": "Pin 原图", "info.pReddit": "帖子视频/图片", "info.pWeibo": "微博高清原图",
+      "info.pTaobao": "商品图/视频", "info.pGeneric": "任意网页 DOM / 网络嗅探",
+      "info.quickLabel": "快速开始", "info.quickTitle": "三步安装，开始使用",
       "info.releaseTitle": "更新日志", "info.releaseMore": "查看完整 Release ↗", "info.releaseDate": "更新于 {{date}}",
-      "info.qs1": "安装浏览器扩展", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "适用于 Chrome、Edge、Arc 等 Chromium 浏览器。下载并解压后，手动加载扩展文件夹。",
-      "info.qs1Step1": "打开 <code>chrome://extensions</code>", "info.qs1Step2": "开启右上角<b>开发者模式</b>", "info.qs1Step3": "点击<b>加载已解压的扩展程序</b>",
+      "info.qs1": "安装浏览器扩展", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "下载 ZIP 并解压，然后在浏览器的扩展管理中以「开发者模式」加载该文件夹。",
+      "info.qs1Step1": "打开 <code>chrome://extensions</code>", "info.qs1Step2": "开启右上角<b>开发者模式</b>", "info.qs1Step3": "点击<b>加载已解压的扩展程序</b>并选择解压后的文件夹",
       "info.dlBrowser": "下载浏览器扩展 (.zip)",
-      "info.macHelp": "macOS 首次安装", "info.macNote": "如果系统阻止加载，请对解压文件夹执行 <code>xattr -dr com.apple.quarantine 文件夹名</code>。",
-      "info.qs2": "安装 AE/PS CEP 插件", "info.qs2Kicker": "ADOBE CEP · ZIP", "info.qs2Desc": "适用于 After Effects 与 Photoshop。将解压后的插件文件夹放入 Adobe CEP 扩展目录。",
-      "info.qs2Step1": "复制 <b>NexusSnap-CEP</b> 文件夹", "info.qs2Step2": "启用 <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "重启 AE 或 Photoshop",
+      "info.macHelp": "macOS 首次安装被拦截？", "info.macNote": "如果系统提示无法加载，在终端对解压后的文件夹执行 <code>xattr -dr com.apple.quarantine 文件夹名</code>，然后重新加载。",
+      "info.qs2": "安装 AE/PS CEP 插件", "info.qs2Kicker": "ADOBE CEP · ZIP", "info.qs2Desc": "下载 ZIP 并解压，把 NexusSnap-CEP 文件夹放入 Adobe CEP 扩展目录，然后启用调试模式。",
+      "info.qs2Step1": "复制 <b>NexusSnap-CEP</b> 文件夹", "info.qs2Step2": "启用 CEP 调试模式 <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "重启 AE 或 Photoshop",
       "info.dlCep": "下载 CEP 插件", "info.cepPaths": "查看 CEP 安装路径", "info.copyBtn": "复制",
-      "info.qs3": "开始采集与导入", "info.qs3Desc": "启动 After Effects 或 Photoshop → 浏览任意网页 → 点击扩展图标查看嗅探媒体并选中发送；或 <code>Ctrl+Shift+右键</code> 呼出快捷采集面板，长按发送打开 Action Orbit 精确路由。",
+      "info.qs3": "开始采集与导入", "info.qs3Desc": "打开 AE/PS 和浏览器，浏览网页时点击扩展图标查看可采集的媒体；选中后发送，或长按「发送」用 Action Orbit 精确指定落位。",
       "info.compatLabel": "兼容性", "info.compatTitle": "环境要求",
       "info.cBrowserT": "浏览器", "info.cBrowser": "Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。",
       "info.cAet": "After Effects", "info.cAe": "AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。",
@@ -1535,39 +1536,39 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "tour.step.s5": "06 / 06 · 完成", "tour.text.s5": "体验完成。继续查看支持平台与安装方式。"
     },
     en: {
-      "meta.title": "NexusSnap · Scattered assets, one-click routing to AE / PS",
-      "meta.description": "NexusSnap — a browser media sniffer and import bridge for Adobe creative tools: route scattered assets to AE / PS in one click. Dedicated parsing for 11 major platforms including YouTube, Bilibili, and Xiaohongshu.",
+      "meta.title": "NexusSnap · Import web assets to AE / PS in one click",
+      "meta.description": "NexusSnap — import web, local, and clipboard assets into After Effects / Photoshop without downloading, renaming, or dragging. Supports 11 major platforms.",
       "nav.experience": "Experience", "nav.pain": "Pain points", "nav.capture": "Capture", "nav.orbit": "Orbit", "nav.transfer": "Transfer", "nav.support": "Support",
       "nav.langToggle": "Switch language", "nav.download": "Download",
       "stage.collect": "Capture", "stage.route": "Route", "stage.place": "Place",
       "hero.tag": "Browser extension + AE / PS CEP plugin",
-      "hero.title": "Scattered assets, <br>one-click routing to <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span>",
-      "hero.sub": "Web media, local files, and clipboard scraps — sniff, capture, and route them straight to the project's target path and composition timeline. No download, no organizing, no dragging.",
+      "hero.title": "Web, local, and clipboard assets<br>into <span class=\"hl-ae\">AE</span> / <span class=\"hl-ps\">PS</span> in one click",
+      "hero.sub": "Videos, images, and audio from the web, local files, or clipboard screenshots — select and send them straight to your AE comp or PS document. No download, no rename, no drag.",
       "hero.enter": "Enter demo", "hero.download": "Download plugin", "hero.latest": "Latest", "hero.scrollHint": "Scroll to enter the demo",
       "pain.tag": "Pain · assets scattered everywhere",
-      "pain.title": "When inspiration strikes, assets are in four corners",
-      "pain.desc": "Videos on the web, files on disk, screenshots in the clipboard, old assets in the project folder — <b>capture, download, rename, find the path, drag into the comp</b>, every step interrupts your creative flow.<br>Tap any card to experience sniffing.",
-      "pain.web": "Web media", "pain.webCount": "3 found", "pain.webHint": "<kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>Right-click</kbd> to open the capture panel · tap a card to try",
+      "pain.title": "When inspiration strikes, assets are everywhere",
+      "pain.desc": "Web videos, local files, clipboard screenshots, old project assets — <b>download, rename, find the path, drag into the app</b>, every step breaks your flow.<br><span style=\"color:var(--accent)\">Tap any card below</span> to try capturing one.",
+      "pain.web": "Web media", "pain.webCount": "3 found", "pain.webHint": "<kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>Right-click</kbd> opens the capture panel · tap a card to queue it",
       "pain.local": "Local files", "pain.localCount": "2 to place", "pain.localHint": "Drag onto the extension icon to collect",
       "pain.clip": "Clipboard", "pain.clipCount": "1 pending", "pain.clipHint": "Appears in the capture panel automatically after a screenshot",
       "pain.proj": "Project folder", "pain.projCount": "Target: …/NexusSnap", "pain.projHint": "Reuse old assets, awaiting one-click placement",
       "pain.dock": "Capture tray", "pain.dockSniffed": "Sniffed", "pain.dockItems": "items",
       "cap.tag": "Capture · without leaving the page",
-      "cap.title": "The panel is your workstation: select, retarget, send",
+      "cap.title": "One panel: pick assets, choose target, send",
       "cap.quick": "QUICK CAPTURE", "cap.live": "0 resources sniffed",
       "cap.video": "Video", "cap.image": "Image", "cap.audio": "Audio", "cap.liveUnit": " resources sniffed",
       "cap.target": "Target", "cap.targetDefault": "Folder · project root", "cap.path": "Path",
       "cap.sendAe": "Send to AE",
       "cap.hint": "Click send = straight to default target · <kbd>hold</kbd> send = open <span class=\"key\">Action Orbit</span> for precise routing",
       "orbit.tag": "Route · Action Orbit",
-      "orbit.title": "One gesture, every decision made",
-      "orbit.desc": "Hold Send for a continuous drag, or hold the shortcut to lock the orbit, release the right button, then drag from the center with the left button. <b>A valid leaf opens final confirmation; releasing on empty space cancels.</b> Return to center or press Esc to go back.",
+      "orbit.title": "Hold and drag to choose where it lands",
+      "orbit.desc": "Hold Send to AE and drag toward a target: project folder, current composition, or local download. Release to confirm; drag back to center or press Esc to cancel.",
       "orbit.sendAe": "Send to AE", "orbit.hold": "Hold 380ms",
       "orbit.guide": "Hold left · drag to target · release",
       "orbit.hint": "<kbd>Left-hold</kbd> 0.38s for a continuous drag · or <kbd>Ctrl/⌘ + Shift + right-hold</kbd> to lock, then left-drag from center",
       "orbit.exec": "Release to confirm", "orbit.drill": "Next ▸", "orbit.crumbs": "Route ▸ ", "orbit.loading": "Action Orbit loading", "orbit.routed": "Route confirmed · {{label}}", "orbit.configFail": "Config load failed",
       "tr.tag": "Transfer · straight to the AE project",
-      "tr.title": "Confirm → transfer → precise placement",
+      "tr.title": "Confirm target → local transfer → placed directly",
       "tr.reset": "↻ Replay", "tr.confirmPrefix": "Confirm import", "tr.selected": "1 selected",
       "tr.filename": "Filename", "tr.targetLabel": "Target: ", "tr.cfTarget": "Folder · project root",
       "tr.layerLabel": "Layer: ", "tr.cfLayer": "Top layer / comp start / normal asset",
@@ -1584,22 +1585,22 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.psRaster": "Raster layer", "info.psRasterDesc": "Rasterize straight to a normal layer at the right spot on the current canvas, in one step.",
       "info.psSave": "Local image", "info.psSaveDesc": "Just save to a chosen path and decide how to use it in PS yourself — lightweight, non-intrusive.", "info.tagSmart": "SMART OBJECT", "info.tagRaster": "RASTER LAYER", "info.tagSave": "SAVE ONLY",
       "info.platLabel": "Deep integration",
-      "info.platTitle": "11 major platforms with dedicated parsing + universal sniffing",
-      "info.platDesc": "Bypass front-end anti-scraping to reach raw HD sources, while also supporting DOM scanning and network interception on any page.",
-      "info.pYoutube": "InnerTube API · all resolutions", "info.pBilibili": "__playinfo__ · audio/video separated",
-      "info.pXhs": "Note image/video extraction", "info.pIg": "Post media source parsing", "info.pX": "Restore media source URLs",
-      "info.pPin": "Pin original image extraction", "info.pReddit": "Video/image source extraction", "info.pWeibo": "HD original image URL parsing",
-      "info.pTaobao": "Product image/video extraction", "info.pGeneric": "DOM scan + network sniffing",
-      "info.quickLabel": "Quick start", "info.quickTitle": "Download, install, and use instantly",
+      "info.platTitle": "11 major platforms, plus any web page",
+      "info.platDesc": "Get original video and audio from YouTube, Bilibili, Xiaohongshu, and more. Any page can be scanned via DOM and network sniffing.",
+      "info.pYoutube": "Original video + audio", "info.pBilibili": "4K + separated audio",
+      "info.pXhs": "Note images/videos", "info.pIg": "Post originals", "info.pX": "Tweet media source",
+      "info.pPin": "Pin originals", "info.pReddit": "Post videos/images", "info.pWeibo": "Weibo HD images",
+      "info.pTaobao": "Product images/videos", "info.pGeneric": "Any page DOM / network sniff",
+      "info.quickLabel": "Quick start", "info.quickTitle": "Three steps to start",
       "info.releaseTitle": "Changelog", "info.releaseMore": "View full release ↗", "info.releaseDate": "Updated {{date}}",
-      "info.qs1": "Install the browser extension", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "For Chrome, Edge, Arc, and other Chromium browsers. Download, unzip, then load the extension folder manually.",
-      "info.qs1Step1": "Open <code>chrome://extensions</code>", "info.qs1Step2": "Enable <b>Developer mode</b>", "info.qs1Step3": "Click <b>Load unpacked</b>",
+      "info.qs1": "Install the browser extension", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "Download the ZIP, extract it, then load the folder in Developer mode from your browser's extensions page.",
+      "info.qs1Step1": "Open <code>chrome://extensions</code>", "info.qs1Step2": "Enable <b>Developer mode</b> in the top right", "info.qs1Step3": "Click <b>Load unpacked</b> and choose the extracted folder",
       "info.dlBrowser": "Download browser extension (.zip)",
-      "info.macHelp": "First install on macOS", "info.macNote": "If macOS blocks loading, run <code>xattr -dr com.apple.quarantine folder-name</code> on the extracted folder.",
-      "info.qs2": "Install the AE/PS CEP plugin", "info.qs2Kicker": "ADOBE CEP · ZIP", "info.qs2Desc": "For After Effects and Photoshop. Put the extracted plugin folder in the Adobe CEP extensions directory.",
-      "info.qs2Step1": "Copy the <b>NexusSnap-CEP</b> folder", "info.qs2Step2": "Enable <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "Restart AE or Photoshop",
+      "info.macHelp": "Blocked on first macOS install?", "info.macNote": "If macOS warns it can't load the extension, run <code>xattr -dr com.apple.quarantine folder-name</code> on the extracted folder in Terminal, then load it again.",
+      "info.qs2": "Install the AE/PS CEP plugin", "info.qs2Kicker": "ADOBE CEP · ZIP", "info.qs2Desc": "Download the ZIP, extract it, place the NexusSnap-CEP folder in the Adobe CEP extensions directory, then enable debug mode.",
+      "info.qs2Step1": "Copy the <b>NexusSnap-CEP</b> folder", "info.qs2Step2": "Enable CEP debug mode <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "Restart AE or Photoshop",
       "info.dlCep": "Download CEP plugin", "info.cepPaths": "View CEP install paths", "info.copyBtn": "Copy",
-      "info.qs3": "Start capturing and importing", "info.qs3Desc": "Launch After Effects or Photoshop → browse any page → click the extension icon to see sniffed media and send it; or <code>Ctrl+Shift+Right-click</code> to open the quick-capture panel, then hold-send to open Action Orbit for precise routing.",
+      "info.qs3": "Start capturing and importing", "info.qs3Desc": "Open AE/PS and your browser. When browsing, click the extension icon to see capturable media; select and send, or hold Send to use Action Orbit for precise placement.",
       "info.compatLabel": "Compatibility", "info.compatTitle": "Requirements",
       "info.cBrowserT": "Browser", "info.cBrowser": "Chrome 88+, Edge 88+, Arc and other Chromium browsers. Firefox is not supported yet.",
       "info.cAet": "After Effects", "info.cAe": "AE 22.0+ (AEFT), requires CEP debug mode (PlayerDebugMode = 1).",
