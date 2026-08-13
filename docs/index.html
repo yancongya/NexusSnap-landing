@@ -706,6 +706,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
 .qs-block p { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; }
 .qs-block p b { color: var(--ink); }
 .qs-block code { font-family: var(--mono); font-size: .85em; background: var(--elev); color: var(--accent); padding: .12em .45em; border-radius: 5px; border: 1px solid var(--border); }
+.release-card { display: none; grid-template-columns: minmax(150px, .42fr) minmax(0, 1fr); gap: 24px; align-items: start; margin: 22px 0 16px; padding: 22px 24px; border: 1px solid var(--border-strong); border-radius: 16px; background: var(--elev); }
+.release-card.is-ready { display: grid; }
+.release-card-meta { display: grid; gap: 7px; }
+.release-card-version { color: var(--accent); font-family: var(--mono); font-size: 18px; font-weight: 800; letter-spacing: -.02em; }
+.release-card-date { color: var(--subtle); font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; }
+.release-card-title { margin-bottom: 9px; color: var(--ink); font-size: 13px; font-weight: 800; }
+.release-highlights { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.release-highlights li { display: grid; grid-template-columns: 7px minmax(0, 1fr); gap: 9px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.release-highlights li::before { content: ""; width: 5px; height: 5px; margin-top: .55em; border-radius: 50%; background: var(--accent); }
+.release-card-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--accent); font-size: 11.5px; font-weight: 700; }
+.release-card-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 .qs-install-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; align-items: stretch; }
 .qs-install-grid .qs-block { margin-bottom: 0; min-width: 0; display: flex; flex-direction: column; }
 .qs-card-kicker { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--accent); text-transform: uppercase; margin: -2px 0 12px 39px; }
@@ -745,6 +756,11 @@ html.has-cursor .cursor-glow { opacity: 1; }
   .copy-btn:hover { background: #ececf6; }
 }
 @media (max-width: 560px) {
+  .release-card { grid-template-columns: 1fr; gap: 14px; padding: 16px; border-radius: 13px; }
+  .release-card-meta { grid-template-columns: auto 1fr; align-items: baseline; gap: 10px; }
+  .release-card-version { font-size: 15px; }
+  .release-card-date { text-align: right; }
+  .release-highlights li { font-size: 10.5px; }
   .qs-install-grid { gap: 9px; }
   .qs-install-grid .qs-block { padding: 14px 12px; border-radius: 13px; }
   .qs-install-grid .qs-block h4 { align-items: flex-start; gap: 7px; font-size: 12px; line-height: 1.35; margin-bottom: 9px; }
@@ -1306,6 +1322,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
       <div class="info-block" id="quickstart">
         <div class="info-label scene-init-hide" data-r="info" data-i18n="info.quickLabel">快速开始</div>
         <h2 class="scene-init-hide" data-r="info" data-i18n="info.quickTitle">下载安装，即刻使用</h2>
+        <div class="release-card scene-init-hide" id="releaseCard" data-r="info" aria-live="polite">
+          <div class="release-card-meta">
+            <div class="release-card-version" id="releaseVersion"></div>
+            <div class="release-card-date" id="releaseDate"></div>
+          </div>
+          <div>
+            <div class="release-card-title" data-i18n="info.releaseTitle">本版更新</div>
+            <ul class="release-highlights" id="releaseHighlights"></ul>
+            <a class="release-card-link" id="releaseNotesLink" href="https://github.com/yancongya/NexusSnap-landing/releases" target="_blank" rel="noopener noreferrer" data-i18n="info.releaseMore">查看完整更新日志 ↗</a>
+          </div>
+        </div>
         <div class="qs-install-grid">
         <div class="qs-block primary scene-init-hide" data-r="info">
           <h4><span class="qs-num">1</span> <span data-i18n="info.qs1">安装浏览器扩展</span></h4>
@@ -1476,6 +1503,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.pPin": "Pin 原图提取", "info.pReddit": "视频/图片源提取", "info.pWeibo": "高清原图 URL 解析",
       "info.pTaobao": "商品图/视频提取", "info.pGeneric": "DOM 扫描 + 网络嗅探",
       "info.quickLabel": "快速开始", "info.quickTitle": "下载安装，即刻使用",
+      "info.releaseTitle": "本版更新", "info.releaseMore": "查看完整更新日志 ↗", "info.releaseDate": "发布于 {{date}}",
       "info.qs1": "安装浏览器扩展", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "适用于 Chrome、Edge、Arc 等 Chromium 浏览器。下载并解压后，手动加载扩展文件夹。",
       "info.qs1Step1": "打开 <code>chrome://extensions</code>", "info.qs1Step2": "开启右上角<b>开发者模式</b>", "info.qs1Step3": "点击<b>加载已解压的扩展程序</b>",
       "info.dlBrowser": "下载浏览器扩展 (.zip)",
@@ -1569,6 +1597,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.pPin": "Pin original image extraction", "info.pReddit": "Video/image source extraction", "info.pWeibo": "HD original image URL parsing",
       "info.pTaobao": "Product image/video extraction", "info.pGeneric": "DOM scan + network sniffing",
       "info.quickLabel": "Quick start", "info.quickTitle": "Download, install, and use instantly",
+      "info.releaseTitle": "What's new", "info.releaseMore": "View full changelog ↗", "info.releaseDate": "Released {{date}}",
       "info.qs1": "Install the browser extension", "info.qs1Kicker": "CHROMIUM · ZIP", "info.qs1Desc": "For Chrome, Edge, Arc, and other Chromium browsers. Download, unzip, then load the extension folder manually.",
       "info.qs1Step1": "Open <code>chrome://extensions</code>", "info.qs1Step2": "Enable <b>Developer mode</b>", "info.qs1Step3": "Click <b>Load unpacked</b>",
       "info.dlBrowser": "Download browser extension (.zip)",
@@ -1648,6 +1677,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     updateThemeBtn();
   }
   var CURRENT_RELEASE_VERSION = "";
+  var CURRENT_RELEASE_CONFIG = null;
   function renderHeroVersion() {
     var badge = $("#heroVersion");
     if (!badge) return;
@@ -1659,6 +1689,41 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     var normalized = String(CURRENT_RELEASE_VERSION).replace(/^v/i, "");
     badge.textContent = t("hero.latest") + " v" + normalized;
     badge.classList.add("is-ready");
+  }
+  function localizedReleaseText(value) {
+    if (typeof value === "string") return value;
+    if (!value || typeof value !== "object") return "";
+    return value[LANG] || value.zh || value.en || "";
+  }
+  function formatReleaseDate(value) {
+    if (!value) return "";
+    var date = new Date(value);
+    if (isNaN(date.getTime())) return "";
+    try {
+      return new Intl.DateTimeFormat(LANG === "en" ? "en-US" : "zh-CN", {
+        year: "numeric", month: LANG === "en" ? "short" : "2-digit", day: "2-digit"
+      }).format(date);
+    } catch (e) {
+      return date.toISOString().slice(0, 10);
+    }
+  }
+  function renderReleaseCard() {
+    var card = $("#releaseCard"), version = $("#releaseVersion"), date = $("#releaseDate");
+    var list = $("#releaseHighlights"), link = $("#releaseNotesLink");
+    var config = CURRENT_RELEASE_CONFIG;
+    if (!card || !version || !date || !list || !link || !config) return;
+    var highlights = Array.isArray(config.highlights) ? config.highlights.map(localizedReleaseText).filter(Boolean) : [];
+    version.textContent = "v" + String(config.version || config.tag || "").replace(/^v/i, "");
+    var formattedDate = formatReleaseDate(config.publishedAt || config.generatedAt);
+    date.textContent = formattedDate ? t("info.releaseDate").replace("{{date}}", formattedDate) : "";
+    list.textContent = "";
+    highlights.slice(0, 3).forEach(function (item) {
+      var li = document.createElement("li");
+      li.textContent = item;
+      list.appendChild(li);
+    });
+    link.href = config.releaseNotes || "https://github.com/yancongya/NexusSnap-landing/releases";
+    card.classList.toggle("is-ready", Boolean(version.textContent && highlights.length));
   }
   function applyLang() {
     if (typeof I18N === "undefined") return;
@@ -1681,6 +1746,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     });
     var lt = $("#langToggle"); if (lt) lt.textContent = LANG === "en" ? "中" : "EN";
     renderHeroVersion();
+    renderReleaseCard();
     if (typeof renderTargetMenu === "function") renderTargetMenu();
     if (typeof updateTargetLabel === "function") updateTargetLabel();
     if (typeof setAccent === "function" && typeof HOST !== "undefined") setAccent(HOST);
@@ -1766,11 +1832,15 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       return response.json();
     });
     configPromise.then(function (config) {
+      CURRENT_RELEASE_CONFIG = config || null;
       CURRENT_RELEASE_VERSION = config && (config.version || config.tag) || "";
       renderHeroVersion();
+      renderReleaseCard();
     }).catch(function () {
+      CURRENT_RELEASE_CONFIG = null;
       CURRENT_RELEASE_VERSION = "";
       renderHeroVersion();
+      renderReleaseCard();
     });
     $$("[data-download]").forEach(function (el) {
       el.addEventListener("click", function (e) {

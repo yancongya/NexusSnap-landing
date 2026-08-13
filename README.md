@@ -66,6 +66,8 @@ npm install
 5. 生成 `SHA256SUMS.txt` 与 `release-manifest.json`。
 6. 更新 `docs/downloads.json`。
 
+如需在落地页显示简短更新日志，在打包前新建 `release-notes/v<version>.json`，提供最多 3 条中英文 `highlights`。打包脚本会自动写入 `docs/downloads.json`，页面同时使用 `publishedAt` 显示发布日期。
+
 落地页的 Browser 与 CEP 下载按钮读取这份 JSON。`primary` 用作 GitHub Release 主下载；当 `mirrors` 非空时，快速安装区会自动增加“备用下载”。
 
 ### 保护版发布包
