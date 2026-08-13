@@ -8,18 +8,9 @@
   "protected": true,
   "releaseNotes": "https://github.com/yancongya/NexusSnap-landing/releases/tag/v0.0.9",
   "highlights": [
-    {
-      "zh": "修复 Browser 与 CEP 的本地图标加载，窄尺寸下仍保持关键图标可见。",
-      "en": "Fixed local icon loading across Browser and CEP, keeping key icons visible at narrow widths."
-    },
-    {
-      "zh": "收敛 Adobe 未连接时的 WebSocket 提示，离线状态不再干扰主要操作。",
-      "en": "Reduced WebSocket noise while Adobe is disconnected so offline use no longer interrupts the main workflow."
-    },
-    {
-      "zh": "优化快捷采集面板与 Action Orbit 的响应式布局和宿主路由。",
-      "en": "Improved responsive Quick Capture and Action Orbit layouts and host routing."
-    }
+    "修复 Browser 与 CEP 的本地图标加载，窄尺寸下仍保持关键图标可见。",
+    "收敛 Adobe 未连接时的 WebSocket 提示，离线状态不再干扰主要操作。",
+    "优化快捷采集面板与 Action Orbit 的响应式布局和宿主路由。"
   ],
   "channels": {
     "browser": {
