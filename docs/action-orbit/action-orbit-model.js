@@ -8,7 +8,7 @@
   'use strict';
 
   var ACTIONS = Object.freeze({
-    STORAGE_SAVE_ONLY: 'storage:save-only', TARGET_FOLDER: 'target:folder', TARGET_COMP: 'target:comp',
+    STORAGE_SAVE_ONLY: 'storage:save-only', STORAGE_SAVE_CONFIGURED: 'storage:save-configured', TARGET_FOLDER: 'target:folder', TARGET_COMP: 'target:comp', TARGET_PHOTOSHOP: 'target:photoshop',
     FOLDER_ROOT: 'folder:root', FOLDER_SELECTED: 'folder:selected', FOLDER_CUSTOM: 'folder:custom',
     LAYER_TOP: 'layer:top', LAYER_ABOVE: 'layer:above', LAYER_BOTTOM: 'layer:bottom',
     TIME_COMP_START: 'time:comp-start', TIME_PLAYHEAD: 'time:playhead', TIME_SELECTED_IN: 'time:selected-in', TIME_SELECTED_RANGE: 'time:selected-range',

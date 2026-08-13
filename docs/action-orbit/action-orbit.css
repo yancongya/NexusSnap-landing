@@ -114,8 +114,7 @@
   border-color: var(--nexus-accent-border);
 }
 
-.nexus-orbit-ring[data-stage="comp-placement"],
-.nexus-orbit-ring[data-stage="comp-timeline"] {
+.nexus-orbit-ring[data-stage="comp-placement"] {
   border-color: var(--nexus-import-comp-border);
 }
 
@@ -277,8 +276,7 @@
 .nexus-orbit-node[data-level="0"]:hover,
 .nexus-orbit-node[data-level="0"]:focus-visible,
 .nexus-orbit-node[data-level="0"].is-near,
-.nexus-orbit-node[data-level="0"].is-magnetic,
-.nexus-orbit-node[data-level="0"].is-branch-selected {
+.nexus-orbit-node[data-level="0"].is-magnetic {
   background: var(--nexus-accent);
   color: var(--nexus-surface-canvas);
 }
@@ -349,8 +347,8 @@
 }
 
 .nexus-orbit-node.is-branch-selected {
-  background: var(--nexus-accent);
-  color: var(--nexus-surface-canvas);
+  background: var(--nexus-accent-soft);
+  color: var(--nexus-accent-text);
   --orbit-scale: 1;
 }
 

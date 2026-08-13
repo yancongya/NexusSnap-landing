@@ -29,6 +29,7 @@
     var attractionDistance = config.attractionDistancePx || 96;
     var magneticDistance = config.magneticDistancePx || 56;
     var releaseDistance = config.magneticReleaseDistancePx || 82;
+    var centerDeadZone = config.centerDeadZonePx || 24;
     var centerInViewport = options.centered === true;
     var draft = null;
     var lastFocused = null;
@@ -404,8 +405,7 @@
         return;
       }
       render();
-      // The pointer must leave the selected magnetic sector before the next
-      // level is armed, preventing one small movement from cascading.
+      if (gestureActive) gestureArmed = true;
     }
 
     function render() {
@@ -554,7 +554,7 @@
       gestureArmed = true;
       gestureKeepOpen = true;
       root.classList.add('is-gesture-active');
-      description.textContent = t('orbit.holdAndDrag', '保持按住并拖向一个节点');
+      description.textContent = t('orbit.holdAndDrag', '按住划向选项，松开确认；原地松开可改用点击');
     }
 
     function armGesture(pointerId) {
@@ -565,7 +565,7 @@
       gestureKeepOpen = true;
       magneticTarget = null;
       root.classList.add('is-gesture-active');
-      description.textContent = t('orbit.dragFromCenter', '按住左键并拖向一个节点');
+      description.textContent = t('orbit.dragFromCenter', '划向选项并松开确认');
     }
 
     function handleGestureMove(event) {
@@ -574,6 +574,13 @@
       var centerRect = center.getBoundingClientRect();
       var centerPoint = { x: centerRect.left + centerRect.width / 2, y: centerRect.top + centerRect.height / 2 };
       var centerDistance = distanceBetween(point, centerPoint);
+      if (centerDistance <= centerDeadZone) {
+        magneticTarget = null;
+        resetNodeProximity();
+        hideHoverLabel();
+        updateVector(point, null);
+        return;
+      }
       var target = updateGestureFeedback(point);
       if (!target && centerDistance > 58) {
         gestureArmed = true;

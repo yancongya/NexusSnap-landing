@@ -1,8 +1,9 @@
 {
   "schemaVersion": 2,
   "behavior": {
-    "holdDelayMs": 380,
+    "holdDelayMs": 210,
     "movementTolerancePx": 6,
+    "centerDeadZonePx": 24,
     "magneticDistancePx": 56,
     "magneticReleaseDistancePx": 82,
     "attractionDistancePx": 96
@@ -24,41 +25,48 @@
           "label": "文件夹位置",
           "labelKey": "orbit.stage.folder",
           "options": [
-            { "id": "folder:root", "icon": "home", "label": "项目根目录", "description": "导入到 AE 项目根目录", "set": { "ae.folderPath": "{rootFolder}" }, "complete": true },
-            { "id": "folder:selected", "icon": "folder-selected", "label": "当前选中文件夹", "description": "使用 AE 当前选中的项目文件夹", "set": { "ae.folderPath": "{selectedFolder}" }, "complete": true },
-            { "id": "folder:custom", "icon": "edit", "label": "自定义文件夹", "description": "在最终确认面板输入 AE 文件夹路径", "set": { "ae.folderPath": "" }, "complete": true }
+            { "id": "folder:root", "icon": "home", "label": "项目根目录", "description": "导入到 AE 项目根目录", "set": { "ae.folderPath": "{rootFolder}" }, "nextStage": "package" },
+            { "id": "folder:selected", "icon": "folder-selected", "label": "当前选中文件夹", "description": "使用 AE 当前选中的项目文件夹", "set": { "ae.folderPath": "{selectedFolder}" }, "nextStage": "package" },
+            { "id": "folder:custom", "icon": "edit", "label": "自定义文件夹", "description": "在最终确认面板输入 AE 文件夹路径", "set": { "ae.folderPath": "" }, "nextStage": "package" }
           ]
         },
         "comp-placement": {
           "label": "图层顺序",
           "labelKey": "orbit.stage.compPlacement",
           "options": [
-            { "id": "layer:top", "icon": "layer-top", "label": "最上层", "description": "把素材图层放到合成最上方", "set": { "layer.placement": "top" }, "nextStage": "comp-timeline" },
-            { "id": "layer:above", "icon": "layer-above", "label": "选中层之上", "description": "把素材图层放到当前选中图层上方", "set": { "layer.placement": "above" }, "nextStage": "comp-timeline", "requires": "selectedLayer", "unavailableReason": "当前合成没有选中图层" },
-            { "id": "layer:bottom", "icon": "layer-bottom", "label": "最下层", "description": "把素材图层放到合成最下方", "set": { "layer.placement": "bottom" }, "nextStage": "comp-timeline" }
+            { "id": "layer:top", "icon": "layer-top", "label": "最上层", "description": "把素材图层放到合成最上方；时间位置沿用当前设置", "set": { "layer.placement": "top" }, "nextStage": "package" },
+            { "id": "layer:above", "icon": "layer-above", "label": "选中层之上", "description": "把素材图层放到当前选中图层上方；时间位置沿用当前设置", "set": { "layer.placement": "above" }, "nextStage": "package", "requires": "selectedLayer", "unavailableReason": "当前合成没有选中图层" },
+            { "id": "layer:bottom", "icon": "layer-bottom", "label": "最下层", "description": "把素材图层放到合成最下方；时间位置沿用当前设置", "set": { "layer.placement": "bottom" }, "nextStage": "package" }
           ]
         },
-        "comp-timeline": {
-          "label": "时间位置",
-          "labelKey": "orbit.stage.compTimeline",
+        "package": {
+          "label": "资源包装",
+          "labelKey": "orbit.stage.package",
           "options": [
-            { "id": "time:comp-start", "icon": "time-start", "label": "合成起点", "description": "把图层时间放到合成起点", "set": { "layer.timeline": "compStart" }, "complete": true },
-            { "id": "time:playhead", "icon": "time-playhead", "label": "当前播放头", "description": "把图层时间放到当前播放头", "set": { "layer.timeline": "playhead" }, "complete": true },
-            { "id": "time:selected-in", "icon": "time-selected-in", "label": "选中层入点", "description": "把图层起点对齐选中图层入点", "set": { "layer.timeline": "selectedIn" }, "complete": true, "requires": "selectedLayer", "unavailableReason": "当前合成没有选中图层" },
-            { "id": "time:selected-range", "icon": "time-selected-range", "label": "匹配选中层范围", "description": "同时匹配选中图层的入点和出点", "set": { "layer.timeline": "selectedRange" }, "complete": true, "requires": "selectedLayer", "unavailableReason": "当前合成没有选中图层" }
+            { "id": "package:regular", "icon": "package-regular", "label": "普通素材", "description": "按普通项目素材或合成图层导入", "set": { "ae.precompose": false }, "complete": true },
+            { "id": "package:precompose", "icon": "package-precompose", "label": "预合成", "description": "导入后按当前目标创建或执行预合成", "set": { "ae.precompose": true }, "complete": true }
           ]
         }
       }
     },
     "photoshop": {
-      "initialStage": "representation",
+      "initialStage": "destination",
       "stages": {
+        "destination": {
+          "label": "处理方式",
+          "labelKey": "orbit.stage.destination",
+          "options": [
+            { "id": "storage:save-only", "icon": "download-local", "label": "下载本地", "description": "使用当前宿主的默认下载位置，不导入 Photoshop", "set": { "storage.action": "save-only", "storage.directoryMode": "host-default", "storage.directory": "", "ae.target": "none" }, "complete": true },
+            { "id": "storage:save-configured", "icon": "path-current", "label": "指定目录", "description": "保存到设置中的统一资源路径，不导入 Photoshop", "set": { "storage.action": "save-only", "storage.directoryMode": "configured", "ae.target": "none" }, "complete": true },
+            { "id": "target:photoshop", "icon": "image", "label": "导入 PS", "description": "保存到统一资源路径并导入当前 Photoshop 文档", "set": { "storage.action": "save-and-import", "storage.directoryMode": "configured", "ae.target": "none" }, "nextStage": "representation", "requires": "document", "unavailableReason": "Photoshop 没有打开的文档" }
+          ]
+        },
         "representation": {
           "label": "导入方式",
           "labelKey": "orbit.stage.representation",
           "options": [
-            { "id": "photoshop:pixel-layer", "icon": "image", "label": "普通图层", "description": "导入当前 Photoshop 文档并转为普通像素图层", "set": { "storage.action": "save-and-import", "ae.target": "none", "host.representation": "pixel-layer" }, "complete": true, "requires": "document", "unavailableReason": "Photoshop 没有打开的文档" },
-            { "id": "photoshop:smart-object", "icon": "file", "label": "智能对象", "description": "导入当前 Photoshop 文档并保留为智能对象", "set": { "storage.action": "save-and-import", "ae.target": "none", "host.representation": "smart-object" }, "complete": true, "requires": "document", "unavailableReason": "Photoshop 没有打开的文档" }
+            { "id": "photoshop:pixel-layer", "icon": "image", "label": "普通图层", "description": "导入当前 Photoshop 文档并转为普通像素图层", "set": { "host.representation": "pixel-layer" }, "complete": true, "requires": "document", "unavailableReason": "Photoshop 没有打开的文档" },
+            { "id": "photoshop:smart-object", "icon": "file", "label": "智能对象", "description": "导入当前 Photoshop 文档并保留为智能对象", "set": { "host.representation": "smart-object" }, "complete": true, "requires": "document", "unavailableReason": "Photoshop 没有打开的文档" }
           ]
         }
       }

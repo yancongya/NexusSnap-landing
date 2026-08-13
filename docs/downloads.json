@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "version": "0.0.8",
-  "tag": "v0.0.8",
-  "generatedAt": "2026-08-11T02:41:07.278Z",
-  "publishedAt": "2026-08-11T02:41:07.278Z",
+  "version": "0.0.9",
+  "tag": "v0.0.9",
+  "generatedAt": "2026-08-13T08:19:16.210Z",
+  "publishedAt": "2026-08-13T08:19:16.210Z",
   "channel": "stable",
   "protected": true,
-  "releaseNotes": "https://github.com/yancongya/NexusSnap-landing/releases/tag/v0.0.8",
+  "releaseNotes": "https://github.com/yancongya/NexusSnap-landing/releases/tag/v0.0.9",
   "channels": {
     "browser": {
       "label": "浏览器扩展",
-      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.8/NexusSnap-Browser-0.0.8-protected.zip",
+      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.9/NexusSnap-Browser-0.0.9-protected.zip",
       "mirrors": [],
-      "file": "NexusSnap-Browser-0.0.8-protected.zip",
-      "sha256": "2b0eb6ab375054a4f9475531d3dfb0fdfaf3ff4649dab783b3f672cab329df1b"
+      "file": "NexusSnap-Browser-0.0.9-protected.zip",
+      "sha256": "538dd886ab3586ff8f8e28aeac9622f60f872c16490d495cc43897f927040098"
     },
     "cep": {
       "label": "AE / PS CEP 插件",
-      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.8/NexusSnap-CEP-0.0.8-protected.zip",
+      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.9/NexusSnap-CEP-0.0.9-protected.zip",
       "mirrors": [],
-      "file": "NexusSnap-CEP-0.0.8-protected.zip",
-      "sha256": "e6ac77bfc2564d297ab7249f8a94a31f82ebc8695c9c560f7ece812e440cd3d0"
+      "file": "NexusSnap-CEP-0.0.9-protected.zip",
+      "sha256": "838d4d5fdcbb0cefa6504f88aaa81d13854c25dd288ff4873db36e04e65e3bd4"
     }
   }
 }
