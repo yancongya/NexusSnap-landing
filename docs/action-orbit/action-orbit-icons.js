@@ -24,7 +24,7 @@
     ? resolvePageUrl('icons/', '../icons/')
     : hasExtensionUrl
       ? global.chrome.runtime.getURL('icons/ui/')
-      : resolvePageUrl('../icons/ui/', '../icons/ui/');
+      : resolvePageUrl('icons/ui/', 'icons/ui/');
   function icon(name) {
     return '<span class="nexus-local-icon" style="--nexus-icon-url:url(' + base + name + '.svg)" aria-hidden="true"></span>';
   }
