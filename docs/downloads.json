@@ -1,31 +1,27 @@
 {
   "schemaVersion": 1,
-  "version": "0.0.9",
-  "tag": "v0.0.9",
-  "generatedAt": "2026-08-13T08:19:16.210Z",
-  "publishedAt": "2026-08-13T08:19:16.210Z",
+  "version": "0.0.10",
+  "tag": "v0.0.10",
+  "generatedAt": "2026-08-15T17:58:18.666Z",
+  "publishedAt": "2026-08-15T17:58:18.666Z",
   "channel": "stable",
   "protected": true,
-  "releaseNotes": "https://github.com/yancongya/NexusSnap-landing/releases/tag/v0.0.9",
-  "highlights": [
-    "修复 Browser 与 CEP 的本地图标加载，窄尺寸下仍保持关键图标可见。",
-    "收敛 Adobe 未连接时的 WebSocket 提示，离线状态不再干扰主要操作。",
-    "优化快捷采集面板与 Action Orbit 的响应式布局和宿主路由。"
-  ],
+  "releaseNotes": "https://github.com/yancongya/NexusSnap-landing/releases/tag/v0.0.10",
+  "highlights": [],
   "channels": {
     "browser": {
       "label": "浏览器扩展",
-      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.9/NexusSnap-Browser-0.0.9-protected.zip",
+      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.10/NexusSnap-Browser-0.0.10-protected.zip",
       "mirrors": [],
-      "file": "NexusSnap-Browser-0.0.9-protected.zip",
-      "sha256": "538dd886ab3586ff8f8e28aeac9622f60f872c16490d495cc43897f927040098"
+      "file": "NexusSnap-Browser-0.0.10-protected.zip",
+      "sha256": "88d5e80c4fed365b8dffa7e9997f99562e4dbddae373937dfcca306675d9e47d"
     },
     "cep": {
       "label": "AE / PS CEP 插件",
-      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.9/NexusSnap-CEP-0.0.9-protected.zip",
+      "primary": "https://github.com/yancongya/NexusSnap-landing/releases/download/v0.0.10/NexusSnap-CEP-0.0.10-protected.zip",
       "mirrors": [],
-      "file": "NexusSnap-CEP-0.0.9-protected.zip",
-      "sha256": "838d4d5fdcbb0cefa6504f88aaa81d13854c25dd288ff4873db36e04e65e3bd4"
+      "file": "NexusSnap-CEP-0.0.10-protected.zip",
+      "sha256": "6cef30fca9829b6e61d86c0eeddbc93acf7a539cd4fefcead9652e97a4884bf9"
     }
   }
 }
