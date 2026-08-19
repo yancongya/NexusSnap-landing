@@ -13,6 +13,7 @@
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" crossorigin>
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" crossorigin>
 <link rel="stylesheet" href="action-orbit/action-orbit.css">
+<link rel="stylesheet" href="features/features.css">
 <script>
 window.__NEXUS_BOOT_STARTED__ = Date.now();
 window.__NEXUS_FRAMEWORKS__ = (function () {
@@ -70,6 +71,7 @@ window.setTimeout(function () {
   --nexus-space-1: 4px; --nexus-space-2: 8px; --nexus-space-3: 12px;
   --nexus-motion-fast: 140ms ease; --nexus-motion-enter: 220ms cubic-bezier(.16,1,.3,1);
   --nexus-motion-progress: 180ms ease; --nexus-layer-orbit: 900; --nexus-layer-orbit-confirm: 910;
+  --nexus-layer-feature-detail: 920;
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
@@ -854,6 +856,7 @@ html.has-cursor .cursor-glow { opacity: 1; }
   </a>
   <div class="nav-links">
     <a href="#s0" data-nav="s0" data-i18n="nav.experience">体验</a>
+    <a href="#s-features" data-nav="s-features" data-i18n="nav.features">功能</a>
     <a href="#s1" data-nav="s1" data-i18n="nav.pain">痛点</a>
     <a href="#s2" data-nav="s2" data-i18n="nav.capture">采集</a>
     <a href="#s3" data-nav="s3" data-i18n="nav.orbit">轨道</a>
@@ -977,6 +980,17 @@ html.has-cursor .cursor-glow { opacity: 1; }
       </div>
     </div>
     <div class="scroll-hint" aria-hidden="true"><div class="wheel"></div><span data-i18n="hero.scrollHint">滚动进入演示</span></div>
+  </section>
+
+  <!-- ===================================================
+       FEATURE SHOWCASE — carousel + detail modal
+       =================================================== -->
+  <section class="scene features" id="s-features" data-scene="features" aria-label="功能展示">
+    <div class="scene-pin">
+      <div class="scene-inner">
+        <div class="features-root scene-init-hide" data-r="features" id="featuresRoot"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ===================================================
@@ -1428,6 +1442,8 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
 <script src="action-orbit/action-orbit-icons.js"></script>
 <script src="action-orbit/action-orbit-view.js"></script>
 <script src="action-orbit/action-orbit-confirm.js"></script>
+<script src="features/features.config.js"></script>
+<script src="features/features-view.js"></script>
 <script>
 /* ============================================================
    NexusSnap 沉浸式落地页 — 应用逻辑
@@ -1444,7 +1460,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     zh: {
       "meta.title": "NexusSnap · 网页素材一键导入 AE / PS",
       "meta.description": "NexusSnap — 把网页、本地、剪贴板素材一键导入 After Effects / Photoshop。无需下载整理拖拽，支持 11 个主流平台。",
-      "nav.experience": "体验", "nav.pain": "痛点", "nav.capture": "采集", "nav.orbit": "轨道", "nav.transfer": "归位", "nav.support": "支持",
+      "nav.experience": "体验", "nav.features": "功能", "nav.pain": "痛点", "nav.capture": "采集", "nav.orbit": "轨道", "nav.transfer": "归位", "nav.support": "支持",
       "nav.langToggle": "切换语言", "nav.download": "下载",
       "stage.collect": "采集", "stage.route": "路由", "stage.place": "归位",
       "hero.tag": "浏览器扩展 + AE / PS CEP 插件",
@@ -1534,12 +1550,13 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "tour.step.s2": "03 / 06 · 设置", "tour.text.s2": "选择宿主、素材类型与目标，然后点击发送。",
       "tour.step.s3": "04 / 06 · 路由", "tour.text.s3": "按住圆心 0.38 秒，拖向节点，松开执行。",
       "tour.step.s4": "05 / 06 · 确认", "tour.text.s4": "核对名称和落位目标，点击继续完成传输。",
-      "tour.step.s5": "06 / 06 · 完成", "tour.text.s5": "体验完成。继续查看支持平台与安装方式。"
+      "tour.step.s5": "06 / 06 · 完成", "tour.text.s5": "体验完成。继续查看支持平台与安装方式。",
+      "tour.step.sFeatures": "功能 · 核心能力", "tour.text.sFeatures": "左右滑动查看各项能力，点卡片看详情。"
     },
     en: {
       "meta.title": "NexusSnap · Import web assets to AE / PS in one click",
       "meta.description": "NexusSnap — import web, local, and clipboard assets into After Effects / Photoshop without downloading, renaming, or dragging. Supports 11 major platforms.",
-      "nav.experience": "Experience", "nav.pain": "Pain points", "nav.capture": "Capture", "nav.orbit": "Orbit", "nav.transfer": "Transfer", "nav.support": "Support",
+      "nav.experience": "Experience", "nav.features": "Features", "nav.pain": "Pain points", "nav.capture": "Capture", "nav.orbit": "Orbit", "nav.transfer": "Transfer", "nav.support": "Support",
       "nav.langToggle": "Switch language", "nav.download": "Download",
       "stage.collect": "Capture", "stage.route": "Route", "stage.place": "Place",
       "hero.tag": "Browser extension + AE / PS CEP plugin",
@@ -1628,7 +1645,8 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "tour.step.s2": "03 / 06 · Setup", "tour.text.s2": "Pick host, asset type, and target, then click send.",
       "tour.step.s3": "04 / 06 · Route", "tour.text.s3": "Hold the hub for 0.38s, drag to a node, release to run.",
       "tour.step.s4": "05 / 06 · Confirm", "tour.text.s4": "Check the name and landing target, then continue to transfer.",
-      "tour.step.s5": "06 / 06 · Done", "tour.text.s5": "Experience complete. Keep exploring supported platforms and install options."
+      "tour.step.s5": "06 / 06 · Done", "tour.text.s5": "Experience complete. Keep exploring supported platforms and install options.",
+      "tour.step.sFeatures": "Features · Core capabilities", "tour.text.sFeatures": "Swipe through capabilities; tap a card for details."
     }
   };
   var THEME_KEY = "nexus-theme", LANG_KEY = "nexus-lang";
@@ -1940,6 +1958,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
   /* ---------- 全程沉浸式操作引导 ---------- */
   var TOUR_STEPS = {
     s0: { step: "tour.step.s0", mode: "scroll", text: "tour.text.s0" },
+    "s-features": { step: "tour.step.sFeatures", mode: "scroll", text: "tour.text.sFeatures" },
     s1: { step: "tour.step.s1", mode: "click", text: "tour.text.s1" },
     s2: { step: "tour.step.s2", mode: "click", text: "tour.text.s2" },
     s3: { step: "tour.step.s3", mode: "hold", text: "tour.text.s3" },
