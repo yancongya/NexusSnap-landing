@@ -718,6 +718,12 @@ html.has-cursor .cursor-glow { opacity: 1; }
 .release-highlights li::before { content: ""; width: 5px; height: 5px; margin-top: .55em; border-radius: 50%; background: var(--accent); }
 .release-card-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--accent); font-size: 11.5px; font-weight: 700; }
 .release-card-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.afdian-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 16px; padding: 22px 24px; border: 1px solid var(--accent); border-radius: 16px; background: var(--accent-wash); }
+.afdian-card-copy { min-width: 0; }
+.afdian-card-kicker { margin-bottom: 5px; color: var(--accent); font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+.afdian-card-title { color: var(--ink); font-size: 16px; font-weight: 800; }
+.afdian-card-desc { margin-top: 5px; color: var(--muted); font-size: 12.5px; line-height: 1.65; }
+.afdian-card .btn { flex: 0 0 auto; white-space: nowrap; }
 .qs-install-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; align-items: stretch; }
 .qs-install-grid .qs-block { margin-bottom: 0; min-width: 0; display: flex; flex-direction: column; }
 .qs-card-kicker { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--accent); text-transform: uppercase; margin: -2px 0 12px 39px; }
@@ -779,6 +785,10 @@ html.has-cursor .cursor-glow { opacity: 1; }
   .qs-card-help { margin-top: 11px; padding-top: 10px; }
   .qs-card-help summary { font-size: 9.5px; }
   .qs-card-help-note { font-size: 9px; }
+  .afdian-card { align-items: stretch; flex-direction: column; gap: 14px; padding: 16px; border-radius: 13px; }
+  .afdian-card-title { font-size: 14px; }
+  .afdian-card-desc { font-size: 11px; }
+  .afdian-card .btn { width: 100%; }
 }
 
 .compat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
@@ -1388,6 +1398,14 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
           <h4><span class="qs-num">3</span> <span data-i18n="info.qs3">开始采集与导入</span></h4>
           <p data-i18n="info.qs3Desc">打开 AE/PS 和浏览器，浏览网页时点击扩展图标查看可采集的媒体；选中后发送，或长按「发送」用 Action Orbit 精确指定落位。</p>
         </div>
+        <div class="afdian-card scene-init-hide" data-r="info">
+          <div class="afdian-card-copy">
+            <div class="afdian-card-kicker" data-i18n="info.afdianKicker">NEXUSSNAP · 爱发电</div>
+            <div class="afdian-card-title" data-i18n="info.afdianTitle">¥8.88 获取 NexusSnap 邀请码</div>
+            <div class="afdian-card-desc" data-i18n="info.afdianDesc">购买后自动发送邀请码；一次购买即可持续使用后续版本，无需因更新重复购买。</div>
+          </div>
+          <a class="btn btn-primary" href="https://ifdian.net/item/01adb9f69cc511f1979b5254001e7c00" target="_blank" rel="noopener noreferrer" data-i18n="info.afdianCta">前往爱发电购买邀请码 ↗</a>
+        </div>
         <div class="release-card scene-init-hide" id="releaseCard" data-r="info" aria-live="polite">
           <div class="release-card-head">
             <div class="release-card-title" data-i18n="info.releaseTitle">更新日志</div>
@@ -1429,6 +1447,7 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
     <div class="copy" data-i18n="footer.copy">© 2026 NexusSnap · 浏览器到 AE/PS 的素材归位桥梁</div>
     <div class="fl">
       <a data-scroll-top data-i18n="footer.top">返回顶部</a>
+      <a href="https://ifdian.net/item/01adb9f69cc511f1979b5254001e7c00" target="_blank" rel="noopener noreferrer" data-i18n="footer.afdian">爱发电购买</a>
       <a href="https://github.com/yancongya/NexusSnap-landing/releases" target="_blank" rel="noopener noreferrer" data-i18n="footer.changelog">更新日志</a>
       <a href="privacy.html" data-i18n="footer.privacy">隐私政策</a>
     </div>
@@ -1524,13 +1543,14 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.qs2Step1": "复制 <b>NexusSnap-CEP</b> 文件夹", "info.qs2Step2": "启用 CEP 调试模式 <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "重启 AE 或 Photoshop",
       "info.dlCep": "下载 CEP 插件", "info.cepPaths": "查看 CEP 安装路径", "info.copyBtn": "复制",
       "info.qs3": "开始采集与导入", "info.qs3Desc": "打开 AE/PS 和浏览器，浏览网页时点击扩展图标查看可采集的媒体；选中后发送，或长按「发送」用 Action Orbit 精确指定落位。",
+      "info.afdianKicker": "NEXUSSNAP · 爱发电", "info.afdianTitle": "¥8.88 获取 NexusSnap 邀请码", "info.afdianDesc": "购买后自动发送邀请码；一次购买即可持续使用后续版本，无需因更新重复购买。", "info.afdianCta": "前往爱发电购买邀请码 ↗",
       "info.compatLabel": "兼容性", "info.compatTitle": "环境要求",
       "info.cBrowserT": "浏览器", "info.cBrowser": "Chrome 88+、Edge 88+、Arc 及其他 Chromium 内核浏览器。Firefox 暂不支持。",
       "info.cAet": "After Effects", "info.cAe": "AE 22.0+ (AEFT)，需启用 CEP 调试模式（PlayerDebugMode = 1）。",
       "info.cPst": "Photoshop", "info.cPs": "PS 23.0+ (PHXS)，支持图片与 SVG 导入，智能对象或像素图层两种模式。",
       "info.cPrivt": "隐私", "info.cPriv": "所有数据本地处理，媒体通过本地 WebSocket 传输，不上传任何服务器。",
       "footer.copy": "© 2026 NexusSnap · 浏览器到 AE/PS 的素材归位桥梁",
-      "footer.top": "返回顶部", "footer.changelog": "更新日志", "footer.privacy": "隐私政策",
+      "footer.top": "返回顶部", "footer.afdian": "爱发电购买", "footer.changelog": "更新日志", "footer.privacy": "隐私政策",
       "theme.toDark": "切换到深色主题", "theme.toLight": "切换到浅色主题", "send.to": "发送到 ",
       "toast.dlUnavailable": "下载配置暂不可用 · 请前往 GitHub Releases",
       "toast.sniffed": "已嗅探 · {{name}} 加入采集队列",
@@ -1619,13 +1639,14 @@ C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
       "info.qs2Step1": "Copy the <b>NexusSnap-CEP</b> folder", "info.qs2Step2": "Enable CEP debug mode <code>PlayerDebugMode = 1</code>", "info.qs2Step3": "Restart AE or Photoshop",
       "info.dlCep": "Download CEP plugin", "info.cepPaths": "View CEP install paths", "info.copyBtn": "Copy",
       "info.qs3": "Start capturing and importing", "info.qs3Desc": "Open AE/PS and your browser. When browsing, click the extension icon to see capturable media; select and send, or hold Send to use Action Orbit for precise placement.",
+      "info.afdianKicker": "NEXUSSNAP · AFDIAN", "info.afdianTitle": "Get a NexusSnap invite code for ¥8.88", "info.afdianDesc": "Your invite code is delivered automatically after purchase. One purchase keeps working with future versions.", "info.afdianCta": "Buy an invite code on Afdian ↗",
       "info.compatLabel": "Compatibility", "info.compatTitle": "Requirements",
       "info.cBrowserT": "Browser", "info.cBrowser": "Chrome 88+, Edge 88+, Arc and other Chromium browsers. Firefox is not supported yet.",
       "info.cAet": "After Effects", "info.cAe": "AE 22.0+ (AEFT), requires CEP debug mode (PlayerDebugMode = 1).",
       "info.cPst": "Photoshop", "info.cPs": "PS 23.0+ (PHXS), supports image and SVG import, as Smart Object or pixel layer.",
       "info.cPrivt": "Privacy", "info.cPriv": "All data is processed locally; media travels over a local WebSocket and never reaches any server.",
       "footer.copy": "© 2026 NexusSnap · the bridge from browser to AE/PS for your assets",
-      "footer.top": "Back to top", "footer.changelog": "Changelog", "footer.privacy": "Privacy Policy",
+      "footer.top": "Back to top", "footer.afdian": "Buy on Afdian", "footer.changelog": "Changelog", "footer.privacy": "Privacy Policy",
       "theme.toDark": "Switch to dark theme", "theme.toLight": "Switch to light theme", "send.to": "Send to ",
       "toast.dlUnavailable": "Download config unavailable · please visit GitHub Releases",
       "toast.sniffed": "Sniffed · {{name}} added to capture queue",
